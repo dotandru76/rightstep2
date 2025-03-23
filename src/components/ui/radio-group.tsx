@@ -62,7 +62,7 @@ const RadioGroupItemWithImage = React.forwardRef<
           <img 
             src={imageSrc} 
             alt={label} 
-            className="object-contain w-full h-52" 
+            className="object-contain w-full h-70" 
           />
         </div>
         <span className="text-base font-medium pb-2">{label}</span>
