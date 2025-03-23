@@ -38,13 +38,13 @@ const formSchema = z.object({
   }),
   weight: z.string().refine((val) => {
     const num = parseFloat(val);
-    return !isNaN(num) && num > 20 && num < 500;
+    return !isNaN(num) && num > 0 && num < 500;
   }, {
     message: "Please enter a valid weight (20-500 kg/lbs).",
   }),
   height: z.string().refine((val) => {
     const num = parseFloat(val);
-    return !isNaN(num) && num > 50 && num < 300;
+    return !isNaN(num) && num > 0 && num < 300;
   }, {
     message: "Please enter a valid height (50-300 cm).",
   }),
@@ -347,31 +347,33 @@ const Register = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-md">
-      <Card className="w-full">
-        <CardHeader className="text-center">
-          <div className="mb-4">
-            <Progress value={(step / totalSteps) * 100} className="h-2" />
-            <p className="text-xs text-gray-500 mt-1">Step {step} of {totalSteps}</p>
-          </div>
-          {getCurrentStepContent()}
-        </CardHeader>
-        <CardFooter className="flex flex-col gap-3">
-          <div className="flex w-full gap-2">
-            {step > 1 && (
-              <Button variant="outline" onClick={goToPreviousStep} className="flex-1">
-                <ChevronLeft className="mr-2 h-4 w-4" /> Back
+      <Form {...form}>
+        <Card className="w-full">
+          <CardHeader className="text-center">
+            <div className="mb-4">
+              <Progress value={(step / totalSteps) * 100} className="h-2" />
+              <p className="text-xs text-gray-500 mt-1">Step {step} of {totalSteps}</p>
+            </div>
+            {getCurrentStepContent()}
+          </CardHeader>
+          <CardFooter className="flex flex-col gap-3">
+            <div className="flex w-full gap-2">
+              {step > 1 && (
+                <Button variant="outline" onClick={goToPreviousStep} className="flex-1">
+                  <ChevronLeft className="mr-2 h-4 w-4" /> Back
+                </Button>
+              )}
+              <Button onClick={goToNextStep} className={`${step === 1 ? 'w-full' : 'flex-1'}`}>
+                {step < totalSteps ? 'Next' : 'Complete Profile'} 
+                {step < totalSteps && <ArrowRight className="ml-2 h-4 w-4" />}
               </Button>
-            )}
-            <Button onClick={goToNextStep} className={`${step === 1 ? 'w-full' : 'flex-1'}`}>
-              {step < totalSteps ? 'Next' : 'Complete Profile'} 
-              {step < totalSteps && <ArrowRight className="ml-2 h-4 w-4" />}
-            </Button>
-          </div>
-          <p className="text-xs text-gray-500 text-center">
-            Your data is stored locally on your device
-          </p>
-        </CardFooter>
-      </Card>
+            </div>
+            <p className="text-xs text-gray-500 text-center">
+              Your data is stored locally on your device
+            </p>
+          </CardFooter>
+        </Card>
+      </Form>
     </div>
   );
 };
