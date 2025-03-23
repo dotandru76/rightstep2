@@ -5,9 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Droplets, Plus, Minus } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
-const WaterTracker = () => {
+interface WaterTrackerProps {
+  recommendedAmount?: number;
+}
+
+const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) => {
   const [waterGlasses, setWaterGlasses] = useState(0);
-  const targetGlasses = 8;
+  // A glass is typically 250ml or 0.25 liters
+  const glassSize = 0.25; 
+  const targetGlasses = Math.ceil(recommendedAmount / glassSize);
   const progressPercentage = Math.min((waterGlasses / targetGlasses) * 100, 100);
 
   const addGlass = () => {

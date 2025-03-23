@@ -1,16 +1,12 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-interface WeeklyProgressProps {
-  currentWeek: number;
-  setCurrentWeek: (week: number) => void;
-}
-
-const WeeklyProgress: React.FC<WeeklyProgressProps> = ({ currentWeek, setCurrentWeek }) => {
+const WeeklyProgress = () => {
+  const [currentWeek, setCurrentWeek] = useState(1);
   const totalWeeks = 13;
   const progressPercentage = (currentWeek / totalWeeks) * 100;
 

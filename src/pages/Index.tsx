@@ -1,10 +1,10 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { WaterTracker } from "@/components/WaterTracker";
-import { WeeklyProgress } from "@/components/WeeklyProgress";
-import { DailyHabits } from "@/components/DailyHabits";
-import { TipsCard } from "@/components/TipsCard";
+import WaterTracker from "@/components/WaterTracker";
+import WeeklyProgress from "@/components/WeeklyProgress";
+import DailyHabits from "@/components/DailyHabits";
+import TipsCard from "@/components/TipsCard";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Form } from "@/components/ui/form"; // Import Form provider
