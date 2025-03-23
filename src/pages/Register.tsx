@@ -21,6 +21,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -118,28 +119,31 @@ const Register = () => {
       case 1:
         return (
           <>
-            <div className="flex justify-center mb-8">
+            <div className="flex flex-col items-center space-y-8 my-12">
               <img 
-                src="/lovable-uploads/d5ce8790-6171-4d07-8e0a-f4ef08542e6d.png" 
+                src="/lovable-uploads/3ce5e3c1-3102-4e4c-b103-9bcdf1e3738b.png" 
                 alt="RightStep" 
-                className="max-h-60"
+                className="h-20"
               />
+              <div className="text-center space-y-2">
+                <h1 className="text-5xl font-bold tracking-wide text-white uppercase drop-shadow-md">RIGHT STEP</h1>
+                <p className="text-white/80 italic">Werres ac deet Dit by trenfœs</p>
+                <div className="inline-block rounded-full bg-white/20 px-4 py-1 text-white my-4 backdrop-blur-sm">
+                  #CCAF099
+                </div>
+              </div>
             </div>
-            <CardTitle className="text-3xl font-bold text-center text-rightstep-green mb-2">Your Journey Starts Here</CardTitle>
-            <CardDescription className="text-center text-lg mb-4">
-              RightStep: Your personalized path to a healthier you
-            </CardDescription>
             <CardContent className="pt-6">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="flex items-center gap-2">
+                    <FormLabel className="flex items-center gap-2 text-white">
                       <User className="h-4 w-4" /> Your Name
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your name" {...field} />
+                      <Input placeholder="Enter your name" {...field} className="bg-white/10 border-white/20 text-white" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -324,14 +328,23 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-rightstep-gradient py-8">
+    <div className="min-h-screen bg-rightstep-vertical-gradient py-8">
       <div className="container mx-auto px-4 py-8 max-w-md">
         <Form {...form}>
-          <Card className="w-full shadow-lg border-0">
-            <CardHeader className="text-center">
+          <Card className={cn(
+            "w-full shadow-lg border-0",
+            step === 1 ? "bg-transparent shadow-none" : "bg-white"
+          )}>
+            <CardHeader className={cn(
+              "text-center",
+              step === 1 ? "text-white" : ""
+            )}>
               <div className="mb-4">
-                <Progress value={(step / totalSteps) * 100} className="h-2 bg-gray-200" indicatorClassName="bg-rightstep-green" />
-                <p className="text-xs text-gray-500 mt-1">Step {step} of {totalSteps}</p>
+                <Progress value={(step / totalSteps) * 100} className="h-2 bg-gray-200" />
+                <p className={cn(
+                  "text-xs mt-1",
+                  step === 1 ? "text-white/70" : "text-gray-500"
+                )}>Step {step} of {totalSteps}</p>
               </div>
               {getCurrentStepContent()}
             </CardHeader>
@@ -347,12 +360,28 @@ const Register = () => {
                   {step < totalSteps && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
               </div>
-              <p className="text-xs text-gray-500 text-center">
+              <p className={cn(
+                "text-xs text-center",
+                step === 1 ? "text-white/70" : "text-gray-500"
+              )}>
                 Your data is stored locally on your device
               </p>
             </CardFooter>
           </Card>
         </Form>
+      </div>
+      <div className="fixed bottom-8 left-0 right-0 flex justify-center">
+        <div className="flex gap-1">
+          {[...Array(7)].map((_, i) => (
+            <div 
+              key={i} 
+              className={cn(
+                "h-2 w-2 rounded-full",
+                i === 0 ? "bg-white" : "bg-white/50"
+              )}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

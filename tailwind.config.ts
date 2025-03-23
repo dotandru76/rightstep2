@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -66,11 +65,16 @@ export default {
 				rightstep: {
 					green: '#7cc027',
 					'green-light': '#9fd655',
-					'green-dark': '#5a9a1f',
+					'green-dark': '#005c24',
+					'green-darker': '#004a1c',
+					'green-gradient-top': '#005c24',
+					'green-gradient-middle': '#3a8c2f',
+					'green-gradient-bottom': '#bddc31',
 				}
 			},
 			backgroundImage: {
 				'rightstep-gradient': 'linear-gradient(135deg, #7cc027 0%, #5a9a1f 100%)',
+				'rightstep-vertical-gradient': 'linear-gradient(to bottom, #005c24 0%, #3a8c2f 50%, #bddc31 100%)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
