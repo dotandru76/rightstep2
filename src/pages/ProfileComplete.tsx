@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Footprints } from "lucide-react";
 
 const ProfileComplete = () => {
   const navigate = useNavigate();
@@ -24,11 +24,10 @@ const ProfileComplete = () => {
       <Card className="max-w-md w-full shadow-lg border-0">
         <CardHeader className="text-center space-y-4">
           <div className="mx-auto flex items-center justify-center">
-            <img 
-              src="/lovable-uploads/0872cbc0-8904-4ff7-ae80-50089556c85d.png" 
-              alt="RightStep Logo" 
-              className="h-24 w-auto"
-            />
+            <div className="flex flex-col items-center">
+              <Footprints className="h-16 w-16 text-rightstep-green mb-1" />
+              <h2 className="text-xl font-bold text-rightstep-green">RightStep</h2>
+            </div>
           </div>
           <CardTitle className="text-2xl font-bold text-rightstep-green">Profile Complete!</CardTitle>
           <CardDescription className="text-lg">
