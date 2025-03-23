@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,7 +15,7 @@ const Index = () => {
   const [selectedTab, setSelectedTab] = useState("overview");
 
   return (
-    <div className="min-h-screen bg-gray-50 rtl" dir="rtl">
+    <div className="min-h-screen bg-gray-50" dir="rtl">
       <header className="bg-white shadow-sm">
         <div className="container mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-blue-600">שיטת הלפטין</h1>
