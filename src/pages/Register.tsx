@@ -11,9 +11,9 @@ import {
   Ruler, 
   CalendarDays, 
   ArrowRight,
-  Footprints,
   ChevronLeft
 } from "lucide-react";
+import RightFootIcon from "@/components/RightFootIcon";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -121,7 +121,7 @@ const Register = () => {
           <>
             <div className="flex flex-col items-center space-y-8 my-12">
               <div className="flex flex-col items-center">
-                <Footprints className="h-24 w-24 text-white mb-2" />
+                <RightFootIcon className="h-24 w-24 text-white mb-2" size={96} />
                 <h1 className="text-3xl font-bold text-white">RightStep</h1>
               </div>
               <div className="text-center space-y-2">
@@ -154,7 +154,7 @@ const Register = () => {
         return (
           <>
             <div className="flex justify-center mb-6">
-              <Footprints className="h-14 w-14 text-rightstep-green" />
+              <RightFootIcon className="h-14 w-14 text-rightstep-green" size={56} />
             </div>
             <CardTitle className="text-2xl font-bold text-center text-rightstep-green">Hi, {form.getValues().name}!</CardTitle>
             <CardDescription className="text-center mb-4">
@@ -239,7 +239,7 @@ const Register = () => {
         return (
           <>
             <div className="flex justify-center mb-6">
-              <Footprints className="h-14 w-14 text-rightstep-green" />
+              <RightFootIcon className="h-14 w-14 text-rightstep-green" size={56} />
             </div>
             <CardTitle className="text-2xl font-bold text-center text-rightstep-green">Almost there!</CardTitle>
             <CardDescription className="text-center mb-4">
@@ -284,7 +284,7 @@ const Register = () => {
         return (
           <>
             <div className="flex justify-center mb-6">
-              <Footprints className="h-14 w-14 text-rightstep-green" />
+              <RightFootIcon className="h-14 w-14 text-rightstep-green" size={56} />
             </div>
             <CardTitle className="text-2xl font-bold text-center text-rightstep-green">Ready to Start Your Journey</CardTitle>
             <CardDescription className="text-center mb-4">

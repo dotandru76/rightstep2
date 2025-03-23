@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Footprints } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import RightFootIcon from "@/components/RightFootIcon";
 
 const ProfileComplete = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const ProfileComplete = () => {
         <CardHeader className="text-center space-y-4">
           <div className="mx-auto flex items-center justify-center">
             <div className="flex flex-col items-center">
-              <Footprints className="h-16 w-16 text-rightstep-green mb-1" />
+              <RightFootIcon className="h-16 w-16 text-rightstep-green mb-1" size={64} />
               <h2 className="text-xl font-bold text-rightstep-green">RightStep</h2>
             </div>
           </div>

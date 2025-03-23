@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WaterTracker from "@/components/WaterTracker";
@@ -7,7 +6,8 @@ import DailyHabits from "@/components/DailyHabits";
 import TipsCard from "@/components/TipsCard";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { UserCircle, Footprints } from "lucide-react";
+import { UserCircle } from "lucide-react";
+import RightFootIcon from "@/components/RightFootIcon";
 
 interface UserData {
   name: string;
@@ -22,22 +22,19 @@ const Index = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
-    // Check if user data exists
     const storedData = localStorage.getItem("userData");
     if (storedData) {
       setUserData(JSON.parse(storedData));
     } else {
-      // Redirect to registration if no user data
       navigate("/register");
     }
   }, [navigate]);
 
   if (!userData) {
-    return null; // Loading state or will redirect
+    return null;
   }
 
   const handleReset = () => {
-    // Clear user data
     localStorage.removeItem("userData");
     toast.success("Profile reset! Redirecting to registration...");
     setTimeout(() => {
@@ -45,7 +42,6 @@ const Index = () => {
     }, 1500);
   };
 
-  // Calculate daily water intake recommendation based on weight
   const weightInKg = parseFloat(userData.weight);
   const recommendedWater = (weightInKg * 0.033).toFixed(1);
 
@@ -54,7 +50,7 @@ const Index = () => {
       <header className="bg-rightstep-gradient text-white py-4">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Footprints className="h-6 w-6" />
+            <RightFootIcon className="h-6 w-6" />
             <h1 className="text-xl font-bold">RightStep</h1>
           </div>
           <Button variant="ghost" size="sm" className="text-white hover:bg-white/20" onClick={handleReset}>
@@ -67,7 +63,7 @@ const Index = () => {
       <main className="container mx-auto px-4 py-6 max-w-4xl">
         <div className="mb-6 p-4 bg-white rounded-lg shadow-sm">
           <h2 className="text-2xl font-bold text-rightstep-green flex items-center gap-2">
-            <Footprints className="h-5 w-5 text-rightstep-green" />
+            <RightFootIcon className="h-5 w-5 text-rightstep-green" />
             Welcome, {userData.name}!
           </h2>
           <p className="text-gray-600">
