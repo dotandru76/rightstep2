@@ -149,7 +149,7 @@ const Register = () => {
         return (
           <>
             <div className="flex justify-center mb-4">
-              <RightFootIcon className="h-12 w-12 text-white" size={48} />
+              <RightFootIcon className="h-20 w-20 text-white" size={80} />
             </div>
             <CardTitle className="text-xl font-bold text-center text-white">Hi, {form.getValues().name}!</CardTitle>
             <CardDescription className="text-center mb-6 text-white/80">
