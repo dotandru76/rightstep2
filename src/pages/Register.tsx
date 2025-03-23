@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem, RadioGroupItemWithImage } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -92,8 +92,8 @@ const Register = () => {
   const getFieldsForStep = (currentStep: number) => {
     switch (currentStep) {
       case 1: return ["name"];
-      case 2: return ["age", "sex"];
-      case 3: return ["weight", "height"];
+      case 2: return ["sex"];
+      case 3: return ["age", "weight", "height"];
       case 4: return []; // Review step, no fields to validate
       default: return [];
     }
@@ -154,7 +154,62 @@ const Register = () => {
             </div>
             <CardTitle className="text-xl md:text-2xl font-bold text-center text-rightstep-green">Hi, {form.getValues().name}!</CardTitle>
             <CardDescription className="text-center mb-3 md:mb-4">
-              Let's get to know you better to customize your plan.
+              Please select your gender to personalize your plan
+            </CardDescription>
+            <CardContent className="pt-4 md:pt-6 space-y-5 md:space-y-6">
+              <FormField
+                control={form.control}
+                name="sex"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex space-x-3 md:space-x-6"
+                      >
+                        <RadioGroupItemWithImage 
+                          id="male"
+                          value="male"
+                          imageSrc="/lovable-uploads/64afc05e-9201-4769-b2d3-d44c83480d8a.png"
+                          label="Male"
+                        />
+                        
+                        <RadioGroupItemWithImage
+                          id="female"
+                          value="female"
+                          imageSrc="/lovable-uploads/85d23c27-0326-452e-9dae-f3a6b94f05d5.png"
+                          label="Female"
+                        />
+                        
+                        <div className="flex-1">
+                          <RadioGroupItem id="other" value="other" className="peer sr-only" />
+                          <label 
+                            htmlFor="other" 
+                            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 md:p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rightstep-green [&:has([data-state=checked])]:border-rightstep-green cursor-pointer"
+                          >
+                            <User className="mb-2 md:mb-3 h-24 md:h-36 w-auto text-purple-500" />
+                            <span>Other</span>
+                          </label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage className="text-center" />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <div className="flex justify-center mb-4 md:mb-6">
+              <RightFootIcon className="h-16 w-16 md:h-20 md:w-20 text-rightstep-green" size={isMobile ? 64 : 80} />
+            </div>
+            <CardTitle className="text-xl md:text-2xl font-bold text-center text-rightstep-green">Almost there!</CardTitle>
+            <CardDescription className="text-center mb-3 md:mb-4">
+              Let's finish up with some measurements to personalize your journey.
             </CardDescription>
             <CardContent className="pt-4 md:pt-6 space-y-5 md:space-y-6">
               <FormField
@@ -173,75 +228,6 @@ const Register = () => {
                 )}
               />
               
-              <FormField
-                control={form.control}
-                name="sex"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel>Biological Sex</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex space-x-2"
-                      >
-                        <FormItem className="flex-1">
-                          <FormControl>
-                            <RadioGroupItem value="male" className="peer sr-only" />
-                          </FormControl>
-                          <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 md:p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rightstep-green [&:has([data-state=checked])]:border-rightstep-green">
-                            <img 
-                              src="/lovable-uploads/c20310f9-a5a7-4777-975a-39c4fa202879.png" 
-                              alt="Male" 
-                              className="mb-2 md:mb-3 h-20 md:h-32" 
-                            />
-                            Male
-                          </FormLabel>
-                        </FormItem>
-                        
-                        <FormItem className="flex-1">
-                          <FormControl>
-                            <RadioGroupItem value="female" className="peer sr-only" />
-                          </FormControl>
-                          <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 md:p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rightstep-green [&:has([data-state=checked])]:border-rightstep-green">
-                            <img 
-                              src="/lovable-uploads/a5b0210c-5524-436c-a9b0-b67703855063.png" 
-                              alt="Female" 
-                              className="mb-2 md:mb-3 h-20 md:h-32" 
-                            />
-                            Female
-                          </FormLabel>
-                        </FormItem>
-                        
-                        <FormItem className="flex-1">
-                          <FormControl>
-                            <RadioGroupItem value="other" className="peer sr-only" />
-                          </FormControl>
-                          <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 md:p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rightstep-green [&:has([data-state=checked])]:border-rightstep-green">
-                            <User className="mb-2 md:mb-3 h-6 w-6 text-purple-500" />
-                            Other
-                          </FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </>
-        );
-      case 3:
-        return (
-          <>
-            <div className="flex justify-center mb-4 md:mb-6">
-              <RightFootIcon className="h-16 w-16 md:h-20 md:w-20 text-rightstep-green" size={isMobile ? 64 : 80} />
-            </div>
-            <CardTitle className="text-xl md:text-2xl font-bold text-center text-rightstep-green">Almost there!</CardTitle>
-            <CardDescription className="text-center mb-3 md:mb-4">
-              Let's finish up with some measurements to personalize your journey.
-            </CardDescription>
-            <CardContent className="pt-4 md:pt-6 space-y-5 md:space-y-6">
               <FormField
                 control={form.control}
                 name="weight"
@@ -295,12 +281,12 @@ const Register = () => {
                       <p className="font-medium">{form.getValues().name}</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-sm text-gray-500">Age</p>
-                      <p className="font-medium">{form.getValues().age} years</p>
+                      <p className="text-sm text-gray-500">Gender</p>
+                      <p className="font-medium capitalize">{form.getValues().sex}</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-sm text-gray-500">Sex</p>
-                      <p className="font-medium capitalize">{form.getValues().sex}</p>
+                      <p className="text-sm text-gray-500">Age</p>
+                      <p className="font-medium">{form.getValues().age} years</p>
                     </div>
                     <div className="space-y-1">
                       <p className="text-sm text-gray-500">Weight</p>
@@ -347,7 +333,7 @@ const Register = () => {
                   onClick={goToNextStep} 
                   className={`${step === 1 ? 'w-full' : 'flex-1'} bg-rightstep-green hover:bg-rightstep-green-dark rounded-full py-5 md:py-6`}
                 >
-                  {step === 1 ? 'Get Started' : (step < totalSteps ? 'Next Step' : 'Get Started')}
+                  {step === 1 ? 'Get Started' : (step < totalSteps ? 'Next Step' : 'Complete')}
                   {step < totalSteps && step !== 1 && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
               </div>

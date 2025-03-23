@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 import { Circle } from "lucide-react"
@@ -39,4 +40,34 @@ const RadioGroupItem = React.forwardRef<
 })
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName
 
-export { RadioGroup, RadioGroupItem }
+const RadioGroupItemWithImage = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> & {
+    imageSrc: string;
+    label: string;
+  }
+>(({ className, imageSrc, label, ...props }, ref) => {
+  return (
+    <div className="flex-1">
+      <RadioGroupPrimitive.Item
+        ref={ref}
+        className="peer sr-only"
+        {...props}
+      />
+      <label 
+        htmlFor={props.id} 
+        className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 md:p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rightstep-green [&:has([data-state=checked])]:border-rightstep-green cursor-pointer"
+      >
+        <img 
+          src={imageSrc} 
+          alt={label} 
+          className="mb-2 md:mb-3 h-24 md:h-36 w-auto object-contain" 
+        />
+        <span>{label}</span>
+      </label>
+    </div>
+  );
+});
+RadioGroupItemWithImage.displayName = "RadioGroupItemWithImage";
+
+export { RadioGroup, RadioGroupItem, RadioGroupItemWithImage }
