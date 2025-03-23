@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -94,7 +93,7 @@ const Register = () => {
       case 1: return ["name"];
       case 2: return ["sex"];
       case 3: return ["age", "weight", "height"];
-      case 4: return []; // Review step, no fields to validate
+      case 4: return [];
       default: return [];
     }
   };
@@ -149,14 +148,14 @@ const Register = () => {
       case 2:
         return (
           <>
-            <div className="flex justify-center mb-4 md:mb-6">
-              <RightFootIcon className="h-16 w-16 md:h-20 md:w-20 text-white" size={isMobile ? 64 : 80} />
+            <div className="flex justify-center mb-4">
+              <RightFootIcon className="h-12 w-12 text-white" size={48} />
             </div>
-            <CardTitle className="text-xl md:text-2xl font-bold text-center text-white">Hi, {form.getValues().name}!</CardTitle>
-            <CardDescription className="text-center mb-3 md:mb-4 text-white/80">
+            <CardTitle className="text-xl font-bold text-center text-white">Hi, {form.getValues().name}!</CardTitle>
+            <CardDescription className="text-center mb-6 text-white/80">
               Please select your gender to personalize your plan
             </CardDescription>
-            <CardContent className="pt-4 md:pt-6 space-y-5 md:space-y-6">
+            <CardContent className="pt-4 space-y-5">
               <FormField
                 control={form.control}
                 name="sex"
@@ -166,7 +165,7 @@ const Register = () => {
                       <RadioGroup
                         onValueChange={field.onChange}
                         defaultValue={field.value}
-                        className="flex space-x-3 md:space-x-6"
+                        className="flex space-x-3"
                       >
                         <RadioGroupItemWithImage 
                           id="male"
@@ -309,22 +308,19 @@ const Register = () => {
         <Form {...form}>
           <Card className={cn(
             "w-full shadow-lg border-0",
-            step === 1 || step === 2 ? "bg-transparent shadow-none" : "bg-white"
+            "bg-transparent shadow-none"
           )}>
-            <CardHeader className={cn(
-              "text-center",
-              step === 1 || step === 2 ? "text-white" : "",
-              "px-4 md:px-6 py-4 md:py-6"
-            )}>
+            <CardHeader className="text-center px-4 md:px-6 py-4 md:py-6">
               {getCurrentStepContent()}
             </CardHeader>
             <CardFooter className="flex flex-col gap-3 pb-6">
               <div className="flex w-full gap-2">
                 {step > 1 && (
-                  <Button variant="outline" onClick={goToPreviousStep} className={cn(
-                    "flex-1",
-                    step === 2 ? "border-white/30 text-white hover:bg-white/10" : "border-gray-300"
-                  )}>
+                  <Button 
+                    variant="outline" 
+                    onClick={goToPreviousStep} 
+                    className="flex-1 border-white/30 text-white hover:bg-white/10"
+                  >
                     <ChevronLeft className="mr-2 h-4 w-4" /> Back
                   </Button>
                 )}
@@ -333,13 +329,10 @@ const Register = () => {
                   className={`${step === 1 ? 'w-full' : 'flex-1'} bg-rightstep-green hover:bg-rightstep-green-dark rounded-full py-5 md:py-6`}
                 >
                   {step === 1 ? 'Get Started' : (step < totalSteps ? 'Next Step' : 'Complete')}
-                  {step < totalSteps && step !== 1 && <ArrowRight className="ml-2 h-4 w-4" />}
+                  {step !== 1 && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
               </div>
-              <p className={cn(
-                "text-xs text-center",
-                step === 1 || step === 2 ? "text-white/70" : "text-gray-500"
-              )}>
+              <p className="text-xs text-center text-white/70">
                 Your data is stored locally on your device
               </p>
             </CardFooter>
