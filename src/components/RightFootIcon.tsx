@@ -4,11 +4,13 @@ import React from "react";
 interface RightFootIconProps {
   className?: string;
   size?: number;
+  color?: string;
 }
 
 const RightFootIcon: React.FC<RightFootIconProps> = ({ 
   className = "", 
-  size = 24 
+  size = 24,
+  color = "white" 
 }) => {
   return (
     <div 
@@ -27,7 +29,8 @@ const RightFootIcon: React.FC<RightFootIconProps> = ({
         style={{
           width: '100%',
           height: '100%',
-          objectFit: 'contain'
+          objectFit: 'contain',
+          filter: color === "white" ? "brightness(0) invert(1)" : "none"
         }}
       />
     </div>

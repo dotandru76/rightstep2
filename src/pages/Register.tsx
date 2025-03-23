@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +19,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -104,13 +102,10 @@ const Register = () => {
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Store user data in localStorage
     localStorage.setItem("userData", JSON.stringify(values));
     
-    // Show success message
     toast.success("Profile created successfully!");
     
-    // Navigate to profile completion page
     navigate("/profile-complete");
   }
 
@@ -121,14 +116,7 @@ const Register = () => {
           <>
             <div className="flex flex-col items-center space-y-8 my-12">
               <div className="flex flex-col items-center">
-                <RightFootIcon className="h-24 w-24 text-white mb-2" size={96} />
-                <h1 className="text-3xl font-bold text-white">RightStep</h1>
-              </div>
-              <div className="text-center space-y-2">
-                <p className="text-white/80 italic">Werres ac deet Dit by trenfœs</p>
-                <div className="inline-block rounded-full bg-white/20 px-4 py-1 text-white my-4 backdrop-blur-sm">
-                  #CCAF099
-                </div>
+                <RightFootIcon className="h-32 w-32 text-white mb-2" size={128} color="white" />
               </div>
             </div>
             <CardContent className="pt-6">
@@ -154,7 +142,7 @@ const Register = () => {
         return (
           <>
             <div className="flex justify-center mb-6">
-              <RightFootIcon className="h-14 w-14 text-rightstep-green" size={56} />
+              <RightFootIcon className="h-20 w-20 text-rightstep-green" size={80} />
             </div>
             <CardTitle className="text-2xl font-bold text-center text-rightstep-green">Hi, {form.getValues().name}!</CardTitle>
             <CardDescription className="text-center mb-4">
@@ -239,7 +227,7 @@ const Register = () => {
         return (
           <>
             <div className="flex justify-center mb-6">
-              <RightFootIcon className="h-14 w-14 text-rightstep-green" size={56} />
+              <RightFootIcon className="h-20 w-20 text-rightstep-green" size={80} />
             </div>
             <CardTitle className="text-2xl font-bold text-center text-rightstep-green">Almost there!</CardTitle>
             <CardDescription className="text-center mb-4">
@@ -284,7 +272,7 @@ const Register = () => {
         return (
           <>
             <div className="flex justify-center mb-6">
-              <RightFootIcon className="h-14 w-14 text-rightstep-green" size={56} />
+              <RightFootIcon className="h-20 w-20 text-rightstep-green" size={80} />
             </div>
             <CardTitle className="text-2xl font-bold text-center text-rightstep-green">Ready to Start Your Journey</CardTitle>
             <CardDescription className="text-center mb-4">
@@ -337,13 +325,6 @@ const Register = () => {
               "text-center",
               step === 1 ? "text-white" : ""
             )}>
-              <div className="mb-4">
-                <Progress value={(step / totalSteps) * 100} className="h-2 bg-gray-200" />
-                <p className={cn(
-                  "text-xs mt-1",
-                  step === 1 ? "text-white/70" : "text-gray-500"
-                )}>Step {step} of {totalSteps}</p>
-              </div>
               {getCurrentStepContent()}
             </CardHeader>
             <CardFooter className="flex flex-col gap-3">
