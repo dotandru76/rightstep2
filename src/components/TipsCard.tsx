@@ -6,18 +6,18 @@ import { LightbulbIcon, RefreshCw } from "lucide-react";
 
 const TipsCard = () => {
   const tips = [
-    "כל פעם שאתה בוחר בארוחה לפטינית, אתה מחזק את הזהות הלפטינית שלך",
-    "אם אתה חש רעב, וודא שאכלת מספיק ירקות מנקים וחלבון בארוחה האחרונה",
-    "רוב העלייה במשקל אחרי ארוחת פינוק היא מנוזלים, לא משומן",
-    "זכור את ההבדל בין 'רעב פה' (דופמין) לבין 'רעב בטן' (צורך אמיתי)",
-    "נשימות 142 לפני ארוחה יכולות להפחית משמעותית את הרעב והחשקים",
-    "חשוב להבדיל בין נפילה לבין כישלון - הלפטיני האמיתי לומד מכל נפילה",
-    "הקפד על השכפ\"צ הלפטיני גם בתקופות מאתגרות: מים, ירקות, ארוחות מסודרות, חלון אכילה",
-    "שתיית מים לפני כל ארוחה מפחיתה צריכה קלורית ב-30% בממוצע",
-    "להישאר בתנוחת עוצמה (ידיים על המותניים) למשך 2 דקות מוריד קורטיזול ומעלה טסטוסטרון",
-    "לדבר על הקשיים שלך עם אחרים הוא אחד הכלים החזקים ביותר להתמודדות עם רגעי שבירה",
-    "גיוון מוגזם בארוחות מעלה את כמות האכילה ב-40% - בחר 5-8 ארוחות קבועות",
-    "אחד המפתחות להצלחה לטווח ארוך הוא למלא את 4 שלבי המוטיבציה: כאב, עונג, צמיחה וזהות",
+    "Every time you choose a Leptin meal, you strengthen your Leptin identity",
+    "If you feel hungry, make sure you've eaten enough cleansing vegetables and protein in your last meal",
+    "Most weight gain after an indulgence meal is from fluids, not fat",
+    "Remember the difference between 'mouth hunger' (dopamine) and 'stomach hunger' (real need)",
+    "142 breathing before a meal can significantly reduce hunger and cravings",
+    "It's important to distinguish between a slip and failure - the true Leptin follower learns from every slip",
+    "Maintain the Leptin shield even during challenging periods: water, vegetables, organized meals, eating window",
+    "Drinking water before each meal reduces caloric intake by 30% on average",
+    "Staying in a power pose (hands on hips) for 2 minutes lowers cortisol and raises testosterone",
+    "Talking about your difficulties with others is one of the most powerful tools for dealing with breaking points",
+    "Excessive variety in meals increases eating amount by 40% - choose 5-8 regular meals",
+    "One of the keys to long-term success is filling the 4 stages of motivation: pain, pleasure, growth, and identity",
   ];
 
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
@@ -32,9 +32,9 @@ const TipsCard = () => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <LightbulbIcon className="h-5 w-5 text-yellow-500" />
-          טיפ לפטיני
+          Leptin Tip
         </CardTitle>
-        <CardDescription>טיפים והמלצות לאורח חיים לפטיני מוצלח</CardDescription>
+        <CardDescription>Tips and recommendations for a successful Leptin lifestyle</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="bg-gray-50 rounded-lg p-4 min-h-[100px] flex items-center">
@@ -44,7 +44,7 @@ const TipsCard = () => {
       <CardFooter>
         <Button variant="outline" onClick={getRandomTip} className="w-full flex items-center gap-2">
           <RefreshCw className="h-4 w-4" />
-          טיפ חדש
+          New Tip
         </Button>
       </CardFooter>
     </Card>

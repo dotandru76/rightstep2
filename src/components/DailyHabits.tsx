@@ -6,12 +6,12 @@ import { CalendarCheck } from "lucide-react";
 
 const DailyHabits = () => {
   const [habits, setHabits] = useState([
-    { id: 1, title: "שתיית 8 כוסות מים", completed: false },
-    { id: 2, title: "50% ירקות מנקים בכל ארוחה", completed: false },
-    { id: 3, title: "3 ארוחות מסודרות", completed: false },
-    { id: 4, title: "חלון אכילה של 8-12 שעות", completed: false },
-    { id: 5, title: "נשימות 142 לפני ארוחות", completed: false },
-    { id: 6, title: "עקרונות בליס\"ה באכילה", completed: false }
+    { id: 1, title: "Drink 8 glasses of water", completed: false },
+    { id: 2, title: "50% cleansing vegetables in each meal", completed: false },
+    { id: 3, title: "3 organized meals", completed: false },
+    { id: 4, title: "Eating window of 8-12 hours", completed: false },
+    { id: 5, title: "142 breathing before meals", completed: false },
+    { id: 6, title: "BLISS principles when eating", completed: false }
   ]);
 
   const toggleHabit = (id: number) => {
@@ -28,19 +28,19 @@ const DailyHabits = () => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <CalendarCheck className="h-5 w-5 text-green-500" />
-          הרגלים יומיים
+          Daily Habits
         </CardTitle>
-        <CardDescription>עקוב אחר ההרגלים הלפטיניים שלך</CardDescription>
+        <CardDescription>Track your Leptin habits</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <div className="flex justify-between text-sm">
-            <span>{completedCount} מתוך {habits.length} הושלמו</span>
+            <span>{completedCount} of {habits.length} completed</span>
             <span>{progressPercentage.toFixed(0)}%</span>
           </div>
           <div className="space-y-2">
             {habits.map(habit => (
-              <div key={habit.id} className="flex items-center space-x-2 rtl:space-x-reverse">
+              <div key={habit.id} className="flex items-center space-x-2">
                 <Checkbox 
                   id={`habit-${habit.id}`} 
                   checked={habit.completed} 
@@ -58,7 +58,7 @@ const DailyHabits = () => {
         </div>
       </CardContent>
       <CardFooter>
-        <p className="text-sm text-muted-foreground">סמן את ההרגלים שהצלחת לשמור עליהם היום</p>
+        <p className="text-sm text-muted-foreground">Check the habits you managed to maintain today</p>
       </CardFooter>
     </Card>
   );

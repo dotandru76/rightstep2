@@ -23,14 +23,14 @@ const WaterTracker = () => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Droplets className="h-5 w-5 text-blue-500" />
-          מעקב שתיית מים
+          Water Tracking
         </CardTitle>
-        <CardDescription>הצפה לפטינית - בסיס השיטה</CardDescription>
+        <CardDescription>Leptin Flooding - The Foundation of the Method</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <div className="flex justify-between mb-1">
-            <span className="font-medium">{waterGlasses} מתוך {targetGlasses} כוסות</span>
+            <span className="font-medium">{waterGlasses} of {targetGlasses} glasses</span>
             <span className="text-sm">{progressPercentage.toFixed(0)}%</span>
           </div>
           <Progress value={progressPercentage} className="h-2" />
@@ -54,7 +54,7 @@ const WaterTracker = () => {
         </div>
       </CardContent>
       <CardFooter>
-        <p className="text-sm text-muted-foreground">זכור: 2 כוסות מים לפני כל ארוחה מונעות אכילת יתר</p>
+        <p className="text-sm text-muted-foreground">Remember: 2 glasses of water before each meal prevents overeating</p>
       </CardFooter>
     </Card>
   );

@@ -16,19 +16,19 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({ currentWeek, setCurrent
 
   // Weekly themes based on the Leptine Method
   const weeklyThemes = [
-    { week: 1, title: "מים ושתייה", description: "הצפה לפטינית - 3-4 ליטר ביום" },
-    { week: 2, title: "ירקות מנקים", description: "50% מהצלחת ירקות מנקים" },
-    { week: 3, title: "הניקוי הלפטיני", description: "חופשה מסוכר, קמח ומאכלים טחונים" },
-    { week: 4, title: "פחמימות לפטיניות", description: "קטניות, כוסמת וקינואה" },
-    { week: 5, title: "הגבלת שומנים", description: "הגבלה של 2 כפות שומן מרוכז ביום" },
-    { week: 6, title: "הרגלי אכילה", description: "תדירות וצורת האכילה" },
-    { week: 7, title: "הפחתת תדירות", description: "2-3 ארוחות ביום ללא נשנושים" },
-    { week: 8, title: "מוטיבציה מחודשת", description: "חיזוק המוטיבציה ופיתוח אדישות למאכל הקריפטונייט" },
-    { week: 9, title: "בחירת מסלול", description: "מעבר לאחד משלושת המסלולים" },
-    { week: 10, title: "העמקה לפטינית", description: "התאזנות הורמונלית והעלאת אנרגיה" },
-    { week: 11, title: "אורח חיים תומך", description: "נשימות, תנוחת עוצמה והרגלי שינה" },
-    { week: 12, title: "דיוק הדרך", description: "צפיפות קלורית וגבולות ברורים" },
-    { week: 13, title: "לפטיני לכל החיים", description: "פיתוח הזהות הלפטינית ואסטרטגיות להתמדה" }
+    { week: 1, title: "Water and Drinking", description: "Leptin flooding - 3-4 liters per day" },
+    { week: 2, title: "Cleansing Vegetables", description: "50% of the plate cleansing vegetables" },
+    { week: 3, title: "Leptin Cleansing", description: "Holiday from sugar, flour, and processed foods" },
+    { week: 4, title: "Leptin Carbohydrates", description: "Legumes, buckwheat, and quinoa" },
+    { week: 5, title: "Fat Limitation", description: "Limiting to 2 tablespoons of concentrated fat per day" },
+    { week: 6, title: "Eating Habits", description: "Frequency and form of eating" },
+    { week: 7, title: "Frequency Reduction", description: "2-3 meals a day without snacking" },
+    { week: 8, title: "Renewed Motivation", description: "Strengthening motivation and developing indifference to kryptonite food" },
+    { week: 9, title: "Track Selection", description: "Transition to one of the three tracks" },
+    { week: 10, title: "Leptin Deepening", description: "Hormonal balance and energy elevation" },
+    { week: 11, title: "Supporting Lifestyle", description: "Breathing, power pose, and sleep habits" },
+    { week: 12, title: "Path Precision", description: "Caloric density and clear boundaries" },
+    { week: 13, title: "Leptin for Life", description: "Developing the Leptin identity and strategies for persistence" }
   ];
 
   const handlePreviousWeek = () => {
@@ -50,15 +50,15 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({ currentWeek, setCurrent
       <CardHeader>
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle>התקדמות בתוכנית</CardTitle>
-            <CardDescription>עקוב אחר התקדמותך בתוכנית 13 השבועות</CardDescription>
+            <CardTitle>Program Progress</CardTitle>
+            <CardDescription>Track your progress in the 13-week program</CardDescription>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="icon" onClick={handlePreviousWeek} disabled={currentWeek === 1}>
-              <ChevronRight className="h-4 w-4" />
+              <ChevronLeft className="h-4 w-4" />
             </Button>
             <Button variant="outline" size="icon" onClick={handleNextWeek} disabled={currentWeek === totalWeeks}>
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -66,7 +66,7 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({ currentWeek, setCurrent
       <CardContent>
         <div className="space-y-4">
           <div className="flex justify-between mb-1">
-            <span className="font-medium">שבוע {currentWeek} מתוך {totalWeeks}</span>
+            <span className="font-medium">Week {currentWeek} of {totalWeeks}</span>
             <span className="text-sm">{progressPercentage.toFixed(0)}%</span>
           </div>
           <Progress value={progressPercentage} className="h-2" />
