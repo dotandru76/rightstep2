@@ -22,7 +22,7 @@ const RightFootIcon: React.FC<RightFootIconProps> = ({
       }}
     >
       <img 
-        src="/lovable-uploads/fcb37a43-c246-4bb3-b419-d10527a09f99.png" 
+        src="/lovable-uploads/d70c16e2-7117-4a45-baf0-63d60781bafa.png" 
         alt="Right Step Logo"
         style={{
           width: '100%',
