@@ -7,8 +7,7 @@ import DailyHabits from "@/components/DailyHabits";
 import TipsCard from "@/components/TipsCard";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Form } from "@/components/ui/form";
-import { Footprints, UserCircle } from "lucide-react";
+import { UserCircle } from "lucide-react";
 
 interface UserData {
   name: string;
@@ -55,8 +54,11 @@ const Index = () => {
       <header className="bg-rightstep-gradient text-white py-4">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Footprints className="h-6 w-6" />
-            <h1 className="text-xl font-bold">RightStep</h1>
+            <img 
+              src="/lovable-uploads/0872cbc0-8904-4ff7-ae80-50089556c85d.png" 
+              alt="RightStep Logo" 
+              className="h-8 w-auto"
+            />
           </div>
           <Button variant="ghost" size="sm" className="text-white hover:bg-white/20" onClick={handleReset}>
             <UserCircle className="mr-2 h-4 w-4" />
@@ -68,7 +70,11 @@ const Index = () => {
       <main className="container mx-auto px-4 py-6 max-w-4xl">
         <div className="mb-6 p-4 bg-white rounded-lg shadow-sm">
           <h2 className="text-2xl font-bold text-rightstep-green flex items-center gap-2">
-            <Footprints className="h-5 w-5" />
+            <img 
+              src="/lovable-uploads/0872cbc0-8904-4ff7-ae80-50089556c85d.png" 
+              alt="RightStep Logo" 
+              className="h-6 w-auto"
+            />
             Welcome, {userData.name}!
           </h2>
           <p className="text-gray-600">

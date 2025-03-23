@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -121,12 +120,11 @@ const Register = () => {
           <>
             <div className="flex flex-col items-center space-y-8 my-12">
               <img 
-                src="/lovable-uploads/3ce5e3c1-3102-4e4c-b103-9bcdf1e3738b.png" 
-                alt="RightStep" 
-                className="h-20"
+                src="/lovable-uploads/0872cbc0-8904-4ff7-ae80-50089556c85d.png" 
+                alt="RightStep Logo" 
+                className="h-40 w-auto"
               />
               <div className="text-center space-y-2">
-                <h1 className="text-5xl font-bold tracking-wide text-white uppercase drop-shadow-md">RIGHT STEP</h1>
                 <p className="text-white/80 italic">Werres ac deet Dit by trenfœs</p>
                 <div className="inline-block rounded-full bg-white/20 px-4 py-1 text-white my-4 backdrop-blur-sm">
                   #CCAF099
