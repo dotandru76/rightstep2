@@ -11,8 +11,8 @@ import {
   Ruler, 
   CalendarDays, 
   ArrowRight,
-  Male,
-  Female
+  UserCircle2,
+  UserRound
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -140,7 +140,7 @@ const Register = () => {
                             <RadioGroupItem value="male" className="peer sr-only" />
                           </FormControl>
                           <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                            <Male className="mb-3 h-6 w-6 text-blue-500" />
+                            <UserCircle2 className="mb-3 h-6 w-6 text-blue-500" />
                             Male
                           </FormLabel>
                         </FormItem>
@@ -150,7 +150,7 @@ const Register = () => {
                             <RadioGroupItem value="female" className="peer sr-only" />
                           </FormControl>
                           <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
-                            <Female className="mb-3 h-6 w-6 text-pink-500" />
+                            <UserRound className="mb-3 h-6 w-6 text-pink-500" />
                             Female
                           </FormLabel>
                         </FormItem>
