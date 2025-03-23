@@ -5,10 +5,7 @@ const config: CapacitorConfig = {
   appId: 'app.lovable.a26073b59f5f4705861366b7bad50c8b',
   appName: 'water-balance-journey',
   webDir: 'dist',
-  server: {
-    url: 'https://a26073b5-9f5f-4705-8613-66b7bad50c8b.lovableproject.com?forceHideBadge=true',
-    cleartext: true
-  },
+  // Removing the server configuration to use bundled content instead
   bundledWebRuntime: false,
   plugins: {
     SplashScreen: {
