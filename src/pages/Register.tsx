@@ -150,10 +150,10 @@ const Register = () => {
         return (
           <>
             <div className="flex justify-center mb-4 md:mb-6">
-              <RightFootIcon className="h-16 w-16 md:h-20 md:w-20 text-rightstep-green" size={isMobile ? 64 : 80} />
+              <RightFootIcon className="h-16 w-16 md:h-20 md:w-20 text-white" size={isMobile ? 64 : 80} />
             </div>
-            <CardTitle className="text-xl md:text-2xl font-bold text-center text-rightstep-green">Hi, {form.getValues().name}!</CardTitle>
-            <CardDescription className="text-center mb-3 md:mb-4">
+            <CardTitle className="text-xl md:text-2xl font-bold text-center text-white">Hi, {form.getValues().name}!</CardTitle>
+            <CardDescription className="text-center mb-3 md:mb-4 text-white/80">
               Please select your gender to personalize your plan
             </CardDescription>
             <CardContent className="pt-4 md:pt-6 space-y-5 md:space-y-6">
@@ -182,19 +182,15 @@ const Register = () => {
                           label="Female"
                         />
                         
-                        <div className="flex-1">
-                          <RadioGroupItem id="other" value="other" className="peer sr-only" />
-                          <label 
-                            htmlFor="other" 
-                            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-2 md:p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rightstep-green [&:has([data-state=checked])]:border-rightstep-green cursor-pointer"
-                          >
-                            <User className="mb-2 md:mb-3 h-24 md:h-36 w-auto text-purple-500" />
-                            <span>Other</span>
-                          </label>
-                        </div>
+                        <RadioGroupItemWithImage
+                          id="other"
+                          value="other"
+                          imageSrc="/lovable-uploads/6ca3238a-5a6d-46e7-85f0-9dddd40f73b3.png"
+                          label="Other"
+                        />
                       </RadioGroup>
                     </FormControl>
-                    <FormMessage className="text-center" />
+                    <FormMessage className="text-center text-white" />
                   </FormItem>
                 )}
               />
@@ -313,11 +309,11 @@ const Register = () => {
         <Form {...form}>
           <Card className={cn(
             "w-full shadow-lg border-0",
-            step === 1 ? "bg-transparent shadow-none" : "bg-white"
+            step === 1 || step === 2 ? "bg-transparent shadow-none" : "bg-white"
           )}>
             <CardHeader className={cn(
               "text-center",
-              step === 1 ? "text-white" : "",
+              step === 1 || step === 2 ? "text-white" : "",
               "px-4 md:px-6 py-4 md:py-6"
             )}>
               {getCurrentStepContent()}
@@ -325,7 +321,10 @@ const Register = () => {
             <CardFooter className="flex flex-col gap-3 pb-6">
               <div className="flex w-full gap-2">
                 {step > 1 && (
-                  <Button variant="outline" onClick={goToPreviousStep} className="flex-1 border-gray-300">
+                  <Button variant="outline" onClick={goToPreviousStep} className={cn(
+                    "flex-1",
+                    step === 2 ? "border-white/30 text-white hover:bg-white/10" : "border-gray-300"
+                  )}>
                     <ChevronLeft className="mr-2 h-4 w-4" /> Back
                   </Button>
                 )}
@@ -339,7 +338,7 @@ const Register = () => {
               </div>
               <p className={cn(
                 "text-xs text-center",
-                step === 1 ? "text-white/70" : "text-gray-500"
+                step === 1 || step === 2 ? "text-white/70" : "text-gray-500"
               )}>
                 Your data is stored locally on your device
               </p>
