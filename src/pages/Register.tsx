@@ -116,7 +116,8 @@ const Register = () => {
           <>
             <div className="flex flex-col items-center space-y-8 my-12">
               <div className="flex flex-col items-center">
-                <RightFootIcon className="h-32 w-32 text-white mb-2" size={128} color="white" />
+                <RightFootIcon className="h-128 w-128 text-white mb-2" size={512} color="white" />
+                <h2 className="text-xl font-medium text-white mt-4">You are taking the Right Step</h2>
               </div>
             </div>
             <CardContent className="pt-6">
@@ -334,9 +335,12 @@ const Register = () => {
                     <ChevronLeft className="mr-2 h-4 w-4" /> Back
                   </Button>
                 )}
-                <Button onClick={goToNextStep} className={`${step === 1 ? 'w-full' : 'flex-1'} bg-rightstep-green hover:bg-rightstep-green-dark`}>
-                  {step < totalSteps ? 'Next Step' : 'Get Started'} 
-                  {step < totalSteps && <ArrowRight className="ml-2 h-4 w-4" />}
+                <Button 
+                  onClick={goToNextStep} 
+                  className={`${step === 1 ? 'w-full' : 'flex-1'} bg-rightstep-green hover:bg-rightstep-green-dark rounded-full py-6`}
+                >
+                  {step === 1 ? 'Get Started' : (step < totalSteps ? 'Next Step' : 'Get Started')}
+                  {step < totalSteps && step !== 1 && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
               </div>
               <p className={cn(
