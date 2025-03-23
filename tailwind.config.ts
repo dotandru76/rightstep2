@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,15 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				rightstep: {
+					green: '#7cc027',
+					'green-light': '#9fd655',
+					'green-dark': '#5a9a1f',
 				}
+			},
+			backgroundImage: {
+				'rightstep-gradient': 'linear-gradient(135deg, #7cc027 0%, #5a9a1f 100%)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

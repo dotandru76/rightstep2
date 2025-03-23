@@ -7,7 +7,8 @@ import DailyHabits from "@/components/DailyHabits";
 import TipsCard from "@/components/TipsCard";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Form } from "@/components/ui/form"; // Import Form provider
+import { Form } from "@/components/ui/form";
+import { Footprints, UserCircle } from "lucide-react";
 
 interface UserData {
   name: string;
@@ -50,28 +51,41 @@ const Index = () => {
   const recommendedWater = (weightInKg * 0.033).toFixed(1);
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
-      <header className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-blue-600">Welcome, {userData.name}!</h1>
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-rightstep-gradient text-white py-4">
+        <div className="container mx-auto px-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Footprints className="h-6 w-6" />
+            <h1 className="text-xl font-bold">RightStep</h1>
+          </div>
+          <Button variant="ghost" size="sm" className="text-white hover:bg-white/20" onClick={handleReset}>
+            <UserCircle className="mr-2 h-4 w-4" />
+            Reset Profile
+          </Button>
+        </div>
+      </header>
+      
+      <main className="container mx-auto px-4 py-6 max-w-4xl">
+        <div className="mb-6 p-4 bg-white rounded-lg shadow-sm">
+          <h2 className="text-2xl font-bold text-rightstep-green flex items-center gap-2">
+            <Footprints className="h-5 w-5" />
+            Welcome, {userData.name}!
+          </h2>
           <p className="text-gray-600">
             Your target: {recommendedWater} liters of water daily
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={handleReset}>
-          Reset Profile
-        </Button>
-      </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <WaterTracker recommendedAmount={parseFloat(recommendedWater)} />
-        <WeeklyProgress />
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <WaterTracker recommendedAmount={parseFloat(recommendedWater)} />
+          <WeeklyProgress />
+        </div>
 
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <DailyHabits />
-        <TipsCard />
-      </div>
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <DailyHabits />
+          <TipsCard />
+        </div>
+      </main>
     </div>
   );
 };

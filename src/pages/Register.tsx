@@ -11,8 +11,7 @@ import {
   Ruler, 
   CalendarDays, 
   ArrowRight,
-  UserCircle2,
-  UserRound,
+  Footprints,
   ChevronLeft
 } from "lucide-react";
 
@@ -119,17 +118,16 @@ const Register = () => {
       case 1:
         return (
           <>
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-8">
               <img 
-                src="/lovable-uploads/f93be550-c758-4f2c-8ceb-2cbe62468624.png" 
-                alt="Friendly Coach" 
-                className="h-40"
+                src="/lovable-uploads/d5ce8790-6171-4d07-8e0a-f4ef08542e6d.png" 
+                alt="RightStep" 
+                className="max-h-60"
               />
             </div>
-            <CardTitle className="text-2xl font-bold text-blue-600">Welcome to Water Balance!</CardTitle>
-            <CardDescription>
-              Let's set up your profile to personalize your hydration journey.
-              First, what should we call you?
+            <CardTitle className="text-3xl font-bold text-center text-rightstep-green mb-2">Your Journey Starts Here</CardTitle>
+            <CardDescription className="text-center text-lg mb-4">
+              RightStep: Your personalized path to a healthier you
             </CardDescription>
             <CardContent className="pt-6">
               <FormField
@@ -153,15 +151,11 @@ const Register = () => {
       case 2:
         return (
           <>
-            <div className="flex justify-center mb-4">
-              <img 
-                src="/lovable-uploads/f93be550-c758-4f2c-8ceb-2cbe62468624.png" 
-                alt="Friendly Coach" 
-                className="h-40"
-              />
+            <div className="flex justify-center mb-6">
+              <Footprints className="h-14 w-14 text-rightstep-green" />
             </div>
-            <CardTitle className="text-2xl font-bold text-blue-600">Hi, {form.getValues().name}!</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-2xl font-bold text-center text-rightstep-green">Hi, {form.getValues().name}!</CardTitle>
+            <CardDescription className="text-center mb-4">
               Let's get to know you better to customize your plan.
             </CardDescription>
             <CardContent className="pt-6 space-y-6">
@@ -197,7 +191,7 @@ const Register = () => {
                           <FormControl>
                             <RadioGroupItem value="male" className="peer sr-only" />
                           </FormControl>
-                          <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                          <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rightstep-green [&:has([data-state=checked])]:border-rightstep-green">
                             <img 
                               src="/lovable-uploads/c20310f9-a5a7-4777-975a-39c4fa202879.png" 
                               alt="Male" 
@@ -211,7 +205,7 @@ const Register = () => {
                           <FormControl>
                             <RadioGroupItem value="female" className="peer sr-only" />
                           </FormControl>
-                          <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                          <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rightstep-green [&:has([data-state=checked])]:border-rightstep-green">
                             <img 
                               src="/lovable-uploads/a5b0210c-5524-436c-a9b0-b67703855063.png" 
                               alt="Female" 
@@ -225,7 +219,7 @@ const Register = () => {
                           <FormControl>
                             <RadioGroupItem value="other" className="peer sr-only" />
                           </FormControl>
-                          <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                          <FormLabel className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-rightstep-green [&:has([data-state=checked])]:border-rightstep-green">
                             <User className="mb-3 h-6 w-6 text-purple-500" />
                             Other
                           </FormLabel>
@@ -242,16 +236,12 @@ const Register = () => {
       case 3:
         return (
           <>
-            <div className="flex justify-center mb-4">
-              <img 
-                src="/lovable-uploads/f93be550-c758-4f2c-8ceb-2cbe62468624.png" 
-                alt="Friendly Coach" 
-                className="h-40"
-              />
+            <div className="flex justify-center mb-6">
+              <Footprints className="h-14 w-14 text-rightstep-green" />
             </div>
-            <CardTitle className="text-2xl font-bold text-blue-600">Almost there!</CardTitle>
-            <CardDescription>
-              Let's finish up with some measurements to personalize your hydration needs.
+            <CardTitle className="text-2xl font-bold text-center text-rightstep-green">Almost there!</CardTitle>
+            <CardDescription className="text-center mb-4">
+              Let's finish up with some measurements to personalize your journey.
             </CardDescription>
             <CardContent className="pt-6 space-y-6">
               <FormField
@@ -291,23 +281,11 @@ const Register = () => {
       case 4:
         return (
           <>
-            <div className="flex justify-center mb-4">
-              {form.getValues().sex === "female" ? (
-                <img 
-                  src="/lovable-uploads/a5b0210c-5524-436c-a9b0-b67703855063.png" 
-                  alt="Female Character" 
-                  className="h-40"
-                />
-              ) : (
-                <img 
-                  src="/lovable-uploads/c20310f9-a5a7-4777-975a-39c4fa202879.png" 
-                  alt="Male Character" 
-                  className="h-40"
-                />
-              )}
+            <div className="flex justify-center mb-6">
+              <Footprints className="h-14 w-14 text-rightstep-green" />
             </div>
-            <CardTitle className="text-2xl font-bold text-blue-600">Review Your Profile</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-2xl font-bold text-center text-rightstep-green">Ready to Start Your Journey</CardTitle>
+            <CardDescription className="text-center mb-4">
               Here's a summary of your information. Everything looks good?
             </CardDescription>
             <CardContent className="pt-6">
@@ -346,34 +324,36 @@ const Register = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-md">
-      <Form {...form}>
-        <Card className="w-full">
-          <CardHeader className="text-center">
-            <div className="mb-4">
-              <Progress value={(step / totalSteps) * 100} className="h-2" />
-              <p className="text-xs text-gray-500 mt-1">Step {step} of {totalSteps}</p>
-            </div>
-            {getCurrentStepContent()}
-          </CardHeader>
-          <CardFooter className="flex flex-col gap-3">
-            <div className="flex w-full gap-2">
-              {step > 1 && (
-                <Button variant="outline" onClick={goToPreviousStep} className="flex-1">
-                  <ChevronLeft className="mr-2 h-4 w-4" /> Back
+    <div className="min-h-screen bg-rightstep-gradient py-8">
+      <div className="container mx-auto px-4 py-8 max-w-md">
+        <Form {...form}>
+          <Card className="w-full shadow-lg border-0">
+            <CardHeader className="text-center">
+              <div className="mb-4">
+                <Progress value={(step / totalSteps) * 100} className="h-2 bg-gray-200" indicatorClassName="bg-rightstep-green" />
+                <p className="text-xs text-gray-500 mt-1">Step {step} of {totalSteps}</p>
+              </div>
+              {getCurrentStepContent()}
+            </CardHeader>
+            <CardFooter className="flex flex-col gap-3">
+              <div className="flex w-full gap-2">
+                {step > 1 && (
+                  <Button variant="outline" onClick={goToPreviousStep} className="flex-1 border-gray-300">
+                    <ChevronLeft className="mr-2 h-4 w-4" /> Back
+                  </Button>
+                )}
+                <Button onClick={goToNextStep} className={`${step === 1 ? 'w-full' : 'flex-1'} bg-rightstep-green hover:bg-rightstep-green-dark`}>
+                  {step < totalSteps ? 'Next Step' : 'Get Started'} 
+                  {step < totalSteps && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
-              )}
-              <Button onClick={goToNextStep} className={`${step === 1 ? 'w-full' : 'flex-1'}`}>
-                {step < totalSteps ? 'Next' : 'Complete Profile'} 
-                {step < totalSteps && <ArrowRight className="ml-2 h-4 w-4" />}
-              </Button>
-            </div>
-            <p className="text-xs text-gray-500 text-center">
-              Your data is stored locally on your device
-            </p>
-          </CardFooter>
-        </Card>
-      </Form>
+              </div>
+              <p className="text-xs text-gray-500 text-center">
+                Your data is stored locally on your device
+              </p>
+            </CardFooter>
+          </Card>
+        </Form>
+      </div>
     </div>
   );
 };
