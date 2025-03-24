@@ -31,9 +31,13 @@ const config: CapacitorConfig = {
       minSdkVersion: 22,
       targetSdkVersion: 33,
       jvmArgs: [
-        '-Xmx2048m',
+        '-Xmx3072m',  // Increased memory allocation
+        '-Xms1024m',  // Initial memory allocation
         '-Dfile.encoding=UTF-8',
-        '-XX:+UseParallelGC'
+        '-XX:+UseParallelGC',
+        '-XX:MaxPermSize=512m',
+        '-XX:+HeapDumpOnOutOfMemoryError',
+        '-Djava.io.tmpdir=./temp'  // Try to use a local temp directory instead
       ]
     },
     iconBackground: '#ffffff', // Optional background color for adaptive icons
