@@ -20,16 +20,16 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
       <div className="flex flex-col items-center justify-center -mt-10 relative">
         {/* Logo with relative positioning */}
         <div className="text-center relative">
-          <RightFootIcon className="text-white" size={400} color="white" />
+          <RightFootIcon className="text-white" size={450} color="white" />
           
-          {/* Motivational text positioned lower */}
-          <h2 className="text-xl font-medium text-white absolute bottom-16 left-0 right-0">
+          {/* Motivational text positioned lower to accommodate larger logo */}
+          <h2 className="text-xl font-medium text-white absolute bottom-14 left-0 right-0">
             You are taking the Right Step
           </h2>
         </div>
       </div>
       
-      {/* Further reduced top margin to move content up */}
+      {/* Further reduced top margin to maintain overall layout */}
       <CardContent className="-mt-16 pb-0">
         <FormField
           control={form.control}
