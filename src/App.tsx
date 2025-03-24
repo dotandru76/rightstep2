@@ -69,7 +69,7 @@ const App = () => {
             <UpdateNotification
               open={showUpdateDialog}
               updateInfo={updateInfo}
-              onClose={() => setShowWeekDetails(false)}
+              onClose={() => setShowUpdateDialog(false)}
               onUpdate={handleUpdateComplete}
             />
           )}

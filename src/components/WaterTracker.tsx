@@ -31,7 +31,7 @@ const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) 
   // Adjust color intensity based on progress
   const dropletColor = progressPercentage >= 100 
     ? "#1EAEDB" // Bright blue when complete
-    : `rgba(30, 174, 219, ${progressPercentage / 100})`; // Gradually intensifying blue
+    : `rgba(30, 174, 219, ${0.3 + (progressPercentage / 100) * 0.7})`; // Gradually intensifying blue
 
   return (
     <Card className="shadow-sm">
@@ -43,7 +43,8 @@ const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) 
           <div className="relative flex justify-center items-center h-[140px]">
             <Droplet 
               size={dropletSize}
-              className={`text-[${dropletColor}] fill-[${dropletColor}]`}
+              fill={dropletColor}
+              color={dropletColor}
             />
             <span className="absolute font-bold text-white">{waterGlasses}/{targetGlasses}</span>
           </div>

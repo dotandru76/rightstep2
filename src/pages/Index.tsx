@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import WaterTracker from "@/components/WaterTracker";
 import DailyHabits from "@/components/DailyHabits";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Settings, ArrowRight, Info, CheckCircle2 } from "lucide-react";
+import { Settings, ArrowRight, CheckCircle2 } from "lucide-react";
 import RightFootIcon from "@/components/RightFootIcon";
 import { useProgram } from "@/contexts/ProgramContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
