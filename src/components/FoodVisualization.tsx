@@ -195,10 +195,10 @@ const FoodVisualization = () => {
             
             <div className="bg-white rounded-lg border p-4">
               <h4 className="font-medium mb-2">Nutritional Information</h4>
-              <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+              <div className="grid grid-cols-1 gap-y-2">
                 {analysis.nutrients.map((nutrient, index) => (
-                  <div key={index} className="flex justify-between">
-                    <span className="text-sm text-gray-600">{nutrient.label}:</span>
+                  <div key={index} className="flex justify-between border-b border-gray-100 pb-1 last:border-0">
+                    <span className="text-sm text-gray-600">{nutrient.label}</span>
                     <span className="text-sm font-medium">{nutrient.value}</span>
                   </div>
                 ))}

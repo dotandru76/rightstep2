@@ -43,7 +43,7 @@ export class GoogleVisionService {
       // Remove the data:image/jpeg;base64, prefix if present
       const base64Image = imageData.replace(/^data:image\/\w+;base64,/, "");
       
-      // Prepare the request to Gemini API - Using the newer gemini-1.5-flash model
+      // Prepare the request to Gemini API - Using the gemini-1.5-flash model
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
@@ -63,7 +63,7 @@ export class GoogleVisionService {
                     "detectedItems": ["list of detected food items"],
                     "suitable": true or false,
                     "explanation": "explanation of why it's suitable or not for the current week",
-                    "nutrients": [{"label": "nutrient name", "value": "amount"}]
+                    "nutrients": [{"label": "nutrient name (item)", "value": "amount (without 'approximately')"}]
                   }`
                 },
                 {
@@ -92,7 +92,6 @@ export class GoogleVisionService {
       const data = await response.json();
       
       // Extract the result from Gemini's response
-      // Gemini returns a text response that we need to parse as JSON
       const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
       
       try {
@@ -106,11 +105,14 @@ export class GoogleVisionService {
         const parsedResponse = JSON.parse(jsonMatch[0]);
         console.log("Parsed food analysis response:", parsedResponse);
         
+        // Clean up the nutrients data to avoid overlapping text
+        let cleanedNutrients = this.cleanupNutrientsData(parsedResponse.nutrients || []);
+        
         // Ensure the response has the expected structure
         return {
           suitable: !!parsedResponse.suitable,
           explanation: parsedResponse.explanation || "No explanation provided",
-          nutrients: parsedResponse.nutrients || this.generateDefaultNutrients(currentWeek),
+          nutrients: cleanedNutrients,
           detectedItems: parsedResponse.detectedItems || []
         };
       } catch (jsonError) {
@@ -123,6 +125,19 @@ export class GoogleVisionService {
       toast.error("Failed to analyze image. Please try again.");
       throw error;
     }
+  }
+
+  // Clean up nutrient data to avoid overlapping text and repeated "approximately" words
+  private cleanupNutrientsData(nutrients: { label: string; value: string }[]): { label: string; value: string }[] {
+    return nutrients.map(nutrient => {
+      // Remove "approximately" from values
+      let value = nutrient.value.replace(/approximately/gi, '').trim();
+      
+      // Clean up the label
+      let label = nutrient.label;
+      
+      return { label, value };
+    });
   }
 
   private analyzeFoodFromText(responseText: string, currentWeek: number): FoodAnalysisResult {
@@ -154,7 +169,7 @@ export class GoogleVisionService {
   }
 
   private generateDefaultNutrients(currentWeek: number): { label: string; value: string }[] {
-    // Mock nutrient data
+    // Mock nutrient data with simplified formatting
     const nutrients = [
       { label: "Calories", value: `${Math.floor(Math.random() * 500 + 200)} kcal` },
       { label: "Protein", value: `${Math.floor(Math.random() * 30 + 10)}g` },
