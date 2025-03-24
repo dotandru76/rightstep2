@@ -17,14 +17,16 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center pt-12 pb-6">
-        {/* Logo only - no separate text */}
-        <div className="text-center mb-0">
+      <div className="flex flex-col items-center justify-center pt-12 pb-6 relative">
+        {/* Logo with relative positioning */}
+        <div className="text-center relative">
           <RightFootIcon className="text-white" size={400} color="white" />
+          
+          {/* Motivational text positioned to overlap with the bottom part of the logo */}
+          <h2 className="text-xl font-medium text-white absolute bottom-20 left-0 right-0">
+            You are taking the Right Step
+          </h2>
         </div>
-        
-        {/* Motivational text moved directly under the logo with no margin */}
-        <h2 className="text-xl font-medium text-white mt-0">You are taking the Right Step</h2>
       </div>
       
       <CardContent className="pt-4">
