@@ -10,6 +10,8 @@ interface ProgramContextType {
   isNewWeek: boolean;
   setIsNewWeekSeen: () => void;
   startProgram: () => void;
+  debugMode: boolean;
+  setDebugMode: (value: boolean) => void;
 }
 
 const ProgramContext = createContext<ProgramContextType | undefined>(undefined);
@@ -22,6 +24,16 @@ export const ProgramProvider = ({ children }: { children: ReactNode }) => {
   const [lastSeenWeek, setLastSeenWeek] = useState<number>(
     parseInt(localStorage.getItem('lastSeenWeek') || '0')
   );
+  const [debugMode, setDebugMode] = useState<boolean>(() => {
+    // Initialize from sessionStorage if exists
+    const storedDebugMode = sessionStorage.getItem('weekDebugMode');
+    return storedDebugMode === 'true';
+  });
+
+  // Save debug mode to sessionStorage when it changes
+  useEffect(() => {
+    sessionStorage.setItem('weekDebugMode', debugMode ? 'true' : 'false');
+  }, [debugMode]);
 
   // Start the program if not already started
   const startProgram = () => {
@@ -95,7 +107,9 @@ export const ProgramProvider = ({ children }: { children: ReactNode }) => {
       startDate,
       isNewWeek,
       setIsNewWeekSeen,
-      startProgram
+      startProgram,
+      debugMode,
+      setDebugMode
     }}>
       {children}
     </ProgramContext.Provider>
