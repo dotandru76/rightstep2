@@ -1,7 +1,7 @@
 
 import { toast } from "sonner";
 
-// Interface for the analysis result from Google Vision API
+// Interface for the analysis result from Gemini API
 export interface FoodAnalysisResult {
   suitable: boolean;
   explanation: string;
@@ -35,7 +35,7 @@ export class GoogleVisionService {
     const apiKey = this.getApiKey();
     
     if (!apiKey) {
-      toast.error("Google Vision API key is missing. Please set it in the form below.");
+      toast.error("Gemini API key is missing. Please set it in the form below.");
       throw new Error("API key is missing");
     }
 
@@ -43,58 +43,81 @@ export class GoogleVisionService {
       // Remove the data:image/jpeg;base64, prefix if present
       const base64Image = imageData.replace(/^data:image\/\w+;base64,/, "");
       
-      // Prepare the request to Google Vision API
-      const response = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`, {
+      // Prepare the request to Gemini API
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          requests: [{
-            image: {
-              content: base64Image
-            },
-            features: [
-              { type: 'LABEL_DETECTION', maxResults: 10 },
-              { type: 'OBJECT_LOCALIZATION', maxResults: 10 }
-            ]
-          }]
+          contents: [
+            {
+              parts: [
+                {
+                  text: `Analyze this food image and identify all food items. 
+                  I am in week ${currentWeek} of a healthy eating program. 
+                  For week ${currentWeek}, tell me if this food is appropriate and why. 
+                  Also estimate basic nutritional information. 
+                  Format your response as JSON with these fields:
+                  {
+                    "detectedItems": ["list of detected food items"],
+                    "suitable": true or false,
+                    "explanation": "explanation of why it's suitable or not for the current week",
+                    "nutrients": [{"label": "nutrient name", "value": "amount"}]
+                  }`
+                },
+                {
+                  inline_data: {
+                    mime_type: "image/jpeg",
+                    data: base64Image
+                  }
+                }
+              ]
+            }
+          ],
+          generationConfig: {
+            temperature: 0.4,
+            maxOutputTokens: 1024
+          }
         })
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Google Vision API error:", errorData);
+        console.error("Gemini API error:", errorData);
         toast.error("Failed to analyze image: " + (errorData.error?.message || "Unknown error"));
         throw new Error("API request failed");
       }
 
       const data = await response.json();
       
-      // Extract labels from the response
-      const labels = data.responses[0]?.labelAnnotations || [];
-      const objects = data.responses[0]?.localizedObjectAnnotations || [];
+      // Extract the result from Gemini's response
+      // Gemini returns a text response that we need to parse as JSON
+      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
       
-      // Collect food-related labels
-      const foodItems = labels
-        .filter((label: any) => 
-          label.description.toLowerCase().match(/food|fruit|vegetable|meat|dish|meal|cuisine|breakfast|lunch|dinner|snack/i))
-        .map((label: any) => label.description);
+      try {
+        // Extract the JSON portion from the text
+        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) {
+          throw new Error('No JSON found in response');
+        }
         
-      // Add objects that might be food
-      objects
-        .filter((obj: any) => 
-          obj.name.toLowerCase().match(/food|fruit|vegetable|meat|dish|meal|cuisine|breakfast|lunch|dinner|snack/i))
-        .forEach((obj: any) => {
-          if (!foodItems.includes(obj.name)) {
-            foodItems.push(obj.name);
-          }
-        });
+        // Parse the JSON response
+        const parsedResponse = JSON.parse(jsonMatch[0]);
+        console.log("Parsed food analysis response:", parsedResponse);
         
-      console.log("Detected food items:", foodItems);
-      
-      // Analyze these food items in the context of the current program week
-      return this.analyzeFoodForProgram(foodItems, currentWeek);
+        // Ensure the response has the expected structure
+        return {
+          suitable: !!parsedResponse.suitable,
+          explanation: parsedResponse.explanation || "No explanation provided",
+          nutrients: parsedResponse.nutrients || this.generateDefaultNutrients(currentWeek),
+          detectedItems: parsedResponse.detectedItems || []
+        };
+      } catch (jsonError) {
+        console.error("Error parsing Gemini response:", jsonError, responseText);
+        // Fallback to analyzing based on the text response
+        return this.analyzeFoodFromText(responseText, currentWeek);
+      }
     } catch (error) {
       console.error("Error analyzing image:", error);
       toast.error("Failed to analyze image. Please try again.");
@@ -102,10 +125,57 @@ export class GoogleVisionService {
     }
   }
 
-  private analyzeFoodForProgram(foodItems: string[], currentWeek: number): FoodAnalysisResult {
-    // This is where we'd implement the logic to determine if the detected food
-    // is suitable for the current program week. For now, we'll use a simplified approach.
+  private analyzeFoodFromText(responseText: string, currentWeek: number): FoodAnalysisResult {
+    // Extract food items from the text
+    const foodItemsMatch = responseText.match(/detected.*?items.*?:.*?\[(.*?)\]/is);
+    const foodItems = foodItemsMatch ? 
+      foodItemsMatch[1].split(',').map(item => item.trim().replace(/"/g, '')) : 
+      [];
     
+    // Determine if the food is suitable
+    const suitableMatch = responseText.match(/suitable.*?:\s*(true|false)/i);
+    const suitable = suitableMatch ? suitableMatch[1].toLowerCase() === 'true' : false;
+    
+    // Extract explanation
+    const explanationMatch = responseText.match(/explanation.*?:\s*"(.*?)"/is);
+    const explanation = explanationMatch ? 
+      explanationMatch[1] : 
+      `We've analyzed this food for Week ${currentWeek} of your program.`;
+    
+    // Generate default nutrients
+    const nutrients = this.generateDefaultNutrients(currentWeek);
+    
+    return {
+      suitable,
+      explanation,
+      nutrients,
+      detectedItems: foodItems
+    };
+  }
+
+  private generateDefaultNutrients(currentWeek: number): { label: string; value: string }[] {
+    // Mock nutrient data
+    const nutrients = [
+      { label: "Calories", value: `${Math.floor(Math.random() * 500 + 200)} kcal` },
+      { label: "Protein", value: `${Math.floor(Math.random() * 30 + 10)}g` },
+      { label: "Carbs", value: `${Math.floor(Math.random() * 60 + 20)}g` },
+      { label: "Fat", value: `${Math.floor(Math.random() * 30 + 5)}g` }
+    ];
+    
+    // Add a specific nutrient based on the week
+    if (currentWeek === 1) {
+      nutrients.push({ label: "Water", value: `${Math.floor(Math.random() * 30 + 60)}%` });
+    } else if (currentWeek === 2) {
+      nutrients.push({ label: "Fiber", value: `${Math.floor(Math.random() * 10 + 5)}g` });
+    } else if (currentWeek === 3) {
+      nutrients.push({ label: "Added Sugar", value: `${Math.floor(Math.random() * 10 + 5)}g` });
+    }
+    
+    return nutrients;
+  }
+
+  // This method is kept for backward compatibility
+  private analyzeFoodForProgram(foodItems: string[], currentWeek: number): FoodAnalysisResult {
     // Week-specific keywords to look for in food items
     const weekKeywords: Record<number, { positive: string[], negative: string[] }> = {
       1: { 
@@ -159,23 +229,8 @@ export class GoogleVisionService {
       explanation = `We couldn't identify enough specific foods that align with Week ${currentWeek}'s focus.`;
     }
     
-    // Mock nutrient data based on detected items
-    // In a real app, you'd look up actual nutritional data for these items
-    const nutrients = [
-      { label: "Calories", value: `${Math.floor(Math.random() * 500 + 200)} kcal` },
-      { label: "Protein", value: `${Math.floor(Math.random() * 30 + 10)}g` },
-      { label: "Carbs", value: `${Math.floor(Math.random() * 60 + 20)}g` },
-      { label: "Fat", value: `${Math.floor(Math.random() * 30 + 5)}g` }
-    ];
-    
-    // Add a specific nutrient based on the week
-    if (currentWeek === 1) {
-      nutrients.push({ label: "Water", value: `${Math.floor(Math.random() * 30 + 60)}%` });
-    } else if (currentWeek === 2) {
-      nutrients.push({ label: "Fiber", value: `${Math.floor(Math.random() * 10 + 5)}g` });
-    } else if (currentWeek === 3) {
-      nutrients.push({ label: "Added Sugar", value: suitable ? "0g" : `${Math.floor(Math.random() * 10 + 5)}g` });
-    }
+    // Mock nutrient data
+    const nutrients = this.generateDefaultNutrients(currentWeek);
     
     return {
       suitable,

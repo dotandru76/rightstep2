@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -114,7 +113,7 @@ const FoodVisualization = () => {
             variant="ghost" 
             size="icon"
             onClick={() => setApiKeyDialogOpen(true)}
-            title="Set Google Vision API Key"
+            title="Set Gemini API Key"
           >
             <Settings className="h-4 w-4" />
           </Button>
@@ -244,10 +243,10 @@ const FoodVisualization = () => {
       <Dialog open={apiKeyDialogOpen} onOpenChange={setApiKeyDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Set Google Vision API Key</DialogTitle>
+            <DialogTitle>Set Gemini API Key</DialogTitle>
             <DialogDescription>
-              Enter your Google Vision API key to enable food analysis.
-              You can get an API key from the Google Cloud Console.
+              Enter your Gemini API key to enable food analysis.
+              You can get a free API key from the Google AI Studio website.
             </DialogDescription>
           </DialogHeader>
           
@@ -256,13 +255,14 @@ const FoodVisualization = () => {
               <Label htmlFor="apiKey">API Key</Label>
               <Input
                 id="apiKey"
-                placeholder="Enter your Google Vision API key"
+                placeholder="Enter your Gemini API key"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
               />
             </div>
             <p className="text-xs text-gray-500">
-              Your API key is stored locally on your device and is only used to make requests to the Google Vision API.
+              Your API key is stored locally on your device and is only used to make requests to the Gemini API.
+              You can get a free API key at <a href="https://makersuite.google.com/" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">Google AI Studio</a>.
             </p>
           </div>
           
