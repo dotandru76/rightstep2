@@ -23,7 +23,9 @@ const config: CapacitorConfig = {
   },
   android: {
     iconBackground: '#ffffff', // Optional background color for adaptive icons
-  }
+  },
+  // Add this line to help with asset handling
+  bundledWebRuntime: false
 };
 
 export default config;
