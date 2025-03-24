@@ -22,37 +22,7 @@ const config: CapacitorConfig = {
     }
   },
   android: {
-    buildOptions: {
-      keystorePath: undefined,
-      keystoreAlias: undefined,
-      keystorePassword: undefined,
-      keystoreAliasPassword: undefined,
-      releaseType: 'APK',
-      minSdkVersion: 22,
-      targetSdkVersion: 33,
-      jvmArgs: [
-        '-Xmx4096m',
-        '-Xms2048m',
-        '-Dfile.encoding=UTF-8',
-        '-XX:+UseParallelGC',
-        '-XX:MaxPermSize=512m',
-        '-XX:+HeapDumpOnOutOfMemoryError',
-        '-Djava.io.tmpdir=./temp',
-        '-Dorg.gradle.daemon=false',
-        '-Dorg.gradle.jvmargs=-Xmx4096M',
-        '-Dkotlin.daemon.jvm.options=-Xmx2048M',
-        '-Dandroid.sdk.dir=C:\\Users\\dotan_d\\AppData\\Local\\Android\\Sdk'
-      ],
-      gradleArgs: [
-        '--rerun-tasks',
-        '--no-daemon',
-        '--max-workers=2',
-        '-Dorg.gradle.caching=false',
-        '-Dorg.gradle.parallel=false',
-        '-Pandroid.sdk.dir=C:\\Users\\dotan_d\\AppData\\Local\\Android\\Sdk'
-      ]
-    },
-    iconBackground: '#ffffff',
+    iconBackground: '#ffffff'
   },
   bundledWebRuntime: false
 };
