@@ -19,12 +19,12 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
     <>
       <div className="flex flex-col items-center justify-center pt-12 pb-6">
         {/* Logo only - no separate text */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-2">
           <RightFootIcon className="text-white" size={400} color="white" />
         </div>
         
-        {/* Motivational text moved below the logo */}
-        <h2 className="text-xl font-medium text-white mb-8">You are taking the Right Step</h2>
+        {/* Motivational text moved closer to the logo by reducing mb-8 to mb-4 */}
+        <h2 className="text-xl font-medium text-white mb-4">You are taking the Right Step</h2>
       </div>
       
       <CardContent className="pt-4">
@@ -54,4 +54,3 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
 };
 
 export default NameStep;
-
