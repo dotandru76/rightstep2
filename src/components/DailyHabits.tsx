@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -101,8 +102,8 @@ const DailyHabits: React.FC<DailyHabitsProps> = ({ currentWeek = 1 }) => {
     ));
   };
 
-  // Display only up to 7 habits maximum for a cleaner UI
-  const displayedHabits = habits.slice(0, 7);
+  // Display only up to 5 habits maximum for a cleaner UI
+  const displayedHabits = habits.slice(0, 5);
 
   return (
     <Card className="shadow-sm">
@@ -113,7 +114,7 @@ const DailyHabits: React.FC<DailyHabitsProps> = ({ currentWeek = 1 }) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2 max-h-[240px] overflow-y-auto pr-2">
+        <div className="space-y-2 max-h-[180px] overflow-y-auto pr-2">
           {displayedHabits.map(habit => (
             <div key={habit.id} className="flex items-start space-x-2">
               <Checkbox 
@@ -130,9 +131,9 @@ const DailyHabits: React.FC<DailyHabitsProps> = ({ currentWeek = 1 }) => {
               </label>
             </div>
           ))}
-          {habits.length > 7 && (
+          {habits.length > 5 && (
             <div className="text-sm text-muted-foreground pt-1">
-              +{habits.length - 7} more habits...
+              +{habits.length - 5} more habits...
             </div>
           )}
         </div>

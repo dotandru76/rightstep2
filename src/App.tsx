@@ -9,7 +9,6 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import ProfileComplete from "./pages/ProfileComplete";
-import WeeklyProgram from "./pages/WeeklyProgram";
 import { checkForUpdates } from "./services/UpdateService";
 import UpdateNotification from "./components/UpdateNotification";
 import { ProgramProvider } from "./contexts/ProgramContext";
@@ -58,7 +57,8 @@ const App = () => {
               <Route path="/" element={userDataExists() ? <Index /> : <Navigate to="/register" />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile-complete" element={<ProfileComplete />} />
-              <Route path="/week/:weekNumber" element={<WeeklyProgram />} />
+              {/* Redirect week routes to index */}
+              <Route path="/week/:weekNumber" element={<Navigate to="/" />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -69,7 +69,7 @@ const App = () => {
             <UpdateNotification
               open={showUpdateDialog}
               updateInfo={updateInfo}
-              onClose={() => setShowUpdateDialog(false)}
+              onClose={() => setShowWeekDetails(false)}
               onUpdate={handleUpdateComplete}
             />
           )}

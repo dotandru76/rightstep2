@@ -24,10 +24,14 @@ const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) 
   };
 
   // Calculate the size of the droplet based on percentage
-  const dropletSize = 48 + Math.round((progressPercentage / 100) * 72); // Size from 48px to 120px
+  const minSize = 48;
+  const maxSize = 120;
+  const dropletSize = minSize + Math.round((progressPercentage / 100) * (maxSize - minSize));
+  
+  // Adjust color intensity based on progress
   const dropletColor = progressPercentage >= 100 
     ? "#1EAEDB" // Bright blue when complete
-    : "#D3E4FD"; // Soft blue during progress
+    : `rgba(30, 174, 219, ${progressPercentage / 100})`; // Gradually intensifying blue
 
   return (
     <Card className="shadow-sm">
@@ -36,14 +40,10 @@ const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) 
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center justify-center gap-3">
-          <div className="relative flex justify-center items-center">
+          <div className="relative flex justify-center items-center h-[140px]">
             <Droplet 
               size={dropletSize}
-              className="text-[#D3E4FD] fill-[#D3E4FD]" 
-            />
-            <Droplet 
-              size={dropletSize * (progressPercentage / 100)}
-              className="absolute text-[#1EAEDB] fill-[#1EAEDB]" 
+              className={`text-[${dropletColor}] fill-[${dropletColor}]`}
             />
             <span className="absolute font-bold text-white">{waterGlasses}/{targetGlasses}</span>
           </div>
