@@ -113,7 +113,7 @@ const Register: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-rightstep-vertical-gradient">
       <Card className="w-full max-w-md bg-transparent border-none shadow-none rounded-lg overflow-hidden">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {currentStep === 0 && <NameStep form={form} />}
             {currentStep === 1 && <GenderStep form={form} />}
             {currentStep === 2 && <MeasurementsStep form={form} />}
@@ -124,7 +124,7 @@ const Register: React.FC = () => {
                   <Button 
                     type="button"
                     onClick={handleNextStep}
-                    className="w-full bg-rightstep-green-light hover:bg-rightstep-green text-white font-bold py-3 rounded-full text-lg"
+                    className="w-full bg-rightstep-green hover:bg-rightstep-green-dark text-white font-bold py-3 rounded-full text-lg"
                   >
                     Get Started
                   </Button>
