@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,9 +44,7 @@ const ProfileComplete = () => {
       <Card className="max-w-md w-full shadow-lg border-0">
         <CardHeader className="text-center space-y-4">
           <div className="mx-auto flex items-center justify-center">
-            <div className="flex flex-col items-center">
-              <RightFootIcon className="h-24 w-24 text-rightstep-green mb-1" size={96} />
-            </div>
+            <RightFootIcon className="h-48 w-48 text-rightstep-green" size={192} />
           </div>
           <CardTitle className="text-xl font-bold text-rightstep-green">Profile Complete!</CardTitle>
           <CardDescription className="text-lg">
@@ -56,13 +55,6 @@ const ProfileComplete = () => {
           <p className="text-gray-700">
             We've created your personalized plan based on your profile. Track your progress, stay hydrated, and build healthy habits one step at a time.
           </p>
-          <div className="py-4 flex justify-center">
-            <img 
-              src="/lovable-uploads/d5ce8790-6171-4d07-8e0a-f4ef08542e6d.png" 
-              alt="RightStep Journey" 
-              className="h-40"
-            />
-          </div>
         </CardContent>
         <CardFooter>
           <Button 

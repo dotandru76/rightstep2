@@ -26,23 +26,23 @@ const SummaryStep: React.FC<SummaryStepProps> = ({ form }) => {
           <div className="border rounded-md p-3 md:p-4 bg-gray-50">
             <div className="grid grid-cols-2 gap-3 md:gap-4">
               <div className="space-y-1">
-                <p className="text-sm text-gray-500">Name</p>
+                <p className="text-sm text-yellow-600 font-medium">Name</p>
                 <p className="font-medium">{form.getValues().name}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-gray-500">Gender</p>
+                <p className="text-sm text-yellow-600 font-medium">Gender</p>
                 <p className="font-medium capitalize">{form.getValues().sex}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-gray-500">Age</p>
+                <p className="text-sm text-yellow-600 font-medium">Age</p>
                 <p className="font-medium">{form.getValues().age} years</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-gray-500">Weight</p>
+                <p className="text-sm text-yellow-600 font-medium">Weight</p>
                 <p className="font-medium">{form.getValues().weight} kg</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-gray-500">Height</p>
+                <p className="text-sm text-yellow-600 font-medium">Height</p>
                 <p className="font-medium">{form.getValues().height} cm</p>
               </div>
             </div>

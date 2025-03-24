@@ -27,7 +27,7 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
             size={iconSize} 
             color="white" 
           />
-          <h2 className="text-lg md:text-xl font-medium text-white mt-2">You are taking the Right Step</h2>
+          <h2 className="text-lg md:text-xl font-medium text-white">You are taking the Right Step</h2>
         </div>
       </div>
       <CardContent className="pt-4">
