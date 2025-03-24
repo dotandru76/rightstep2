@@ -15,8 +15,8 @@ interface NameStepProps {
 const NameStep: React.FC<NameStepProps> = ({ form }) => {
   const isMobile = useIsMobile();
   
-  // Optimize rendering by using smaller icon size
-  const iconSize = isMobile ? 120 : 180;
+  // Doubled the icon sizes
+  const iconSize = isMobile ? 240 : 360;
 
   return (
     <>

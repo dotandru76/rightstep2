@@ -15,7 +15,7 @@ const SummaryStep: React.FC<SummaryStepProps> = ({ form }) => {
   return (
     <>
       <div className="flex justify-center mb-4 md:mb-6">
-        <RightFootIcon className="h-16 w-16 md:h-20 md:w-20 text-rightstep-green" size={isMobile ? 64 : 80} />
+        <RightFootIcon className="h-32 w-32 md:h-40 md:w-40 text-rightstep-green" size={isMobile ? 128 : 160} /> {/* Doubled from h-16/h-20 to h-32/h-40 */}
       </div>
       <CardTitle className="text-xl md:text-2xl font-bold text-center text-rightstep-green">Ready to Start Your Journey</CardTitle>
       <CardDescription className="text-center mb-3 md:mb-4">
