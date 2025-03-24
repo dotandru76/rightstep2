@@ -43,7 +43,6 @@ const config: CapacitorConfig = {
         '-Dkotlin.daemon.jvm.options=-Xmx2048M', // Increase Kotlin daemon memory
         '-Dandroid.sdk.dir=C:\\Users\\dotan_d\\AppData\\Local\\Android\\Sdk' // Updated SDK location
       ],
-      // Add these to try and fix file locking issues
       gradleArgs: [
         '--rerun-tasks',
         '--no-daemon',
@@ -55,7 +54,6 @@ const config: CapacitorConfig = {
     },
     iconBackground: '#ffffff', // Optional background color for adaptive icons
   },
-  // Add this line to help with asset handling
   bundledWebRuntime: false
 };
 
