@@ -57,13 +57,13 @@ export class GoogleVisionService {
                   text: `Analyze this food image and identify all food items. 
                   I am in week ${currentWeek} of a healthy eating program. 
                   For week ${currentWeek}, tell me if this food is appropriate and why. 
-                  Also estimate basic nutritional information. 
+                  Also estimate basic nutritional information. IMPORTANT: DO NOT include the word "approximately" in any values.
                   Format your response as JSON with these fields:
                   {
                     "detectedItems": ["list of detected food items"],
                     "suitable": true or false,
                     "explanation": "explanation of why it's suitable or not for the current week",
-                    "nutrients": [{"label": "nutrient name (item)", "value": "amount (without 'approximately')"}]
+                    "nutrients": [{"label": "nutrient name (item)", "value": "amount"}]
                   }`
                 },
                 {
