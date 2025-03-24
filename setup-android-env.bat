@@ -3,8 +3,8 @@
 echo Setting up Android SDK environment variables...
 
 rem Set ANDROID_HOME environment variable
-setx ANDROID_HOME "C:\Users\dotan_d\AppData\Local\Android\Sdk" /M
-echo ANDROID_HOME environment variable set to C:\Users\dotan_d\AppData\Local\Android\Sdk
+setx ANDROID_HOME "%USERPROFILE%\AppData\Local\Android\Sdk" /M
+echo ANDROID_HOME environment variable set to %USERPROFILE%\AppData\Local\Android\Sdk
 
 rem Add platform-tools to PATH
 setx PATH "%PATH%;%ANDROID_HOME%\platform-tools" /M
