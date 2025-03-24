@@ -69,13 +69,13 @@ const WeeklyProgress = () => {
   const currentTheme = weeklyThemes.find(theme => theme.week === displayedWeek) || weeklyThemes[0];
 
   return (
-    <Card>
+    <Card className="shadow-md border-t-4 border-t-rightstep-green">
       <CardHeader>
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle>Program Progress</CardTitle>
+            <CardTitle className="text-xl text-rightstep-green">Leptin Program</CardTitle>
             <CardDescription>
-              Current week: {maxAccessibleWeek} of {totalWeeks}
+              Week {maxAccessibleWeek} of {totalWeeks}
             </CardDescription>
           </div>
           <div className="flex gap-2">
@@ -91,7 +91,7 @@ const WeeklyProgress = () => {
       <CardContent>
         <div className="space-y-4">
           <div className="flex justify-between mb-1">
-            <span className="font-medium">Week {displayedWeek} of {totalWeeks}</span>
+            <span className="font-medium">Overall Progress</span>
             <span className="text-sm">{progressPercentage.toFixed(0)}%</span>
           </div>
           <Progress value={progressPercentage} className="h-2" />
@@ -100,7 +100,7 @@ const WeeklyProgress = () => {
             <div className="flex justify-between items-start">
               <div>
                 <h3 className="font-bold text-lg">{currentTheme.title}</h3>
-                <p>{currentTheme.description}</p>
+                <p className="text-sm text-gray-600">{currentTheme.description}</p>
               </div>
               <Button 
                 size="sm" 
@@ -127,12 +127,13 @@ const WeeklyProgress = () => {
             {Array.from({ length: totalWeeks }).map((_, i) => {
               const weekNum = i + 1;
               const isLocked = weekNum > maxAccessibleWeek;
+              const isCurrent = weekNum === maxAccessibleWeek;
               
               return (
                 <Button 
                   key={i}
-                  variant={displayedWeek === weekNum ? "default" : "outline"}
-                  className={`h-10 min-w-0 ${isLocked ? "opacity-60" : ""}`}
+                  variant={displayedWeek === weekNum ? "default" : isCurrent ? "secondary" : "outline"}
+                  className={`h-10 min-w-0 ${isLocked ? "opacity-60" : ""} ${isCurrent ? "border-2 border-rightstep-green" : ""}`}
                   onClick={() => isLocked ? 
                     toast.error("Week not unlocked yet") : 
                     setDisplayedWeek(weekNum)
