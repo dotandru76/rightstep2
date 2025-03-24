@@ -22,8 +22,8 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
         <div className="text-center relative">
           <RightFootIcon className="text-white" size={400} color="white" />
           
-          {/* Motivational text positioned to overlap with the bottom part of the logo */}
-          <h2 className="text-xl font-medium text-white absolute bottom-20 left-0 right-0">
+          {/* Motivational text positioned higher on the logo */}
+          <h2 className="text-xl font-medium text-white absolute bottom-40 left-0 right-0">
             You are taking the Right Step
           </h2>
         </div>
