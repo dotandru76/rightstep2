@@ -16,6 +16,7 @@ interface UpdateNotificationProps {
   open: boolean;
   updateInfo: {
     version: string;
+    buildNumber: number;
     mandatory: boolean;
     releaseNotes?: string;
     updateUrl: string;
