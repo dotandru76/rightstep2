@@ -9,6 +9,7 @@ import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import ProgramProgressCard from "@/components/dashboard/ProgramProgressCard";
 import WeekDetailsDialog from "@/components/dashboard/WeekDetailsDialog";
 import MealTracker from "@/components/MealTracker";
+import { Progress } from "@/components/ui/progress";
 
 interface UserData {
   name: string;
@@ -60,12 +61,14 @@ const Index = () => {
   const recommendedWater = (weightInKg * 0.033).toFixed(1);
   
   const currentWeekData = weeklyProgram.find(program => program.week === maxAccessibleWeek) || weeklyProgram[0];
+  const totalWeeks = 13;
+  const progressPercentage = (maxAccessibleWeek / totalWeeks) * 100;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <DashboardHeader onReset={handleReset} />
       
-      <main className="container mx-auto px-4 py-6 max-w-4xl">
+      <main className="container mx-auto px-4 py-6 max-w-4xl flex-grow">
         <ProgramProgressCard 
           maxAccessibleWeek={maxAccessibleWeek} 
           onShowDetails={() => setShowWeekDetails(true)} 
@@ -76,6 +79,16 @@ const Index = () => {
           <MealTracker />
         </div>
       </main>
+
+      <div className="container mx-auto px-4 pb-8 max-w-4xl">
+        <div className="mt-6">
+          <div className="flex justify-between mb-1">
+            <span className="font-medium">Overall Progress</span>
+            <span className="text-sm">{progressPercentage.toFixed(0)}%</span>
+          </div>
+          <Progress value={progressPercentage} className="h-2" />
+        </div>
+      </div>
 
       <WeekDetailsDialog 
         open={showWeekDetails} 

@@ -23,8 +23,8 @@ const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) 
   };
 
   // Calculate the size of the droplet based on percentage
-  const minSize = 36;
-  const maxSize = 80;
+  const minSize = 30;
+  const maxSize = 50;
   const dropletSize = minSize + Math.round((progressPercentage / 100) * (maxSize - minSize));
   
   // Adjust color intensity based on progress
@@ -33,31 +33,29 @@ const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) 
     : `rgba(30, 174, 219, ${0.3 + (progressPercentage / 100) * 0.7})`; // Gradually intensifying blue
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-sm">
-      <h3 className="text-lg font-medium mb-2">Water Intake</h3>
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col items-center justify-center">
-          <div className="relative flex justify-center items-center h-[90px] w-[90px]">
-            <Droplet 
-              size={dropletSize}
-              fill={dropletColor}
-              color={dropletColor}
-            />
-            <span className="absolute font-bold text-white text-sm">{waterGlasses}/{targetGlasses}</span>
-          </div>
-          <span className="text-xs mt-1">{(waterGlasses * glassSize).toFixed(1)}L of {recommendedAmount}L</span>
+    <div className="p-3 flex items-center justify-between rounded-lg">
+      <div className="flex items-center">
+        <div className="relative flex justify-center items-center h-[60px] w-[60px]">
+          <Droplet 
+            size={dropletSize}
+            fill={dropletColor}
+            color={dropletColor}
+          />
+          <span className="absolute font-bold text-white text-xs">{waterGlasses}/{targetGlasses}</span>
         </div>
-        
-        <div className="flex flex-col gap-2">
-          <Button variant="outline" size="sm" onClick={addGlass} className="w-full">
-            <Plus className="h-4 w-4 mr-1" />
-            Add Glass
-          </Button>
-          <Button variant="outline" size="sm" onClick={removeGlass} disabled={waterGlasses === 0} className="w-full">
-            <Minus className="h-4 w-4 mr-1" />
-            Remove
-          </Button>
+        <div className="ml-2">
+          <h3 className="text-sm font-medium">Water Intake</h3>
+          <span className="text-xs text-gray-600">{(waterGlasses * glassSize).toFixed(1)}L of {recommendedAmount}L</span>
         </div>
+      </div>
+      
+      <div className="flex gap-1">
+        <Button variant="outline" size="sm" onClick={addGlass}>
+          <Plus className="h-4 w-4" />
+        </Button>
+        <Button variant="outline" size="sm" onClick={removeGlass} disabled={waterGlasses === 0}>
+          <Minus className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );

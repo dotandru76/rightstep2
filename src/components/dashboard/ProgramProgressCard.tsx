@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Settings } from "lucide-react";
@@ -51,23 +51,20 @@ const ProgramProgressCard: React.FC<ProgramProgressCardProps> = ({
 
   return (
     <Card className="shadow-md mb-6 border-t-4 border-t-rightstep-green">
-      <CardHeader>
+      <CardHeader className="pb-2 pt-4">
         <div className="flex justify-between items-center">
-          <div>
-            <CardTitle className="text-xl text-rightstep-green">
-              Leptin Program
+          <div className="text-center w-full">
+            <h2 className="text-2xl font-semibold text-center">
+              Week {maxAccessibleWeek}
               {debugMode && <span className="ml-2 text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full">Dev Mode</span>}
-            </CardTitle>
-            <CardDescription>
-              Week {maxAccessibleWeek} of {totalWeeks}
-            </CardDescription>
+            </h2>
           </div>
           <Popover open={showDevMenu} onOpenChange={setShowDevMenu}>
             <PopoverTrigger asChild>
               <Button 
                 variant="outline" 
                 size="icon" 
-                className="h-8 w-8 rounded-full"
+                className="h-8 w-8 rounded-full absolute right-4"
                 onClick={() => setShowDevMenu(true)}
                 title="Developer options"
               >
@@ -118,28 +115,20 @@ const ProgramProgressCard: React.FC<ProgramProgressCardProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="flex justify-between mb-1">
-            <span className="font-medium">Overall Progress</span>
-            <span className="text-sm">{progressPercentage.toFixed(0)}%</span>
-          </div>
-          <Progress value={progressPercentage} className="h-2" />
-          
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-bold text-lg">{currentWeekData.title}</h3>
-                <p className="text-sm text-gray-600">{currentWeekData.description}</p>
-              </div>
-              <Button 
-                size="sm" 
-                className="bg-rightstep-green hover:bg-rightstep-green-dark"
-                onClick={onShowDetails}
-              >
-                Details
-                <ArrowRight className="ml-1 h-3 w-3" />
-              </Button>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-2">
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="font-bold text-lg">{currentWeekData.title}</h3>
+              <p className="text-sm text-gray-600">{currentWeekData.description}</p>
             </div>
+            <Button 
+              size="sm" 
+              className="bg-rightstep-green hover:bg-rightstep-green-dark"
+              onClick={onShowDetails}
+            >
+              Details
+              <ArrowRight className="ml-1 h-3 w-3" />
+            </Button>
           </div>
         </div>
       </CardContent>
