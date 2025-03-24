@@ -58,10 +58,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-rightstep-gradient text-white py-4">
+      <header className="bg-rightstep-gradient text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center">
-            <RightFootIcon className="h-40 w-40" size={160} /> {/* Significantly increased size */}
+            <RightFootIcon className="h-16 w-16" size={64} />
+            <h1 className="text-2xl font-bold ml-2">RightStep</h1>
           </div>
           <Button variant="ghost" size="sm" className="text-white hover:bg-white/20" onClick={handleReset}>
             <UserCircle className="mr-2 h-4 w-4" />
@@ -74,8 +75,7 @@ const Index = () => {
         <div className="mb-6 p-4 bg-white rounded-lg shadow-sm">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-2xl font-bold text-rightstep-green flex items-center gap-2">
-                <RightFootIcon className="h-20 w-20 text-rightstep-green" size={80} /> {/* Increased size */}
+              <h2 className="text-2xl font-bold text-rightstep-green">
                 Welcome, {userData.name}!
               </h2>
               <p className="text-gray-600">
@@ -84,7 +84,7 @@ const Index = () => {
             </div>
             <Button 
               onClick={handleGoToWeeklyProgram}
-              className="bg-rightstep-green hover:bg-rightstep-green-dark"
+              className="bg-rightstep-green hover:bg-rightstep-green-dark whitespace-nowrap"
             >
               Current Week's Program
               <ArrowRight className="ml-2 h-4 w-4" />

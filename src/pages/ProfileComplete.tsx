@@ -45,10 +45,11 @@ const ProfileComplete = () => {
         <CardHeader className="text-center space-y-4">
           <div className="mx-auto flex items-center justify-center">
             <div className="flex flex-col items-center">
-              <RightFootIcon className="h-80 w-80 text-rightstep-green mb-1" size={320} /> {/* Significantly increased size */}
+              <RightFootIcon className="h-24 w-24 text-rightstep-green mb-1" size={96} />
+              <h1 className="text-2xl font-bold text-rightstep-green">RightStep</h1>
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-rightstep-green">Profile Complete!</CardTitle>
+          <CardTitle className="text-xl font-bold text-rightstep-green">Profile Complete!</CardTitle>
           <CardDescription className="text-lg">
             You're all set to begin your journey with RightStep
           </CardDescription>
