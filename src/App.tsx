@@ -17,8 +17,8 @@ import { ProgramProvider } from "./contexts/ProgramContext";
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Check if user data exists
-  const userDataExists = !!localStorage.getItem("userData");
+  // Update to use a function to check if user data exists
+  const userDataExists = () => !!localStorage.getItem("userData");
   
   const [updateInfo, setUpdateInfo] = useState<any>(null);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
@@ -54,8 +54,8 @@ const App = () => {
         <ProgramProvider>
           <BrowserRouter>
             <Routes>
-              {/* Redirect to register if no user data */}
-              <Route path="/" element={userDataExists ? <Index /> : <Navigate to="/register" />} />
+              {/* Update to use function to check dynamically */}
+              <Route path="/" element={userDataExists() ? <Index /> : <Navigate to="/register" />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile-complete" element={<ProfileComplete />} />
               <Route path="/week/:weekNumber" element={<WeeklyProgram />} />

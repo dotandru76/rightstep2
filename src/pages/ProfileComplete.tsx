@@ -22,7 +22,16 @@ const ProfileComplete = () => {
   }, [navigate]);
 
   const handleContinue = () => {
-    // Use replace: true to prevent back navigation to this page
+    // First make sure we have a valid program start date
+    const programStartDate = localStorage.getItem('programStartDate');
+    if (!programStartDate) {
+      // Initialize program start date if it doesn't exist
+      const today = new Date().toISOString();
+      localStorage.setItem('programStartDate', today);
+      localStorage.setItem('lastSeenWeek', '1');
+    }
+    
+    // Force navigation to root with replace to prevent back navigation issues
     navigate("/", { replace: true });
   };
 
@@ -57,7 +66,10 @@ const ProfileComplete = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button onClick={handleContinue} className="w-full bg-rightstep-green hover:bg-rightstep-green-dark">
+          <Button 
+            onClick={handleContinue} 
+            className="w-full bg-rightstep-green hover:bg-rightstep-green-dark"
+          >
             Continue to Dashboard
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
