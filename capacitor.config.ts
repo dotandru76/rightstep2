@@ -22,6 +22,7 @@ const config: CapacitorConfig = {
     }
   },
   android: {
+    minSdkVersion: 23,
     iconBackground: '#ffffff'
   },
   bundledWebRuntime: false
