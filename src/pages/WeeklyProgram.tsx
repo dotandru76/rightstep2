@@ -190,6 +190,7 @@ const WeeklyProgram = () => {
   const [currentWeek, setCurrentWeek] = useState(1);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
   const [showDebugMenu, setShowDebugMenu] = useState(false);
+  const [debugMode, setDebugMode] = useState(false);
   const totalWeeks = 13;
   
   useEffect(() => {
@@ -201,14 +202,14 @@ const WeeklyProgram = () => {
     
     if (weekNumber) {
       const week = parseInt(weekNumber);
-      if (week >= 1 && week <= maxAccessibleWeek) {
+      if (week >= 1 && week <= maxAccessibleWeek || debugMode) {
         setCurrentWeek(week);
         
-        if (week === maxAccessibleWeek && isNewWeek) {
+        if (week === maxAccessibleWeek && isNewWeek && !debugMode) {
           setShowWelcomeDialog(true);
           setIsNewWeekSeen();
         }
-      } else if (week > maxAccessibleWeek) {
+      } else if (week > maxAccessibleWeek && !debugMode) {
         toast.error("That week isn't unlocked yet", {
           description: "You'll gain access as you progress through the program."
         });
@@ -217,13 +218,17 @@ const WeeklyProgram = () => {
         navigate("/week/1", { replace: true });
       }
     }
-  }, [weekNumber, navigate, maxAccessibleWeek, isNewWeek, setIsNewWeekSeen]);
+  }, [weekNumber, navigate, maxAccessibleWeek, isNewWeek, setIsNewWeekSeen, debugMode]);
 
   const handleWeekDebugSelect = (week: number) => {
     if (week >= 1 && week <= totalWeeks) {
+      // Enable debug mode when selecting a week through debug menu
+      setDebugMode(true);
       navigate(`/week/${week}`);
       setShowDebugMenu(false);
-      toast.success(`Debug: Navigated to Week ${week}`);
+      toast.success(`Debug: Navigated to Week ${week}`, {
+        description: "Debug mode enabled - week lock restrictions bypassed"
+      });
     }
   };
 
@@ -238,8 +243,12 @@ const WeeklyProgram = () => {
   };
 
   const handleNextWeek = () => {
-    if (currentWeek < maxAccessibleWeek) {
-      navigate(`/week/${currentWeek + 1}`);
+    if (currentWeek < maxAccessibleWeek || debugMode) {
+      if (debugMode && currentWeek < totalWeeks) {
+        navigate(`/week/${currentWeek + 1}`);
+      } else if (currentWeek < maxAccessibleWeek) {
+        navigate(`/week/${currentWeek + 1}`);
+      }
     } else if (currentWeek < totalWeeks) {
       toast.error("Week not unlocked yet", {
         description: "You'll gain access to this week as you progress in real time."
@@ -249,6 +258,13 @@ const WeeklyProgram = () => {
 
   const handleBackToDashboard = () => {
     navigate("/");
+  };
+
+  const toggleDebugMode = () => {
+    setDebugMode(!debugMode);
+    toast(debugMode ? "Debug mode disabled" : "Debug mode enabled", {
+      description: debugMode ? "Week restrictions reapplied" : "Week lock restrictions bypassed"
+    });
   };
 
   return (
@@ -272,8 +288,18 @@ const WeeklyProgram = () => {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-56" align="end">
-                <div className="space-y-2">
-                  <h4 className="font-medium text-sm">Debug Navigation</h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <h4 className="font-medium text-sm">Debug Navigation</h4>
+                    <Button 
+                      variant={debugMode ? "default" : "outline"} 
+                      size="sm" 
+                      className={debugMode ? "bg-green-600 hover:bg-green-700" : ""}
+                      onClick={toggleDebugMode}
+                    >
+                      {debugMode ? "Debug ON" : "Debug OFF"}
+                    </Button>
+                  </div>
                   <div className="grid grid-cols-4 gap-1">
                     {Array.from({ length: totalWeeks }).map((_, i) => {
                       const weekNum = i + 1;
@@ -282,7 +308,7 @@ const WeeklyProgram = () => {
                           key={i}
                           variant="outline" 
                           size="sm"
-                          className="h-8 min-w-0"
+                          className={`h-8 min-w-0 ${currentWeek === weekNum ? "bg-blue-100" : ""}`}
                           onClick={() => handleWeekDebugSelect(weekNum)}
                         >
                           {weekNum}
@@ -306,12 +332,20 @@ const WeeklyProgram = () => {
       
       <main className="container mx-auto px-4 py-6 max-w-4xl">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-rightstep-green">Week {currentWeek}: {weekProgram.title}</h2>
+          <h2 className="text-2xl font-bold text-rightstep-green">
+            Week {currentWeek}: {weekProgram.title}
+            {debugMode && <span className="ml-2 text-sm px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full">Debug Mode</span>}
+          </h2>
           <div className="flex gap-2">
             <Button variant="outline" size="icon" onClick={handlePreviousWeek} disabled={currentWeek === 1}>
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon" onClick={handleNextWeek} disabled={currentWeek === totalWeeks || currentWeek >= maxAccessibleWeek}>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={handleNextWeek} 
+              disabled={currentWeek === totalWeeks || (currentWeek >= maxAccessibleWeek && !debugMode)}
+            >
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -364,10 +398,10 @@ const WeeklyProgram = () => {
                 </Button>
                 <Button 
                   onClick={handleNextWeek} 
-                  disabled={currentWeek === totalWeeks || currentWeek >= maxAccessibleWeek}
+                  disabled={currentWeek === totalWeeks || (currentWeek >= maxAccessibleWeek && !debugMode)}
                   className="flex items-center gap-2"
                 >
-                  {currentWeek < maxAccessibleWeek ? (
+                  {currentWeek < maxAccessibleWeek || debugMode ? (
                     <>
                       Next Week
                       <ArrowRight className="h-4 w-4" />
