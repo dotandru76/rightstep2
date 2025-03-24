@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ImageIcon, Camera, UploadIcon, CheckCircle, AlertCircle, Settings, ExternalLink } from "lucide-react";
+import { ImageIcon, Camera, UploadIcon, CheckCircle, AlertCircle, Settings, ExternalLink, Save } from "lucide-react";
 import { toast } from "sonner";
 import { useProgram } from "@/contexts/ProgramContext";
 import { weeklyProgram } from "@/data/weeklyProgramData";
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { googleVisionService } from "@/services/GoogleVisionService";
+import { foodLogService } from "@/services/FoodLogService";
 
 const FoodVisualization = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -97,6 +98,24 @@ const FoodVisualization = () => {
     }
   };
 
+  const saveToFoodLog = () => {
+    if (!analysis || !image) return;
+    
+    const calories = foodLogService.extractCalories(analysis.nutrients);
+    
+    foodLogService.saveEntry({
+      timestamp: Date.now(),
+      foodItems: analysis.detectedItems || [],
+      calories,
+      imageUrl: image,
+      suitable: analysis.suitable
+    });
+    
+    toast.success("Added to food log", {
+      description: `Logged ${calories} calories from this meal`
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -164,6 +183,15 @@ const FoodVisualization = () => {
                 </div>
               </div>
             )}
+            
+            <Button 
+              onClick={saveToFoodLog}
+              className="w-full"
+              variant="outline"
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Save to Food Log
+            </Button>
             
             <div className="bg-white rounded-lg border p-4">
               <h4 className="font-medium mb-2">Nutritional Information</h4>
