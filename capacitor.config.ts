@@ -40,7 +40,8 @@ const config: CapacitorConfig = {
         '-Djava.io.tmpdir=./temp',  // Use a local temp directory instead
         '-Dorg.gradle.daemon=false', // Disable gradle daemon
         '-Dorg.gradle.jvmargs=-Xmx4096M', // Increase gradle JVM memory
-        '-Dkotlin.daemon.jvm.options=-Xmx2048M' // Increase Kotlin daemon memory
+        '-Dkotlin.daemon.jvm.options=-Xmx2048M', // Increase Kotlin daemon memory
+        '-Dandroid.sdk.dir=C:\\Users\\dotan_d\\AndroidStudioProjects\\MyLaptinDiet' // Explicitly set SDK location
       ],
       // Add these to try and fix file locking issues
       gradleArgs: [
@@ -48,7 +49,8 @@ const config: CapacitorConfig = {
         '--no-daemon',
         '--max-workers=2',
         '-Dorg.gradle.caching=false',
-        '-Dorg.gradle.parallel=false'
+        '-Dorg.gradle.parallel=false',
+        '-Pandroid.sdk.dir=C:\\Users\\dotan_d\\AndroidStudioProjects\\MyLaptinDiet' // Add as Gradle property
       ]
     },
     iconBackground: '#ffffff', // Optional background color for adaptive icons
