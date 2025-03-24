@@ -36,7 +36,7 @@ const ProfileComplete = () => {
         <CardHeader className="text-center space-y-4">
           <div className="mx-auto flex items-center justify-center">
             <div className="flex flex-col items-center">
-              <RightFootIcon className="h-48 w-48 text-rightstep-green mb-1" size={192} /> {/* Tripled from h-16 w-16 to h-48 w-48 */}
+              <RightFootIcon className="h-80 w-80 text-rightstep-green mb-1" size={320} /> {/* Significantly increased size */}
             </div>
           </div>
           <CardTitle className="text-2xl font-bold text-rightstep-green">Profile Complete!</CardTitle>

@@ -14,7 +14,7 @@ const GenderStep: React.FC<GenderStepProps> = ({ form }) => {
   return (
     <>
       <div className="flex justify-center mb-4">
-        <RightFootIcon className="h-40 w-40 text-white" size={160} /> {/* Doubled from h-20 w-20 to h-40 w-40 */}
+        <RightFootIcon className="h-64 w-64 text-white" size={256} /> {/* Significantly increased size */}
       </div>
       <CardTitle className="text-xl font-bold text-center text-white">Hi, {form.getValues().name}!</CardTitle>
       <CardDescription className="text-center mb-6 text-white/80">

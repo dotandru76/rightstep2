@@ -9,7 +9,7 @@ interface RightFootIconProps {
 
 const RightFootIcon: React.FC<RightFootIconProps> = ({ 
   className = "", 
-  size = 48, // Doubled the default size from 24 to 48
+  size = 96, // Doubled the default size again from 48 to 96
   color = "white" 
 }) => {
   return (
