@@ -32,7 +32,8 @@ const config: CapacitorConfig = {
       targetSdkVersion: 33,
       jvmArgs: [
         '-Xmx2048m',
-        '-Dfile.encoding=UTF-8'
+        '-Dfile.encoding=UTF-8',
+        '-XX:+UseParallelGC'
       ]
     },
     iconBackground: '#ffffff', // Optional background color for adaptive icons
