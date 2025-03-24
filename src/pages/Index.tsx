@@ -9,6 +9,8 @@ import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import ProgramProgressCard from "@/components/dashboard/ProgramProgressCard";
 import WeekDetailsDialog from "@/components/dashboard/WeekDetailsDialog";
 import MealTracker from "@/components/MealTracker";
+import FoodVisualization from "@/components/FoodVisualization";
+import TipsCard from "@/components/TipsCard";
 import { Progress } from "@/components/ui/progress";
 
 interface UserData {
@@ -77,6 +79,11 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <WaterTracker recommendedAmount={parseFloat(recommendedWater)} />
           <MealTracker />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <FoodVisualization />
+          <TipsCard />
         </div>
       </main>
 
