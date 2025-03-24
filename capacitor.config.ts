@@ -31,17 +31,17 @@ const config: CapacitorConfig = {
       minSdkVersion: 22,
       targetSdkVersion: 33,
       jvmArgs: [
-        '-Xmx4096m',  // Further increased memory allocation
-        '-Xms2048m',  // Increased initial memory allocation
+        '-Xmx4096m',
+        '-Xms2048m',
         '-Dfile.encoding=UTF-8',
         '-XX:+UseParallelGC',
         '-XX:MaxPermSize=512m',
         '-XX:+HeapDumpOnOutOfMemoryError',
-        '-Djava.io.tmpdir=./temp',  // Use a local temp directory instead
-        '-Dorg.gradle.daemon=false', // Disable gradle daemon
-        '-Dorg.gradle.jvmargs=-Xmx4096M', // Increase gradle JVM memory
-        '-Dkotlin.daemon.jvm.options=-Xmx2048M', // Increase Kotlin daemon memory
-        '-Dandroid.sdk.dir=C:\\Users\\dotan_d\\AppData\\Local\\Android\\Sdk' // Updated SDK location
+        '-Djava.io.tmpdir=./temp',
+        '-Dorg.gradle.daemon=false',
+        '-Dorg.gradle.jvmargs=-Xmx4096M',
+        '-Dkotlin.daemon.jvm.options=-Xmx2048M',
+        '-Dandroid.sdk.dir=C:\\Users\\dotan_d\\AppData\\Local\\Android\\Sdk'
       ],
       gradleArgs: [
         '--rerun-tasks',
@@ -49,10 +49,10 @@ const config: CapacitorConfig = {
         '--max-workers=2',
         '-Dorg.gradle.caching=false',
         '-Dorg.gradle.parallel=false',
-        '-Pandroid.sdk.dir=C:\\Users\\dotan_d\\AppData\\Local\\Android\\Sdk' // Updated SDK location
+        '-Pandroid.sdk.dir=C:\\Users\\dotan_d\\AppData\\Local\\Android\\Sdk'
       ]
     },
-    iconBackground: '#ffffff', // Optional background color for adaptive icons
+    iconBackground: '#ffffff',
   },
   bundledWebRuntime: false
 };
