@@ -2,11 +2,14 @@
 import React, { useState, useRef } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ImageIcon, Camera, UploadIcon, CheckCircle, AlertCircle } from "lucide-react";
+import { ImageIcon, Camera, UploadIcon, CheckCircle, AlertCircle, Settings } from "lucide-react";
 import { toast } from "sonner";
 import { useProgram } from "@/contexts/ProgramContext";
 import { weeklyProgram } from "@/data/weeklyProgramData";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { googleVisionService } from "@/services/GoogleVisionService";
 
 const FoodVisualization = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -15,7 +18,10 @@ const FoodVisualization = () => {
     suitable: boolean;
     explanation: string;
     nutrients: { label: string; value: string; }[];
+    detectedItems?: string[];
   } | null>(null);
+  const [apiKeyDialogOpen, setApiKeyDialogOpen] = useState(false);
+  const [apiKey, setApiKey] = useState(googleVisionService.getApiKey() || "");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { maxAccessibleWeek } = useProgram();
   
@@ -46,22 +52,31 @@ const FoodVisualization = () => {
     }
   };
   
-  const analyzeFoodImage = (imageData: string) => {
+  const analyzeFoodImage = async (imageData: string) => {
+    // Check if API key is set
+    if (!googleVisionService.getApiKey()) {
+      setApiKeyDialogOpen(true);
+      return;
+    }
+    
     setAnalyzing(true);
     
-    // Simulate AI analysis
-    setTimeout(() => {
-      // Mock data - in a real app, this would come from an AI food recognition service
-      const mockAnalysisResults = getMockAnalysisResults(maxAccessibleWeek);
-      setAnalysis(mockAnalysisResults);
-      setAnalyzing(false);
+    try {
+      // Use the Google Vision service to analyze the image
+      const result = await googleVisionService.analyzeImage(imageData, maxAccessibleWeek);
+      setAnalysis(result);
       
       toast.success("Food analysis complete!", {
-        description: mockAnalysisResults.suitable 
+        description: result.suitable 
           ? "This food aligns well with your current program stage." 
           : "This food may not be ideal for your current program stage."
       });
-    }, 2500);
+    } catch (error) {
+      console.error("Error analyzing image:", error);
+      // Error is already handled in the service with a toast
+    } finally {
+      setAnalyzing(false);
+    }
   };
   
   const resetAnalysis = () => {
@@ -72,58 +87,38 @@ const FoodVisualization = () => {
     }
   };
   
-  // Mock function to simulate different analysis results based on program week
-  const getMockAnalysisResults = (week: number) => {
-    // Different mock analyses based on program week
-    const analyses = [
-      {
-        suitable: true,
-        explanation: "This meal contains plenty of hydrating ingredients, which is perfect for Week 1's focus on water and drinking.",
-        nutrients: [
-          { label: "Calories", value: "320 kcal" },
-          { label: "Protein", value: "15g" },
-          { label: "Carbs", value: "40g" },
-          { label: "Fat", value: "10g" },
-          { label: "Water", value: "70%" }
-        ]
-      },
-      {
-        suitable: false,
-        explanation: "This meal appears to lack the cleansing vegetables that should make up 50% of your plate in Week 2.",
-        nutrients: [
-          { label: "Calories", value: "550 kcal" },
-          { label: "Protein", value: "22g" },
-          { label: "Carbs", value: "65g" },
-          { label: "Fat", value: "20g" },
-          { label: "Fiber", value: "5g" }
-        ]
-      },
-      {
-        suitable: true,
-        explanation: "This meal appears to be free from sugar, flour, and processed foods, which aligns with Week 3's cleansing focus.",
-        nutrients: [
-          { label: "Calories", value: "420 kcal" },
-          { label: "Protein", value: "25g" },
-          { label: "Carbs", value: "30g" },
-          { label: "Fat", value: "18g" },
-          { label: "Added Sugar", value: "0g" }
-        ]
+  const saveApiKey = () => {
+    if (apiKey.trim()) {
+      googleVisionService.setApiKey(apiKey.trim());
+      setApiKeyDialogOpen(false);
+      toast.success("API Key saved");
+      
+      // If there's a pending image analysis, restart it
+      if (image) {
+        analyzeFoodImage(image);
       }
-    ];
-    
-    // Return a random analysis but weighted toward suitability based on week
-    // In a real app, this would be real AI analysis
-    const randomIndex = Math.floor(Math.random() * analyses.length);
-    return analyses[randomIndex];
+    } else {
+      toast.error("Please enter a valid API key");
+    }
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <ImageIcon className="h-5 w-5 text-purple-500" />
-          Analyze Your Food
-        </CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle className="flex items-center gap-2">
+            <ImageIcon className="h-5 w-5 text-purple-500" />
+            Analyze Your Food
+          </CardTitle>
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => setApiKeyDialogOpen(true)}
+            title="Set Google Vision API Key"
+          >
+            <Settings className="h-4 w-4" />
+          </Button>
+        </div>
         <CardDescription>Take a photo of your meal for personalized feedback</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -158,6 +153,22 @@ const FoodVisualization = () => {
                 </div>
               </div>
             </div>
+            
+            {analysis.detectedItems && analysis.detectedItems.length > 0 && (
+              <div className="bg-blue-50 rounded-lg p-4">
+                <h4 className="font-medium mb-2">Detected Items</h4>
+                <div className="flex flex-wrap gap-1">
+                  {analysis.detectedItems.map((item, index) => (
+                    <span 
+                      key={index} 
+                      className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
             
             <div className="bg-white rounded-lg border p-4">
               <h4 className="font-medium mb-2">Nutritional Information</h4>
@@ -228,6 +239,43 @@ const FoodVisualization = () => {
           </p>
         )}
       </CardFooter>
+
+      {/* API Key Dialog */}
+      <Dialog open={apiKeyDialogOpen} onOpenChange={setApiKeyDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Set Google Vision API Key</DialogTitle>
+            <DialogDescription>
+              Enter your Google Vision API key to enable food analysis.
+              You can get an API key from the Google Cloud Console.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="apiKey">API Key</Label>
+              <Input
+                id="apiKey"
+                placeholder="Enter your Google Vision API key"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+              />
+            </div>
+            <p className="text-xs text-gray-500">
+              Your API key is stored locally on your device and is only used to make requests to the Google Vision API.
+            </p>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setApiKeyDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={saveApiKey}>
+              Save
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };
