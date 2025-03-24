@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,17 +8,27 @@ import RightFootIcon from "@/components/RightFootIcon";
 
 const ProfileComplete = () => {
   const navigate = useNavigate();
+  const [dataExists, setDataExists] = useState<boolean>(false);
   
   useEffect(() => {
-    // Redirect to registration if no user data
-    if (!localStorage.getItem("userData")) {
-      navigate("/register");
+    // Check for user data on component mount
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      setDataExists(true);
+    } else {
+      // If no data exists, redirect to registration
+      navigate("/register", { replace: true });
     }
   }, [navigate]);
 
   const handleContinue = () => {
-    navigate("/");
+    // Use replace: true to prevent back navigation to this page
+    navigate("/", { replace: true });
   };
+
+  if (!dataExists) {
+    return null; // Don't render anything while checking/redirecting
+  }
 
   return (
     <div className="min-h-screen bg-rightstep-gradient flex items-center justify-center px-4 py-12">

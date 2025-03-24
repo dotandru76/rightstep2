@@ -116,9 +116,17 @@ const Register = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      localStorage.setItem("userData", JSON.stringify(values));
+      // Save data with a timestamp to make sure we can detect new data
+      const userData = {
+        ...values,
+        createdAt: new Date().toISOString()
+      };
+      
+      localStorage.setItem("userData", JSON.stringify(userData));
       toast.success("Profile created successfully!");
-      navigate("/profile-complete");
+      
+      // Use replace: true to prevent back navigation to the registration
+      navigate("/profile-complete", { replace: true });
     } catch (error) {
       console.error("Error saving profile:", error);
       toast.error("Failed to save profile. Please try again.");
