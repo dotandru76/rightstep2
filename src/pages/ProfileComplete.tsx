@@ -15,6 +15,14 @@ const ProfileComplete = () => {
     const userData = localStorage.getItem("userData");
     if (userData) {
       setDataExists(true);
+      
+      // Initialize program start date if it doesn't exist
+      const programStartDate = localStorage.getItem('programStartDate');
+      if (!programStartDate) {
+        const today = new Date().toISOString();
+        localStorage.setItem('programStartDate', today);
+        localStorage.setItem('lastSeenWeek', '1');
+      }
     } else {
       // If no data exists, redirect to registration
       navigate("/register", { replace: true });
@@ -22,15 +30,6 @@ const ProfileComplete = () => {
   }, [navigate]);
 
   const handleContinue = () => {
-    // First make sure we have a valid program start date
-    const programStartDate = localStorage.getItem('programStartDate');
-    if (!programStartDate) {
-      // Initialize program start date if it doesn't exist
-      const today = new Date().toISOString();
-      localStorage.setItem('programStartDate', today);
-      localStorage.setItem('lastSeenWeek', '1');
-    }
-    
     // Force navigation to root with replace to prevent back navigation issues
     navigate("/", { replace: true });
   };
