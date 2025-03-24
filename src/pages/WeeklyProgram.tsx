@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +18,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-// Weekly themes based on the Leptine Method (from WeeklyProgress.tsx)
 const weeklyProgram = [
   { 
     week: 1, 
@@ -188,41 +186,34 @@ const WeeklyProgram = () => {
   const totalWeeks = 13;
   
   useEffect(() => {
-    // Check if user data exists, if not redirect to registration
     const userData = localStorage.getItem("userData");
     if (!userData) {
       navigate("/register", { replace: true });
       return;
     }
     
-    // Set current week based on URL parameter
     if (weekNumber) {
       const week = parseInt(weekNumber);
       if (week >= 1 && week <= maxAccessibleWeek) {
         setCurrentWeek(week);
         
-        // Show welcome dialog if this is the current max week and it's new
         if (week === maxAccessibleWeek && isNewWeek) {
           setShowWelcomeDialog(true);
           setIsNewWeekSeen();
         }
       } else if (week > maxAccessibleWeek) {
-        // Redirect to max accessible week if requested week is not yet available
         toast.error("That week isn't unlocked yet", {
           description: "You'll gain access as you progress through the program."
         });
         navigate(`/week/${maxAccessibleWeek}`, { replace: true });
       } else {
-        // Redirect to week 1 if invalid week number
         navigate("/week/1", { replace: true });
       }
     }
   }, [weekNumber, navigate, maxAccessibleWeek, isNewWeek, setIsNewWeekSeen]);
 
-  // Get the current week's program
   const weekProgram = weeklyProgram.find(w => w.week === currentWeek) || weeklyProgram[0];
   
-  // Calculate progress percentage
   const progressPercentage = (maxAccessibleWeek / totalWeeks) * 100;
 
   const handlePreviousWeek = () => {
@@ -249,9 +240,8 @@ const WeeklyProgram = () => {
     <div className="min-h-screen bg-gray-50 pb-8">
       <header className="bg-rightstep-gradient text-white py-4">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <RightFootIcon className="h-6 w-6" />
-            <h1 className="text-xl font-bold">RightStep</h1>
+          <div className="flex items-center">
+            <RightFootIcon className="h-20 w-20" size={80} />
           </div>
           <Button 
             variant="ghost" 
@@ -371,7 +361,6 @@ const WeeklyProgram = () => {
         </div>
       </main>
 
-      {/* New Week Welcome Dialog */}
       <Dialog open={showWelcomeDialog} onOpenChange={setShowWelcomeDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>

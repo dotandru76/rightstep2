@@ -60,9 +60,8 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-rightstep-gradient text-white py-4">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <RightFootIcon className="h-12 w-12" size={48} /> {/* Doubled from h-6 w-6 to h-12 w-12 */}
-            <h1 className="text-xl font-bold">RightStep</h1>
+          <div className="flex items-center">
+            <RightFootIcon className="h-24 w-24" size={96} /> {/* Tripled from h-8 w-8 to h-24 w-24 */}
           </div>
           <Button variant="ghost" size="sm" className="text-white hover:bg-white/20" onClick={handleReset}>
             <UserCircle className="mr-2 h-4 w-4" />
@@ -76,7 +75,7 @@ const Index = () => {
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-2xl font-bold text-rightstep-green flex items-center gap-2">
-                <RightFootIcon className="h-10 w-10 text-rightstep-green" size={40} /> {/* Doubled from h-5 w-5 to h-10 w-10 */}
+                <RightFootIcon className="h-12 w-12 text-rightstep-green" size={48} />
                 Welcome, {userData.name}!
               </h2>
               <p className="text-gray-600">
