@@ -27,7 +27,13 @@ const config: CapacitorConfig = {
       keystoreAlias: undefined,
       keystorePassword: undefined,
       keystoreAliasPassword: undefined,
-      releaseType: 'APK'
+      releaseType: 'APK',
+      minSdkVersion: 22,
+      targetSdkVersion: 33,
+      jvmArgs: [
+        '-Xmx2048m',
+        '-Dfile.encoding=UTF-8'
+      ]
     },
     iconBackground: '#ffffff', // Optional background color for adaptive icons
   },
