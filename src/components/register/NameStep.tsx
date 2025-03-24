@@ -17,7 +17,7 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center pt-6 pb-2 relative">
+      <div className="flex flex-col items-center justify-center pt-2 relative">
         {/* Logo with relative positioning */}
         <div className="text-center relative">
           <RightFootIcon className="text-white" size={400} color="white" />
@@ -29,12 +29,13 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
         </div>
       </div>
       
-      <CardContent className="pt-0">
+      {/* Reduced the top and bottom margin for the card content */}
+      <CardContent className="pt-0 pb-0">
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="mb-2">
+            <FormItem className="mb-0">
               <FormLabel className="flex items-center gap-2 text-white">
                 <User className="h-4 w-4" /> Your Name
               </FormLabel>
