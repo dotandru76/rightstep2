@@ -56,13 +56,13 @@ const RadioGroupItemWithImage = React.forwardRef<
       />
       <label 
         htmlFor={props.id} 
-        className="flex flex-col items-center justify-between rounded-md border border-white/30 bg-transparent hover:bg-white/10 hover:border-white peer-data-[state=checked]:border-white [&:has([data-state=checked])]:border-white cursor-pointer text-white h-55"
+        className="flex flex-col items-center justify-between rounded-md border border-white/30 bg-transparent hover:bg-white/10 hover:border-white peer-data-[state=checked]:border-white [&:has([data-state=checked])]:border-white cursor-pointer text-white h-auto"
       >
-        <div className="flex justify-center items-center h-full w-full p-1">
+        <div className="flex justify-center items-center w-full p-1">
           <img 
             src={imageSrc} 
             alt={label} 
-            className="object-contain w-full h-70" 
+            className="object-contain w-full h-28" 
           />
         </div>
         <span className="text-base font-medium pb-2">{label}</span>

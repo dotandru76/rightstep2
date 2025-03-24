@@ -79,8 +79,8 @@ const Register: React.FC = () => {
     // Get the current step's field names to validate
     const fieldsToValidate = [];
     if (currentStep === 0) fieldsToValidate.push("name");
-    if (currentStep === 1) fieldsToValidate.push("sex", "age");
-    if (currentStep === 2) fieldsToValidate.push("weight", "height");
+    if (currentStep === 1) fieldsToValidate.push("sex");
+    if (currentStep === 2) fieldsToValidate.push("weight", "height", "age");
 
     // Validate the current step's fields
     form.trigger(fieldsToValidate).then((isValid) => {

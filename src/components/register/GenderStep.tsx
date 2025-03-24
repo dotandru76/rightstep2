@@ -13,14 +13,14 @@ interface GenderStepProps {
 const GenderStep: React.FC<GenderStepProps> = ({ form }) => {
   return (
     <>
-      <div className="flex justify-center mb-4">
-        <RightFootIcon className="h-64 w-64 text-white" size={256} /> {/* Significantly increased size */}
+      <div className="flex justify-center -mt-4">
+        <RightFootIcon className="h-52 w-52 text-white opacity-40" size={208} />
       </div>
-      <CardTitle className="text-xl font-bold text-center text-white">Hi, {form.getValues().name}!</CardTitle>
-      <CardDescription className="text-center mb-6 text-white/80">
+      <CardTitle className="text-xl font-bold text-center text-white -mt-12">Hi, {form.getValues().name}!</CardTitle>
+      <CardDescription className="text-center mb-2 text-white/80">
         Please select your gender to personalize your plan
       </CardDescription>
-      <CardContent className="pt-4 space-y-5">
+      <CardContent className="pt-0 space-y-3 z-10 relative">
         <FormField
           control={form.control}
           name="sex"
