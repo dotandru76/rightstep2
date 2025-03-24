@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Info, LockIcon, Skip } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Info, LockIcon, LayoutDashboard } from "lucide-react";
 import WaterTracker from "@/components/WaterTracker";
 import DailyHabits from "@/components/DailyHabits";
 import { Progress } from "@/components/ui/progress";
@@ -266,7 +267,7 @@ const WeeklyProgram = () => {
                   className="text-white hover:bg-white/20"
                   onClick={() => setShowDebugMenu(true)}
                 >
-                  <Skip className="h-4 w-4 mr-1" />
+                  <LayoutDashboard className="h-4 w-4 mr-1" />
                   Debug
                 </Button>
               </PopoverTrigger>
