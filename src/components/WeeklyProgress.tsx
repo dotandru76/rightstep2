@@ -1,16 +1,27 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, LockIcon } from "lucide-react";
+import { useProgram } from "@/contexts/ProgramContext";
+import { toast } from "sonner";
 
 const WeeklyProgress = () => {
   const navigate = useNavigate();
-  const [currentWeek, setCurrentWeek] = useState(1);
+  const { maxAccessibleWeek, isNewWeek, setIsNewWeekSeen } = useProgram();
+  const [displayedWeek, setDisplayedWeek] = useState(1);
   const totalWeeks = 13;
-  const progressPercentage = (currentWeek / totalWeeks) * 100;
+  const progressPercentage = (maxAccessibleWeek / totalWeeks) * 100;
+
+  // If there's a new week, show it automatically
+  useEffect(() => {
+    if (isNewWeek) {
+      setDisplayedWeek(maxAccessibleWeek);
+      setIsNewWeekSeen();
+    }
+  }, [isNewWeek, maxAccessibleWeek, setIsNewWeekSeen]);
 
   // Weekly themes based on the Leptine Method
   const weeklyThemes = [
@@ -30,22 +41,32 @@ const WeeklyProgress = () => {
   ];
 
   const handlePreviousWeek = () => {
-    if (currentWeek > 1) {
-      setCurrentWeek(currentWeek - 1);
+    if (displayedWeek > 1) {
+      setDisplayedWeek(displayedWeek - 1);
     }
   };
 
   const handleNextWeek = () => {
-    if (currentWeek < totalWeeks) {
-      setCurrentWeek(currentWeek + 1);
+    if (displayedWeek < maxAccessibleWeek) {
+      setDisplayedWeek(displayedWeek + 1);
+    } else if (displayedWeek < totalWeeks) {
+      toast.error("Week not unlocked yet", {
+        description: "You'll gain access to this week as you progress in real time."
+      });
     }
   };
   
   const handleGoToWeek = (week: number) => {
-    navigate(`/week/${week}`);
+    if (week <= maxAccessibleWeek) {
+      navigate(`/week/${week}`);
+    } else {
+      toast.error("Week not unlocked yet", {
+        description: "You'll gain access to this week as you progress in real time."
+      });
+    }
   };
 
-  const currentTheme = weeklyThemes.find(theme => theme.week === currentWeek) || weeklyThemes[0];
+  const currentTheme = weeklyThemes.find(theme => theme.week === displayedWeek) || weeklyThemes[0];
 
   return (
     <Card>
@@ -53,13 +74,15 @@ const WeeklyProgress = () => {
         <div className="flex justify-between items-center">
           <div>
             <CardTitle>Program Progress</CardTitle>
-            <CardDescription>Track your progress in the 13-week program</CardDescription>
+            <CardDescription>
+              Current week: {maxAccessibleWeek} of {totalWeeks}
+            </CardDescription>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="icon" onClick={handlePreviousWeek} disabled={currentWeek === 1}>
+            <Button variant="outline" size="icon" onClick={handlePreviousWeek} disabled={displayedWeek === 1}>
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon" onClick={handleNextWeek} disabled={currentWeek === totalWeeks}>
+            <Button variant="outline" size="icon" onClick={handleNextWeek} disabled={displayedWeek === totalWeeks}>
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
@@ -68,7 +91,7 @@ const WeeklyProgress = () => {
       <CardContent>
         <div className="space-y-4">
           <div className="flex justify-between mb-1">
-            <span className="font-medium">Week {currentWeek} of {totalWeeks}</span>
+            <span className="font-medium">Week {displayedWeek} of {totalWeeks}</span>
             <span className="text-sm">{progressPercentage.toFixed(0)}%</span>
           </div>
           <Progress value={progressPercentage} className="h-2" />
@@ -82,25 +105,47 @@ const WeeklyProgress = () => {
               <Button 
                 size="sm" 
                 className="bg-rightstep-green hover:bg-rightstep-green-dark"
-                onClick={() => handleGoToWeek(currentWeek)}
+                onClick={() => handleGoToWeek(displayedWeek)}
+                disabled={displayedWeek > maxAccessibleWeek}
               >
-                Details
-                <ArrowRight className="ml-1 h-3 w-3" />
+                {displayedWeek <= maxAccessibleWeek ? (
+                  <>
+                    Details
+                    <ArrowRight className="ml-1 h-3 w-3" />
+                  </>
+                ) : (
+                  <>
+                    Locked
+                    <LockIcon className="ml-1 h-3 w-3" />
+                  </>
+                )}
               </Button>
             </div>
           </div>
           
           <div className="grid grid-cols-7 gap-1 mt-4">
-            {Array.from({ length: totalWeeks }).map((_, i) => (
-              <Button 
-                key={i}
-                variant={currentWeek === i + 1 ? "default" : "outline"}
-                className="h-10 min-w-0"
-                onClick={() => setCurrentWeek(i + 1)}
-              >
-                {i + 1}
-              </Button>
-            ))}
+            {Array.from({ length: totalWeeks }).map((_, i) => {
+              const weekNum = i + 1;
+              const isLocked = weekNum > maxAccessibleWeek;
+              
+              return (
+                <Button 
+                  key={i}
+                  variant={displayedWeek === weekNum ? "default" : "outline"}
+                  className={`h-10 min-w-0 ${isLocked ? "opacity-60" : ""}`}
+                  onClick={() => isLocked ? 
+                    toast.error("Week not unlocked yet") : 
+                    setDisplayedWeek(weekNum)
+                  }
+                >
+                  {isLocked ? (
+                    <LockIcon className="h-3 w-3" />
+                  ) : (
+                    weekNum
+                  )}
+                </Button>
+              );
+            })}
           </div>
         </div>
       </CardContent>

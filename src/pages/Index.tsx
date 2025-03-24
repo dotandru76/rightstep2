@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ArrowRight, UserCircle } from "lucide-react";
 import RightFootIcon from "@/components/RightFootIcon";
+import { useProgram } from "@/contexts/ProgramContext";
 
 interface UserData {
   name: string;
@@ -21,20 +22,18 @@ interface UserData {
 const Index = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [currentWeek, setCurrentWeek] = useState(1);
+  const { currentWeek, maxAccessibleWeek, startProgram } = useProgram();
 
   useEffect(() => {
     const storedData = localStorage.getItem("userData");
     if (storedData) {
       setUserData(JSON.parse(storedData));
+      // Ensure the program is started
+      startProgram();
     } else {
       navigate("/register");
     }
-    
-    // In a real app, this would come from the user's progress data
-    // For now, we'll just use week 1 as default
-    setCurrentWeek(1);
-  }, [navigate]);
+  }, [navigate, startProgram]);
 
   if (!userData) {
     return null;
@@ -42,6 +41,8 @@ const Index = () => {
 
   const handleReset = () => {
     localStorage.removeItem("userData");
+    localStorage.removeItem("programStartDate");
+    localStorage.removeItem("lastSeenWeek");
     toast.success("Profile reset! Redirecting to registration...");
     setTimeout(() => {
       navigate("/register");
@@ -49,7 +50,7 @@ const Index = () => {
   };
   
   const handleGoToWeeklyProgram = () => {
-    navigate(`/week/${currentWeek}`);
+    navigate(`/week/${maxAccessibleWeek}`);
   };
 
   const weightInKg = parseFloat(userData.weight);
@@ -86,7 +87,7 @@ const Index = () => {
               onClick={handleGoToWeeklyProgram}
               className="bg-rightstep-green hover:bg-rightstep-green-dark"
             >
-              This Week's Program
+              Current Week's Program
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -98,7 +99,7 @@ const Index = () => {
         </div>
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <DailyHabits currentWeek={currentWeek} />
+          <DailyHabits currentWeek={maxAccessibleWeek} />
           <TipsCard />
         </div>
       </main>

@@ -12,6 +12,7 @@ import ProfileComplete from "./pages/ProfileComplete";
 import WeeklyProgram from "./pages/WeeklyProgram";
 import { checkForUpdates } from "./services/UpdateService";
 import UpdateNotification from "./components/UpdateNotification";
+import { ProgramProvider } from "./contexts/ProgramContext";
 
 const queryClient = new QueryClient();
 
@@ -50,27 +51,29 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Redirect to register if no user data */}
-            <Route path="/" element={userDataExists ? <Index /> : <Navigate to="/register" />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/profile-complete" element={<ProfileComplete />} />
-            <Route path="/week/:weekNumber" element={<WeeklyProgram />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-        <Toaster />
-        <Sonner />
-        {updateInfo && (
-          <UpdateNotification
-            open={showUpdateDialog}
-            updateInfo={updateInfo}
-            onClose={() => setShowUpdateDialog(false)}
-            onUpdate={handleUpdateComplete}
-          />
-        )}
+        <ProgramProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Redirect to register if no user data */}
+              <Route path="/" element={userDataExists ? <Index /> : <Navigate to="/register" />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/profile-complete" element={<ProfileComplete />} />
+              <Route path="/week/:weekNumber" element={<WeeklyProgram />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+          <Toaster />
+          <Sonner />
+          {updateInfo && (
+            <UpdateNotification
+              open={showUpdateDialog}
+              updateInfo={updateInfo}
+              onClose={() => setShowUpdateDialog(false)}
+              onUpdate={handleUpdateComplete}
+            />
+          )}
+        </ProgramProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

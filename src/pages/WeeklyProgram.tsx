@@ -3,11 +3,21 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Info } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Info, LockIcon } from "lucide-react";
 import WaterTracker from "@/components/WaterTracker";
 import DailyHabits from "@/components/DailyHabits";
 import { Progress } from "@/components/ui/progress";
 import RightFootIcon from "@/components/RightFootIcon";
+import { useProgram } from "@/contexts/ProgramContext";
+import { toast } from "sonner";
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 // Weekly themes based on the Leptine Method (from WeeklyProgress.tsx)
 const weeklyProgram = [
@@ -172,7 +182,9 @@ const weeklyProgram = [
 const WeeklyProgram = () => {
   const navigate = useNavigate();
   const { weekNumber } = useParams();
+  const { maxAccessibleWeek, isNewWeek, setIsNewWeekSeen } = useProgram();
   const [currentWeek, setCurrentWeek] = useState(1);
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
   const totalWeeks = 13;
   
   useEffect(() => {
@@ -186,20 +198,32 @@ const WeeklyProgram = () => {
     // Set current week based on URL parameter
     if (weekNumber) {
       const week = parseInt(weekNumber);
-      if (week >= 1 && week <= totalWeeks) {
+      if (week >= 1 && week <= maxAccessibleWeek) {
         setCurrentWeek(week);
+        
+        // Show welcome dialog if this is the current max week and it's new
+        if (week === maxAccessibleWeek && isNewWeek) {
+          setShowWelcomeDialog(true);
+          setIsNewWeekSeen();
+        }
+      } else if (week > maxAccessibleWeek) {
+        // Redirect to max accessible week if requested week is not yet available
+        toast.error("That week isn't unlocked yet", {
+          description: "You'll gain access as you progress through the program."
+        });
+        navigate(`/week/${maxAccessibleWeek}`, { replace: true });
       } else {
         // Redirect to week 1 if invalid week number
         navigate("/week/1", { replace: true });
       }
     }
-  }, [weekNumber, navigate]);
+  }, [weekNumber, navigate, maxAccessibleWeek, isNewWeek, setIsNewWeekSeen]);
 
   // Get the current week's program
   const weekProgram = weeklyProgram.find(w => w.week === currentWeek) || weeklyProgram[0];
   
   // Calculate progress percentage
-  const progressPercentage = (currentWeek / totalWeeks) * 100;
+  const progressPercentage = (maxAccessibleWeek / totalWeeks) * 100;
 
   const handlePreviousWeek = () => {
     if (currentWeek > 1) {
@@ -208,8 +232,12 @@ const WeeklyProgram = () => {
   };
 
   const handleNextWeek = () => {
-    if (currentWeek < totalWeeks) {
+    if (currentWeek < maxAccessibleWeek) {
       navigate(`/week/${currentWeek + 1}`);
+    } else if (currentWeek < totalWeeks) {
+      toast.error("Week not unlocked yet", {
+        description: "You'll gain access to this week as you progress in real time."
+      });
     }
   };
 
@@ -242,7 +270,7 @@ const WeeklyProgram = () => {
             <Button variant="outline" size="icon" onClick={handlePreviousWeek} disabled={currentWeek === 1}>
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon" onClick={handleNextWeek} disabled={currentWeek === totalWeeks}>
+            <Button variant="outline" size="icon" onClick={handleNextWeek} disabled={currentWeek === totalWeeks || currentWeek >= maxAccessibleWeek}>
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -250,7 +278,7 @@ const WeeklyProgram = () => {
         
         <div className="mb-6">
           <div className="flex justify-between mb-1">
-            <span className="font-medium">Week {currentWeek} of {totalWeeks}</span>
+            <span className="font-medium">Current: Week {maxAccessibleWeek} of {totalWeeks}</span>
             <span className="text-sm">{progressPercentage.toFixed(0)}%</span>
           </div>
           <Progress value={progressPercentage} className="h-2" />
@@ -295,11 +323,20 @@ const WeeklyProgram = () => {
                 </Button>
                 <Button 
                   onClick={handleNextWeek} 
-                  disabled={currentWeek === totalWeeks}
+                  disabled={currentWeek === totalWeeks || currentWeek >= maxAccessibleWeek}
                   className="flex items-center gap-2"
                 >
-                  Next Week
-                  <ArrowRight className="h-4 w-4" />
+                  {currentWeek < maxAccessibleWeek ? (
+                    <>
+                      Next Week
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  ) : (
+                    <>
+                      Locked
+                      <LockIcon className="h-4 w-4" />
+                    </>
+                  )}
                 </Button>
               </CardFooter>
             </Card>
@@ -333,6 +370,30 @@ const WeeklyProgram = () => {
           </div>
         </div>
       </main>
+
+      {/* New Week Welcome Dialog */}
+      <Dialog open={showWelcomeDialog} onOpenChange={setShowWelcomeDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl text-center text-rightstep-green">
+              Welcome to Week {currentWeek}!
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              You've unlocked a new week in your journey
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg">{weekProgram.title}</h3>
+            <p className="text-sm">{weekProgram.description}</p>
+            <p>{weekProgram.explanation}</p>
+          </div>
+          <DialogFooter>
+            <Button className="w-full bg-rightstep-green" onClick={() => setShowWelcomeDialog(false)}>
+              Start Week {currentWeek}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
