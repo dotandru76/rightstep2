@@ -13,11 +13,11 @@ interface GenderStepProps {
 const GenderStep: React.FC<GenderStepProps> = ({ form }) => {
   return (
     <>
-      <div className="flex justify-center -mt-4">
-        <RightFootIcon className="h-52 w-52 text-white opacity-40" size={208} />
+      <div className="flex justify-center -mt-8">
+        <RightFootIcon className="h-56 w-56 text-white opacity-30" size={224} />
       </div>
-      <CardTitle className="text-xl font-bold text-center text-white -mt-12">Hi, {form.getValues().name}!</CardTitle>
-      <CardDescription className="text-center mb-2 text-white/80">
+      <CardTitle className="text-xl font-bold text-center text-white -mt-16">Hi, {form.getValues().name}!</CardTitle>
+      <CardDescription className="text-center mb-4 text-white/90">
         Please select your gender to personalize your plan
       </CardDescription>
       <CardContent className="pt-0 space-y-3 z-10 relative">
@@ -25,12 +25,12 @@ const GenderStep: React.FC<GenderStepProps> = ({ form }) => {
           control={form.control}
           name="sex"
           render={({ field }) => (
-            <FormItem className="space-y-3">
+            <FormItem className="space-y-4">
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
-                  className="flex space-x-3"
+                  className="flex space-x-4"
                 >
                   <RadioGroupItemWithImage 
                     id="male"

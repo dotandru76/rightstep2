@@ -124,7 +124,7 @@ const Register: React.FC = () => {
                   <Button 
                     type="button"
                     onClick={handleNextStep}
-                    className="w-full bg-rightstep-green-darker hover:bg-rightstep-green-dark text-white font-bold py-3 rounded-full text-lg"
+                    className="w-full bg-rightstep-green-darker hover:bg-rightstep-green-dark text-white font-bold py-3 rounded-full text-lg shadow-lg transform transition-transform hover:scale-105"
                   >
                     Get Started
                   </Button>
@@ -137,6 +137,7 @@ const Register: React.FC = () => {
                     variant="secondary"
                     onClick={handlePrevStep}
                     disabled={isFirstStep}
+                    className="bg-white/20 hover:bg-white/30 text-white"
                   >
                     <ChevronLeft className="w-4 h-4 mr-2" />
                     Previous
@@ -144,6 +145,7 @@ const Register: React.FC = () => {
                   <Button
                     type={isLastStep ? "submit" : "button"}
                     onClick={isLastStep ? undefined : handleNextStep}
+                    className="bg-rightstep-green hover:bg-rightstep-green-light text-white"
                   >
                     {isLastStep ? "Complete" : "Next"}
                     <ChevronRight className="w-4 h-4 ml-2" />
