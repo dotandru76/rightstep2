@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +8,6 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import ProfileComplete from "./pages/ProfileComplete";
-import WeeklyProgram from "./pages/WeeklyProgram"; // Import WeeklyProgram
 import { checkForUpdates } from "./services/UpdateService";
 import UpdateNotification from "./components/UpdateNotification";
 import { ProgramProvider } from "./contexts/ProgramContext";
@@ -17,7 +15,6 @@ import { ProgramProvider } from "./contexts/ProgramContext";
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Update to use a function to check if user data exists
   const userDataExists = () => {
     try {
       return !!localStorage.getItem("userData");
@@ -40,10 +37,8 @@ const App = () => {
       }
     };
     
-    // Check for updates when app loads
     checkUpdates();
     
-    // Schedule regular update checks (every hour)
     const intervalId = setInterval(checkUpdates, 60 * 60 * 1000);
     
     return () => clearInterval(intervalId);
@@ -51,7 +46,6 @@ const App = () => {
 
   const handleUpdateComplete = () => {
     setShowUpdateDialog(false);
-    // In a real app, you might want to reload the app here
     window.location.reload();
   };
 
@@ -61,7 +55,6 @@ const App = () => {
         <ProgramProvider>
           <BrowserRouter>
             <Routes>
-              {/* Use function to check dynamically and add fallback for any errors */}
               <Route 
                 path="/" 
                 element={
@@ -72,9 +65,7 @@ const App = () => {
               />
               <Route path="/register" element={<Register />} />
               <Route path="/profile-complete" element={<ProfileComplete />} />
-              {/* Add direct route to WeeklyProgram instead of redirecting */}
-              <Route path="/week/:weekNumber" element={<WeeklyProgram />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/week/:weekNumber" element={<Navigate to="/" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
