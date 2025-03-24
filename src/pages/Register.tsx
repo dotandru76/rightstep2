@@ -76,9 +76,18 @@ const Register: React.FC = () => {
   const isLastStep = currentStep === steps.length - 1;
 
   const handleNextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
+    // Get the current step's field names to validate
+    const fieldsToValidate = [];
+    if (currentStep === 0) fieldsToValidate.push("name");
+    if (currentStep === 1) fieldsToValidate.push("sex", "age");
+    if (currentStep === 2) fieldsToValidate.push("weight", "height");
+
+    // Validate the current step's fields
+    form.trigger(fieldsToValidate).then((isValid) => {
+      if (isValid && currentStep < steps.length - 1) {
+        setCurrentStep(currentStep + 1);
+      }
+    });
   };
 
   const handlePrevStep = () => {
@@ -111,6 +120,7 @@ const Register: React.FC = () => {
             {currentStep === 3 && <SummaryStep form={form} />}
             <CardFooter className="flex justify-between items-center bg-gray-700 border-t border-gray-600 p-4">
               <Button
+                type="button"
                 variant="secondary"
                 onClick={handlePrevStep}
                 disabled={isFirstStep}
