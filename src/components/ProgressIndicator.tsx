@@ -9,7 +9,7 @@ interface ProgressIndicatorProps {
 
 const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ 
   activeStep = 0,
-  totalDots = 7
+  totalDots = 4
 }) => {
   return (
     <div className="fixed bottom-4 md:bottom-8 left-0 right-0 flex justify-center">

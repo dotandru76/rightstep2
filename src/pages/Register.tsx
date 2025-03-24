@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -51,6 +51,7 @@ const formSchema = z.object({
 const Register = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const isMobile = useIsMobile();
   
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,17 +66,34 @@ const Register = () => {
     mode: "onChange"
   });
 
-  const goToNextStep = async () => {
-    const fields = getFieldsForStep(step);
-    const isValid = await validateStepFields(fields);
+  // Add a useEffect to reset any potential UI blocking on component mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Force a re-render after component mounts to help with any initial rendering issues
+      setStep(1);
+    }, 100);
     
-    if (isValid) {
-      if (step < TOTAL_STEPS) {
-        setStep(step + 1);
-        window.scrollTo(0, 0);
-      } else {
-        onSubmit(form.getValues());
+    return () => clearTimeout(timer);
+  }, []);
+
+  const goToNextStep = async () => {
+    try {
+      setIsLoading(true);
+      const fields = getFieldsForStep(step);
+      const isValid = await validateStepFields(fields);
+      
+      if (isValid) {
+        if (step < TOTAL_STEPS) {
+          setStep(step + 1);
+          window.scrollTo(0, 0);
+        } else {
+          onSubmit(form.getValues());
+        }
       }
+    } catch (error) {
+      console.error("Error in step validation:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,14 +105,24 @@ const Register = () => {
   };
 
   const validateStepFields = async (fields: string[]) => {
-    const result = await form.trigger(fields as any);
-    return result;
+    try {
+      const result = await form.trigger(fields as any);
+      return result;
+    } catch (error) {
+      console.error("Field validation error:", error);
+      return false;
+    }
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    localStorage.setItem("userData", JSON.stringify(values));
-    toast.success("Profile created successfully!");
-    navigate("/profile-complete");
+    try {
+      localStorage.setItem("userData", JSON.stringify(values));
+      toast.success("Profile created successfully!");
+      navigate("/profile-complete");
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      toast.error("Failed to save profile. Please try again.");
+    }
   }
 
   const renderStepContent = () => {
@@ -113,8 +141,8 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-rightstep-vertical-gradient py-4 md:py-8">
-      <div className="container mx-auto px-4 py-6 md:py-8 max-w-md">
+    <div className="min-h-screen bg-rightstep-vertical-gradient py-2 md:py-4">
+      <div className="container mx-auto px-4 py-4 md:py-6 max-w-md">
         <Form {...form}>
           <Card className={cn(
             "w-full shadow-lg border-0",
@@ -130,6 +158,7 @@ const Register = () => {
                     variant="outline" 
                     onClick={goToPreviousStep} 
                     className="flex-1 border-white/30 text-white hover:bg-white/10"
+                    disabled={isLoading}
                   >
                     <ChevronLeft className="mr-2 h-4 w-4" /> Back
                   </Button>
@@ -137,9 +166,10 @@ const Register = () => {
                 <Button 
                   onClick={goToNextStep} 
                   className={`${step === 1 ? 'w-full' : 'flex-1'} bg-rightstep-green hover:bg-rightstep-green-dark rounded-full py-5 md:py-6`}
+                  disabled={isLoading}
                 >
-                  {step === 1 ? 'Get Started' : (step < TOTAL_STEPS ? 'Next Step' : 'Complete')}
-                  {step !== 1 && <ArrowRight className="ml-2 h-4 w-4" />}
+                  {isLoading ? "Loading..." : (step === 1 ? 'Get Started' : (step < TOTAL_STEPS ? 'Next Step' : 'Complete'))}
+                  {!isLoading && step !== 1 && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
               </div>
               <p className="text-xs text-center text-white/70">
@@ -149,7 +179,7 @@ const Register = () => {
           </Card>
         </Form>
       </div>
-      <ProgressIndicator activeStep={0} />
+      <ProgressIndicator activeStep={step - 1} totalDots={TOTAL_STEPS} />
     </div>
   );
 };

@@ -32,19 +32,26 @@ const UpdateNotification = ({
   onUpdate
 }: UpdateNotificationProps) => {
   const handleUpdate = async () => {
-    // Apply the update
-    const success = await applyUpdate(updateInfo);
-    if (success) {
-      onUpdate();
+    try {
+      // Apply the update
+      const success = await applyUpdate(updateInfo);
+      if (success) {
+        onUpdate();
+      }
+    } catch (error) {
+      console.error("Update failed:", error);
     }
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={(open) => !open && !updateInfo.mandatory && onClose()}>
-      <AlertDialogContent>
+    <AlertDialog 
+      open={open} 
+      onOpenChange={(open) => !open && !updateInfo.mandatory && onClose()}
+    >
+      <AlertDialogContent className="max-w-[90%] w-[320px]">
         <AlertDialogHeader>
-          <AlertDialogTitle>Update Available</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogTitle className="text-center">Update Available</AlertDialogTitle>
+          <AlertDialogDescription className="text-center">
             Version {updateInfo.version} is now available. 
             {updateInfo.releaseNotes && (
               <>
@@ -55,11 +62,11 @@ const UpdateNotification = ({
             )}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="flex flex-col sm:flex-row gap-2">
           {!updateInfo.mandatory && (
-            <AlertDialogCancel>Later</AlertDialogCancel>
+            <AlertDialogCancel className="mt-0">Later</AlertDialogCancel>
           )}
-          <AlertDialogAction onClick={handleUpdate}>
+          <AlertDialogAction onClick={handleUpdate} className="w-full sm:w-auto">
             Update Now
           </AlertDialogAction>
         </AlertDialogFooter>

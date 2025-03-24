@@ -2,7 +2,7 @@
 import React from 'react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { CardContent, CardTitle } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { User } from "lucide-react";
 import RightFootIcon from "@/components/RightFootIcon";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -14,20 +14,23 @@ interface NameStepProps {
 
 const NameStep: React.FC<NameStepProps> = ({ form }) => {
   const isMobile = useIsMobile();
+  
+  // Optimize rendering by using smaller icon size
+  const iconSize = isMobile ? 120 : 180;
 
   return (
     <>
-      <div className="flex flex-col items-center space-y-8 my-6 md:my-12">
+      <div className="flex flex-col items-center space-y-4 my-4 md:my-6">
         <div className="flex flex-col items-center">
           <RightFootIcon 
             className="text-white mb-2" 
-            size={isMobile ? 200 : 300} 
+            size={iconSize} 
             color="white" 
           />
-          <h2 className="text-lg md:text-xl font-medium text-white mt-4">You are taking the Right Step</h2>
+          <h2 className="text-lg md:text-xl font-medium text-white mt-2">You are taking the Right Step</h2>
         </div>
       </div>
-      <CardContent className="pt-4 md:pt-6">
+      <CardContent className="pt-4">
         <FormField
           control={form.control}
           name="name"
@@ -37,7 +40,12 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
                 <User className="h-4 w-4" /> Your Name
               </FormLabel>
               <FormControl>
-                <Input placeholder="Enter your name" {...field} className="bg-white/10 border-white/20 text-white" />
+                <Input 
+                  placeholder="Enter your name" 
+                  {...field} 
+                  className="bg-white/10 border-white/20 text-white" 
+                  autoComplete="off"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
