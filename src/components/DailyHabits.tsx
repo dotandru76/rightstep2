@@ -1,8 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "@/components/ui/progress";
 import { CalendarCheck } from "lucide-react";
 
 interface DailyHabitsProps {
@@ -18,19 +16,19 @@ const DailyHabits: React.FC<DailyHabitsProps> = ({ currentWeek = 1 }) => {
   // Week-specific habits
   const weeklyHabits = {
     1: [
-      { id: 101, title: "Drink 2 glasses of water before each meal", permanent: true },
-      { id: 102, title: "Track your water intake throughout the day", permanent: false },
+      { id: 101, title: "Drink 2 glasses before meals", permanent: true },
+      { id: 102, title: "Track water intake", permanent: false },
     ],
     2: [
-      { id: 201, title: "50% cleansing vegetables in each meal", permanent: true },
+      { id: 201, title: "50% cleansing vegetables", permanent: true },
       { id: 202, title: "Prepare vegetables in advance", permanent: false },
     ],
     3: [
       { id: 301, title: "Eliminate added sugars", permanent: true },
-      { id: 302, title: "Avoid wheat flour and refined grains", permanent: true },
+      { id: 302, title: "Avoid wheat flour", permanent: true },
     ],
     4: [
-      { id: 401, title: "Include legumes in at least one meal", permanent: true },
+      { id: 401, title: "Include legumes in meals", permanent: true },
       { id: 402, title: "Use buckwheat and quinoa", permanent: true },
     ],
     5: [
@@ -103,11 +101,11 @@ const DailyHabits: React.FC<DailyHabitsProps> = ({ currentWeek = 1 }) => {
     ));
   };
 
-  const completedCount = habits.filter(habit => habit.completed).length;
-  const progressPercentage = habits.length > 0 ? (completedCount / habits.length) * 100 : 0;
+  // Display only up to 7 habits maximum for a cleaner UI
+  const displayedHabits = habits.slice(0, 7);
 
   return (
-    <Card>
+    <Card className="shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-lg">
           <CalendarCheck className="h-5 w-5 text-green-500" />
@@ -115,30 +113,28 @@ const DailyHabits: React.FC<DailyHabitsProps> = ({ currentWeek = 1 }) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
-          <div className="flex justify-between text-sm">
-            <span>{completedCount} of {habits.length} completed</span>
-            <span>{progressPercentage.toFixed(0)}%</span>
-          </div>
-          <Progress value={progressPercentage} className="h-2 mb-3" />
-          <div className="space-y-2 max-h-[240px] overflow-y-auto pr-2">
-            {habits.slice(0, 7).map(habit => (
-              <div key={habit.id} className="flex items-start space-x-2">
-                <Checkbox 
-                  id={`habit-${habit.id}`} 
-                  checked={habit.completed} 
-                  onCheckedChange={() => toggleHabit(habit.id)} 
-                  className="mt-0.5"
-                />
-                <label 
-                  htmlFor={`habit-${habit.id}`} 
-                  className={`text-sm font-medium leading-tight ${habit.completed ? 'line-through text-muted-foreground' : ''}`}
-                >
-                  {habit.title}
-                </label>
-              </div>
-            ))}
-          </div>
+        <div className="space-y-2 max-h-[240px] overflow-y-auto pr-2">
+          {displayedHabits.map(habit => (
+            <div key={habit.id} className="flex items-start space-x-2">
+              <Checkbox 
+                id={`habit-${habit.id}`} 
+                checked={habit.completed} 
+                onCheckedChange={() => toggleHabit(habit.id)} 
+                className="mt-0.5"
+              />
+              <label 
+                htmlFor={`habit-${habit.id}`} 
+                className={`text-sm font-medium leading-tight ${habit.completed ? 'line-through text-muted-foreground' : ''}`}
+              >
+                {habit.title}
+              </label>
+            </div>
+          ))}
+          {habits.length > 7 && (
+            <div className="text-sm text-muted-foreground pt-1">
+              +{habits.length - 7} more habits...
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

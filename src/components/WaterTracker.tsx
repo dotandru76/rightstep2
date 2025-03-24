@@ -1,9 +1,8 @@
 
 import React, { useState } from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Droplets, Plus, Minus } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { Droplet, Plus, Minus } from "lucide-react";
 
 interface WaterTrackerProps {
   recommendedAmount?: number;
@@ -24,44 +23,42 @@ const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) 
     setWaterGlasses(prev => Math.max(0, prev - 1));
   };
 
+  // Calculate the size of the droplet based on percentage
+  const dropletSize = 48 + Math.round((progressPercentage / 100) * 72); // Size from 48px to 120px
+  const dropletColor = progressPercentage >= 100 
+    ? "#1EAEDB" // Bright blue when complete
+    : "#D3E4FD"; // Soft blue during progress
+
   return (
-    <Card className="shadow-sm border-t-4 border-t-rightstep-green">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Droplets className="h-5 w-5 text-rightstep-green" />
-          Water Tracking
-        </CardTitle>
-        <CardDescription>Leptin Flooding - The Foundation of the Method</CardDescription>
+    <Card className="shadow-sm">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg">Water Intake</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="flex justify-between mb-1">
-            <span className="font-medium">{waterGlasses} of {targetGlasses} glasses</span>
-            <span className="text-sm">{progressPercentage.toFixed(0)}%</span>
+        <div className="flex flex-col items-center justify-center gap-3">
+          <div className="relative flex justify-center items-center">
+            <Droplet 
+              size={dropletSize}
+              className="text-[#D3E4FD] fill-[#D3E4FD]" 
+            />
+            <Droplet 
+              size={dropletSize * (progressPercentage / 100)}
+              className="absolute text-[#1EAEDB] fill-[#1EAEDB]" 
+            />
+            <span className="absolute font-bold text-white">{waterGlasses}/{targetGlasses}</span>
           </div>
-          <Progress value={progressPercentage} className="h-2 bg-gray-200" indicatorClassName="bg-rightstep-green" />
           
-          <div className="flex justify-between mt-6">
-            <Button variant="outline" size="icon" onClick={removeGlass} disabled={waterGlasses === 0} className="border-gray-300">
+          <div className="flex items-center gap-4 mt-2">
+            <Button variant="outline" size="icon" onClick={removeGlass} disabled={waterGlasses === 0}>
               <Minus className="h-4 w-4" />
             </Button>
-            <div className="flex items-center gap-2">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <Droplets 
-                  key={i}
-                  className={`h-5 w-5 ${i < waterGlasses ? 'text-rightstep-green' : 'text-gray-300'}`} 
-                />
-              ))}
-            </div>
-            <Button variant="outline" size="icon" onClick={addGlass} className="border-gray-300">
+            <span className="text-sm">{(waterGlasses * glassSize).toFixed(1)}L of {recommendedAmount}L</span>
+            <Button variant="outline" size="icon" onClick={addGlass}>
               <Plus className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </CardContent>
-      <CardFooter>
-        <p className="text-sm text-muted-foreground">Remember: 2 glasses of water before each meal prevents overeating</p>
-      </CardFooter>
     </Card>
   );
 };
