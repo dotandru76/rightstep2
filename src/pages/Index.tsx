@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WaterTracker from "@/components/WaterTracker";
@@ -28,7 +27,6 @@ const Index = () => {
     const storedData = localStorage.getItem("userData");
     if (storedData) {
       setUserData(JSON.parse(storedData));
-      // Ensure the program is started
       startProgram();
     } else {
       navigate("/register");
@@ -62,7 +60,6 @@ const Index = () => {
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center">
             <RightFootIcon className="h-16 w-16" size={64} />
-            <h1 className="text-2xl font-bold ml-2">RightStep</h1>
           </div>
           <Button variant="ghost" size="sm" className="text-white hover:bg-white/20" onClick={handleReset}>
             <UserCircle className="mr-2 h-4 w-4" />
