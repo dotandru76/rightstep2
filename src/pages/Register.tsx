@@ -110,31 +110,46 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-rightstep-gradient">
-      <Card className="w-full max-w-md bg-gray-800 text-white shadow-md rounded-lg overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-rightstep-vertical-gradient">
+      <Card className="w-full max-w-md bg-transparent border-none shadow-none rounded-lg overflow-hidden">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {currentStep === 0 && <NameStep form={form} />}
             {currentStep === 1 && <GenderStep form={form} />}
             {currentStep === 2 && <MeasurementsStep form={form} />}
             {currentStep === 3 && <SummaryStep form={form} />}
-            <CardFooter className="flex justify-between items-center bg-gray-700 border-t border-gray-600 p-4">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={handlePrevStep}
-                disabled={isFirstStep}
-              >
-                <ChevronLeft className="w-4 h-4 mr-2" />
-                Previous
-              </Button>
-              <Button
-                type={isLastStep ? "submit" : "button"}
-                onClick={isLastStep ? undefined : handleNextStep}
-              >
-                {isLastStep ? "Complete" : "Next"}
-                <ChevronRight className="w-4 h-4 ml-2" />
-              </Button>
+            <CardFooter className={`flex justify-between items-center p-4 ${isFirstStep ? 'flex-col' : 'bg-transparent border-t border-white/20'}`}>
+              {isFirstStep ? (
+                <>
+                  <Button 
+                    type="button"
+                    onClick={handleNextStep}
+                    className="w-full bg-rightstep-green-light hover:bg-rightstep-green text-white font-bold py-3 rounded-full text-lg"
+                  >
+                    Get Started
+                  </Button>
+                  <p className="text-white text-sm mt-2">Your data is stored locally on your device</p>
+                </>
+              ) : (
+                <>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handlePrevStep}
+                    disabled={isFirstStep}
+                  >
+                    <ChevronLeft className="w-4 h-4 mr-2" />
+                    Previous
+                  </Button>
+                  <Button
+                    type={isLastStep ? "submit" : "button"}
+                    onClick={isLastStep ? undefined : handleNextStep}
+                  >
+                    {isLastStep ? "Complete" : "Next"}
+                    <ChevronRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </>
+              )}
             </CardFooter>
           </form>
         </Form>

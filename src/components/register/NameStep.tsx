@@ -14,22 +14,22 @@ interface NameStepProps {
 
 const NameStep: React.FC<NameStepProps> = ({ form }) => {
   const isMobile = useIsMobile();
-  
-  // Significantly increased icon sizes
-  const iconSize = isMobile ? 320 : 480;
 
   return (
     <>
-      <div className="flex flex-col items-center space-y-4 my-4 md:my-6">
-        <div className="flex flex-col items-center">
-          <RightFootIcon 
-            className="text-white mb-2" 
-            size={iconSize} 
-            color="white" 
-          />
-          <h2 className="text-lg md:text-xl font-medium text-white">You are taking the Right Step</h2>
+      <div className="flex flex-col items-center justify-center pt-12 pb-6">
+        {/* Logo and app name */}
+        <div className="text-center mb-10">
+          <div className="relative">
+            <h1 className="text-white text-5xl font-bold tracking-wide">RightStep</h1>
+            <RightFootIcon className="absolute -top-5 -right-14 text-white" size={56} color="white" />
+          </div>
         </div>
+        
+        {/* Motivational text moved higher */}
+        <h2 className="text-xl font-medium text-white mb-8">You are taking the Right Step</h2>
       </div>
+      
       <CardContent className="pt-4">
         <FormField
           control={form.control}
