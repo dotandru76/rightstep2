@@ -22,16 +22,9 @@ const config: CapacitorConfig = {
     }
   },
   android: {
-    minSdkVersion: 23,
-    buildOptions: {
-      keystorePath: null,
-      keystorePassword: null,
-      keystoreAlias: null,
-      keystoreAliasPassword: null,
-      releaseType: "APK"
-    },
-    iconBackground: '#ffffff'
+    iconBackground: '#ffffff', // Optional background color for adaptive icons
   },
+  // Add this line to help with asset handling
   bundledWebRuntime: false
 };
 
