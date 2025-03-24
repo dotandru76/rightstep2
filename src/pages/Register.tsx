@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -104,9 +103,7 @@ const Register: React.FC = () => {
       title: "Registration complete.",
       description: "You will be redirected to the dashboard.",
     });
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
+    navigate("/profile-complete", { replace: true });
   };
 
   return (

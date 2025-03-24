@@ -17,7 +17,14 @@ const queryClient = new QueryClient();
 
 const App = () => {
   // Update to use a function to check if user data exists
-  const userDataExists = () => !!localStorage.getItem("userData");
+  const userDataExists = () => {
+    try {
+      return !!localStorage.getItem("userData");
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
+      return false;
+    }
+  };
   
   const [updateInfo, setUpdateInfo] = useState<any>(null);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
@@ -53,12 +60,19 @@ const App = () => {
         <ProgramProvider>
           <BrowserRouter>
             <Routes>
-              {/* Update to use function to check dynamically */}
-              <Route path="/" element={userDataExists() ? <Index /> : <Navigate to="/register" />} />
+              {/* Use function to check dynamically and add fallback for any errors */}
+              <Route 
+                path="/" 
+                element={
+                  userDataExists() ? 
+                    <Index /> : 
+                    <Navigate to="/register" replace />
+                } 
+              />
               <Route path="/register" element={<Register />} />
               <Route path="/profile-complete" element={<ProfileComplete />} />
               {/* Redirect week routes to index */}
-              <Route path="/week/:weekNumber" element={<Navigate to="/" />} />
+              <Route path="/week/:weekNumber" element={<Navigate to="/" replace />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
