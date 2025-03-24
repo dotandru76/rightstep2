@@ -18,12 +18,9 @@ const NameStep: React.FC<NameStepProps> = ({ form }) => {
   return (
     <>
       <div className="flex flex-col items-center justify-center pt-12 pb-6">
-        {/* Logo and app name */}
+        {/* Logo only - no separate text */}
         <div className="text-center mb-10">
-          <div className="relative">
-            <h1 className="text-white text-5xl font-bold tracking-wide">RightStep</h1>
-            <RightFootIcon className="absolute -top-5 -right-14 text-white" size={56} color="white" />
-          </div>
+          <RightFootIcon className="text-white" size={96} color="white" />
         </div>
         
         {/* Motivational text moved higher */}
