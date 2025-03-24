@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Info, LockIcon } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, CheckCircle2, Info, LockIcon, Skip } from "lucide-react";
 import WaterTracker from "@/components/WaterTracker";
 import DailyHabits from "@/components/DailyHabits";
 import { Progress } from "@/components/ui/progress";
@@ -17,6 +17,11 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { 
+  Popover, 
+  PopoverContent, 
+  PopoverTrigger
+} from "@/components/ui/popover";
 
 const weeklyProgram = [
   { 
@@ -183,6 +188,7 @@ const WeeklyProgram = () => {
   const { maxAccessibleWeek, isNewWeek, setIsNewWeekSeen } = useProgram();
   const [currentWeek, setCurrentWeek] = useState(1);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+  const [showDebugMenu, setShowDebugMenu] = useState(false);
   const totalWeeks = 13;
   
   useEffect(() => {
@@ -212,6 +218,14 @@ const WeeklyProgram = () => {
     }
   }, [weekNumber, navigate, maxAccessibleWeek, isNewWeek, setIsNewWeekSeen]);
 
+  const handleWeekDebugSelect = (week: number) => {
+    if (week >= 1 && week <= totalWeeks) {
+      navigate(`/week/${week}`);
+      setShowDebugMenu(false);
+      toast.success(`Debug: Navigated to Week ${week}`);
+    }
+  };
+
   const weekProgram = weeklyProgram.find(w => w.week === currentWeek) || weeklyProgram[0];
   
   const progressPercentage = (maxAccessibleWeek / totalWeeks) * 100;
@@ -238,18 +252,54 @@ const WeeklyProgram = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-8">
-      <header className="bg-rightstep-gradient text-white py-4">
+      <header className="bg-rightstep-gradient text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center">
-            <RightFootIcon className="h-20 w-20" size={80} />
+            <RightFootIcon className="h-12 w-12" size={48} />
           </div>
-          <Button 
-            variant="ghost" 
-            className="text-white hover:bg-white/20"
-            onClick={handleBackToDashboard}
-          >
-            Back to Dashboard
-          </Button>
+          <div className="flex items-center gap-2">
+            <Popover open={showDebugMenu} onOpenChange={setShowDebugMenu}>
+              <PopoverTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="text-white hover:bg-white/20"
+                  onClick={() => setShowDebugMenu(true)}
+                >
+                  <Skip className="h-4 w-4 mr-1" />
+                  Debug
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56" align="end">
+                <div className="space-y-2">
+                  <h4 className="font-medium text-sm">Debug Navigation</h4>
+                  <div className="grid grid-cols-4 gap-1">
+                    {Array.from({ length: totalWeeks }).map((_, i) => {
+                      const weekNum = i + 1;
+                      return (
+                        <Button 
+                          key={i}
+                          variant="outline" 
+                          size="sm"
+                          className="h-8 min-w-0"
+                          onClick={() => handleWeekDebugSelect(weekNum)}
+                        >
+                          {weekNum}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <Button 
+              variant="ghost" 
+              className="text-white hover:bg-white/20"
+              onClick={handleBackToDashboard}
+            >
+              Dashboard
+            </Button>
+          </div>
         </div>
       </header>
       
