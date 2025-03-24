@@ -24,8 +24,8 @@ const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) 
   };
 
   // Calculate the size of the droplet based on percentage
-  const minSize = 48;
-  const maxSize = 120;
+  const minSize = 36;
+  const maxSize = 80;
   const dropletSize = minSize + Math.round((progressPercentage / 100) * (maxSize - minSize));
   
   // Adjust color intensity based on progress
@@ -39,23 +39,27 @@ const WaterTracker: React.FC<WaterTrackerProps> = ({ recommendedAmount = 2.5 }) 
         <CardTitle className="text-lg">Water Intake</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col items-center justify-center gap-3">
-          <div className="relative flex justify-center items-center h-[140px]">
-            <Droplet 
-              size={dropletSize}
-              fill={dropletColor}
-              color={dropletColor}
-            />
-            <span className="absolute font-bold text-white">{waterGlasses}/{targetGlasses}</span>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative flex justify-center items-center h-[90px] w-[90px]">
+              <Droplet 
+                size={dropletSize}
+                fill={dropletColor}
+                color={dropletColor}
+              />
+              <span className="absolute font-bold text-white text-sm">{waterGlasses}/{targetGlasses}</span>
+            </div>
+            <span className="text-xs mt-1">{(waterGlasses * glassSize).toFixed(1)}L of {recommendedAmount}L</span>
           </div>
           
-          <div className="flex items-center gap-4 mt-2">
-            <Button variant="outline" size="icon" onClick={removeGlass} disabled={waterGlasses === 0}>
-              <Minus className="h-4 w-4" />
+          <div className="flex flex-col gap-2">
+            <Button variant="outline" size="sm" onClick={addGlass} className="w-full">
+              <Plus className="h-4 w-4 mr-1" />
+              Add Glass
             </Button>
-            <span className="text-sm">{(waterGlasses * glassSize).toFixed(1)}L of {recommendedAmount}L</span>
-            <Button variant="outline" size="icon" onClick={addGlass}>
-              <Plus className="h-4 w-4" />
+            <Button variant="outline" size="sm" onClick={removeGlass} disabled={waterGlasses === 0} className="w-full">
+              <Minus className="h-4 w-4 mr-1" />
+              Remove
             </Button>
           </div>
         </div>

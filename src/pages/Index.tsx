@@ -2,14 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import WaterTracker from "@/components/WaterTracker";
-import DailyHabits from "@/components/DailyHabits";
 import { toast } from "sonner";
 import { useProgram } from "@/contexts/ProgramContext";
-import TipsCard from "@/components/TipsCard";
 import { weeklyProgram } from "@/data/weeklyProgramData";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import ProgramProgressCard from "@/components/dashboard/ProgramProgressCard";
 import WeekDetailsDialog from "@/components/dashboard/WeekDetailsDialog";
+import MealTracker from "@/components/MealTracker";
 
 interface UserData {
   name: string;
@@ -73,12 +72,10 @@ const Index = () => {
         />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <WaterTracker recommendedAmount={parseFloat(recommendedWater)} />
-          <DailyHabits currentWeek={maxAccessibleWeek} />
-        </div>
-
-        <div className="mt-6">
-          <TipsCard />
+          <div className="flex flex-col gap-6">
+            <WaterTracker recommendedAmount={parseFloat(recommendedWater)} />
+          </div>
+          <MealTracker />
         </div>
       </main>
 

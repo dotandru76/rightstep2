@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Settings } from "lucide-react";
 import { weeklyProgram } from "@/data/weeklyProgramData";
 import { toast } from "sonner";
+import { useProgram } from "@/contexts/ProgramContext";
 import { 
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
 
 interface ProgramProgressCardProps {
   maxAccessibleWeek: number;
@@ -21,8 +23,10 @@ const ProgramProgressCard: React.FC<ProgramProgressCardProps> = ({
   maxAccessibleWeek,
   onShowDetails 
 }) => {
-  const [debugMode, setDebugMode] = useState(false);
+  const { debugMode, setDebugMode, setDebugWeek } = useProgram();
   const [showDevMenu, setShowDevMenu] = useState(false);
+  const [weekInput, setWeekInput] = useState(maxAccessibleWeek.toString());
+  
   const totalWeeks = 13;
   const progressPercentage = (maxAccessibleWeek / totalWeeks) * 100;
   const currentWeekData = weeklyProgram.find(program => program.week === maxAccessibleWeek) || weeklyProgram[0];
@@ -34,10 +38,15 @@ const ProgramProgressCard: React.FC<ProgramProgressCardProps> = ({
         ? "Week restrictions reapplied" 
         : "All weeks are now accessible for testing"
     });
-    setShowDevMenu(false);
-    
-    // Store debug mode in sessionStorage to persist it across pages
-    sessionStorage.setItem('weekDebugMode', debugMode ? 'false' : 'true');
+  };
+
+  const handleSetWeek = () => {
+    const weekNum = parseInt(weekInput);
+    if (!isNaN(weekNum) && weekNum >= 1 && weekNum <= 13) {
+      setDebugWeek(weekNum);
+    } else {
+      toast.error("Please enter a valid week number (1-13)");
+    }
   };
 
   return (
@@ -78,7 +87,31 @@ const ProgramProgressCard: React.FC<ProgramProgressCardProps> = ({
                     {debugMode ? "Debug ON" : "Debug OFF"}
                   </Button>
                 </div>
-                <p className="text-sm text-gray-500">Enable debug mode to access all weeks for testing purposes.</p>
+                
+                {debugMode && (
+                  <>
+                    <div className="pt-2 border-t">
+                      <h4 className="font-medium text-sm mb-2">Set Current Week</h4>
+                      <div className="flex space-x-2">
+                        <Input
+                          type="number"
+                          min="1"
+                          max="13"
+                          value={weekInput}
+                          onChange={(e) => setWeekInput(e.target.value)}
+                          className="w-20"
+                        />
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={handleSetWeek}
+                        >
+                          Set Week
+                        </Button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </PopoverContent>
           </Popover>

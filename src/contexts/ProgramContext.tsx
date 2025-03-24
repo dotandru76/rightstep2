@@ -12,6 +12,7 @@ interface ProgramContextType {
   startProgram: () => void;
   debugMode: boolean;
   setDebugMode: (value: boolean) => void;
+  setDebugWeek: (weekNumber: number) => void;
 }
 
 const ProgramContext = createContext<ProgramContextType | undefined>(undefined);
@@ -45,6 +46,21 @@ export const ProgramProvider = ({ children }: { children: ReactNode }) => {
       setLastSeenWeek(1);
       setCurrentWeek(1);
       setMaxAccessibleWeek(1);
+    }
+  };
+
+  // Function to set the week number in debug mode
+  const setDebugWeek = (weekNumber: number) => {
+    if (debugMode) {
+      if (weekNumber >= 1 && weekNumber <= 13) {
+        setMaxAccessibleWeek(weekNumber);
+        setCurrentWeek(weekNumber);
+        toast.success(`Week set to ${weekNumber}`);
+      } else {
+        toast.error('Week number must be between 1 and 13');
+      }
+    } else {
+      toast.error('Debug mode must be enabled to change weeks');
     }
   };
 
@@ -109,7 +125,8 @@ export const ProgramProvider = ({ children }: { children: ReactNode }) => {
       setIsNewWeekSeen,
       startProgram,
       debugMode,
-      setDebugMode
+      setDebugMode,
+      setDebugWeek
     }}>
       {children}
     </ProgramContext.Provider>
