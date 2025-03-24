@@ -1,11 +1,13 @@
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
 const WeeklyProgress = () => {
+  const navigate = useNavigate();
   const [currentWeek, setCurrentWeek] = useState(1);
   const totalWeeks = 13;
   const progressPercentage = (currentWeek / totalWeeks) * 100;
@@ -38,6 +40,10 @@ const WeeklyProgress = () => {
       setCurrentWeek(currentWeek + 1);
     }
   };
+  
+  const handleGoToWeek = (week: number) => {
+    navigate(`/week/${week}`);
+  };
 
   const currentTheme = weeklyThemes.find(theme => theme.week === currentWeek) || weeklyThemes[0];
 
@@ -68,8 +74,20 @@ const WeeklyProgress = () => {
           <Progress value={progressPercentage} className="h-2" />
           
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-            <h3 className="font-bold text-lg">{currentTheme.title}</h3>
-            <p>{currentTheme.description}</p>
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="font-bold text-lg">{currentTheme.title}</h3>
+                <p>{currentTheme.description}</p>
+              </div>
+              <Button 
+                size="sm" 
+                className="bg-rightstep-green hover:bg-rightstep-green-dark"
+                onClick={() => handleGoToWeek(currentWeek)}
+              >
+                Details
+                <ArrowRight className="ml-1 h-3 w-3" />
+              </Button>
+            </div>
           </div>
           
           <div className="grid grid-cols-7 gap-1 mt-4">
