@@ -43,8 +43,8 @@ export class GoogleVisionService {
       // Remove the data:image/jpeg;base64, prefix if present
       const base64Image = imageData.replace(/^data:image\/\w+;base64,/, "");
       
-      // Prepare the request to Gemini API
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${apiKey}`, {
+      // Prepare the request to Gemini API - Using the newer gemini-1.5-flash model
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ImageIcon, Camera, UploadIcon, CheckCircle, AlertCircle, Settings } from "lucide-react";
+import { ImageIcon, Camera, UploadIcon, CheckCircle, AlertCircle, Settings, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { useProgram } from "@/contexts/ProgramContext";
 import { weeklyProgram } from "@/data/weeklyProgramData";
@@ -52,7 +52,6 @@ const FoodVisualization = () => {
   };
   
   const analyzeFoodImage = async (imageData: string) => {
-    // Check if API key is set
     if (!googleVisionService.getApiKey()) {
       setApiKeyDialogOpen(true);
       return;
@@ -61,7 +60,6 @@ const FoodVisualization = () => {
     setAnalyzing(true);
     
     try {
-      // Use the Google Vision service to analyze the image
       const result = await googleVisionService.analyzeImage(imageData, maxAccessibleWeek);
       setAnalysis(result);
       
@@ -72,7 +70,6 @@ const FoodVisualization = () => {
       });
     } catch (error) {
       console.error("Error analyzing image:", error);
-      // Error is already handled in the service with a toast
     } finally {
       setAnalyzing(false);
     }
@@ -92,7 +89,6 @@ const FoodVisualization = () => {
       setApiKeyDialogOpen(false);
       toast.success("API Key saved");
       
-      // If there's a pending image analysis, restart it
       if (image) {
         analyzeFoodImage(image);
       }
@@ -239,14 +235,12 @@ const FoodVisualization = () => {
         )}
       </CardFooter>
 
-      {/* API Key Dialog */}
       <Dialog open={apiKeyDialogOpen} onOpenChange={setApiKeyDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Set Gemini API Key</DialogTitle>
             <DialogDescription>
-              Enter your Gemini API key to enable food analysis.
-              You can get a free API key from the Google AI Studio website.
+              This app uses Google's Gemini AI to analyze food photos. You'll need a free API key from Google AI Studio.
             </DialogDescription>
           </DialogHeader>
           
@@ -260,10 +254,16 @@ const FoodVisualization = () => {
                 onChange={(e) => setApiKey(e.target.value)}
               />
             </div>
-            <p className="text-xs text-gray-500">
-              Your API key is stored locally on your device and is only used to make requests to the Gemini API.
-              You can get a free API key at <a href="https://makersuite.google.com/" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">Google AI Studio</a>.
-            </p>
+            <div className="space-y-2 text-xs text-gray-500">
+              <p>How to get your free API key:</p>
+              <ol className="list-decimal pl-5 space-y-1">
+                <li>Go to <a href="https://makersuite.google.com/" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline inline-flex items-center">Google AI Studio <ExternalLink className="h-3 w-3 ml-0.5" /></a></li>
+                <li>Sign in with your Google account</li>
+                <li>Click on "Get API key" or go to API Keys section</li>
+                <li>Create a new API key and copy it here</li>
+              </ol>
+              <p className="mt-2">Your API key is stored locally on your device and is only used to analyze your food photos.</p>
+            </div>
           </div>
           
           <DialogFooter>
