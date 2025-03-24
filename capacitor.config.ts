@@ -18,6 +18,9 @@ const config: CapacitorConfig = {
       splashFullScreen: true,
       splashImmersive: true
     }
+  },
+  android: {
+    iconBackground: '#ffffff', // Optional background color for adaptive icons
   }
 };
 
