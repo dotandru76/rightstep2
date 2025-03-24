@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -9,6 +10,7 @@ import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 // Import the default exports correctly
 import NameStep from "@/components/register/NameStep";
@@ -117,8 +119,8 @@ const Register: React.FC = () => {
                 Previous
               </Button>
               <Button
-                type="submit"
-                disabled={isLastStep ? !form.isValid : false}
+                type={isLastStep ? "submit" : "button"}
+                onClick={isLastStep ? undefined : handleNextStep}
               >
                 {isLastStep ? "Complete" : "Next"}
                 <ChevronRight className="w-4 h-4 ml-2" />
