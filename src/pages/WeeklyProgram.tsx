@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -222,7 +221,6 @@ const WeeklyProgram = () => {
 
   const handleWeekDebugSelect = (week: number) => {
     if (week >= 1 && week <= totalWeeks) {
-      // Enable debug mode when selecting a week through debug menu
       setDebugMode(true);
       navigate(`/week/${week}`);
       setShowDebugMenu(false);
@@ -272,7 +270,7 @@ const WeeklyProgram = () => {
       <header className="bg-rightstep-gradient text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center">
-            <RightFootIcon className="h-12 w-12" size={48} />
+            <RightFootIcon className="h-12 w-12" size={120} />
           </div>
           <div className="flex items-center gap-2">
             <Popover open={showDebugMenu} onOpenChange={setShowDebugMenu}>

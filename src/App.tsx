@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import ProfileComplete from "./pages/ProfileComplete";
+import WeeklyProgram from "./pages/WeeklyProgram"; // Import WeeklyProgram
 import { checkForUpdates } from "./services/UpdateService";
 import UpdateNotification from "./components/UpdateNotification";
 import { ProgramProvider } from "./contexts/ProgramContext";
@@ -71,8 +72,8 @@ const App = () => {
               />
               <Route path="/register" element={<Register />} />
               <Route path="/profile-complete" element={<ProfileComplete />} />
-              {/* Redirect week routes to index */}
-              <Route path="/week/:weekNumber" element={<Navigate to="/" replace />} />
+              {/* Add direct route to WeeklyProgram instead of redirecting */}
+              <Route path="/week/:weekNumber" element={<WeeklyProgram />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
