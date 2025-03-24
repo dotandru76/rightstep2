@@ -71,10 +71,8 @@ const Index = () => {
           onShowDetails={() => setShowWeekDetails(true)} 
         />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex flex-col gap-6">
-            <WaterTracker recommendedAmount={parseFloat(recommendedWater)} />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <WaterTracker recommendedAmount={parseFloat(recommendedWater)} />
           <MealTracker />
         </div>
       </main>
