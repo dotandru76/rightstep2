@@ -1,186 +1,134 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { toast } from "sonner";
-import { ArrowRight, ChevronLeft } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
-
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Card, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
-import { NameStep } from "@/components/register/NameStep";
-import { GenderStep } from "@/components/register/GenderStep";
-import { MeasurementsStep } from "@/components/register/MeasurementsStep";
-import { SummaryStep } from "@/components/register/SummaryStep";
-import { ProgressIndicator } from "@/components/ProgressIndicator";
-import { getFieldsForStep, TOTAL_STEPS } from "@/utils/registerSteps";
+// Import the default exports correctly
+import NameStep from "@/components/register/NameStep";
+import GenderStep from "@/components/register/GenderStep";
+import MeasurementsStep from "@/components/register/MeasurementsStep";
+import SummaryStep from "@/components/register/SummaryStep";
+import ProgressIndicator from "@/components/ProgressIndicator";
 
-const formSchema = z.object({
+const registerFormSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
-  age: z.string().refine((val) => {
-    const num = parseInt(val, 10);
+  age: z.string().refine((value) => {
+    const num = Number(value);
     return !isNaN(num) && num > 0 && num < 120;
   }, {
-    message: "Please enter a valid age between 1-120.",
+    message: "Age must be a valid number between 1 and 119.",
   }),
-  sex: z.enum(["male", "female", "other"], {
-    required_error: "Please select your sex.",
+  sex: z.enum(['male', 'female', 'other'], {
+    required_error: "You need to select a gender.",
   }),
-  weight: z.string().refine((val) => {
-    const num = parseFloat(val);
+  weight: z.string().refine((value) => {
+    const num = Number(value);
     return !isNaN(num) && num > 0 && num < 500;
   }, {
-    message: "Please enter a valid weight (20-500 kg/lbs).",
+    message: "Weight must be a valid number between 1 and 499.",
   }),
-  height: z.string().refine((val) => {
-    const num = parseFloat(val);
+  height: z.string().refine((value) => {
+    const num = Number(value);
     return !isNaN(num) && num > 0 && num < 300;
   }, {
-    message: "Please enter a valid height (50-300 cm).",
+    message: "Height must be a valid number between 1 and 299.",
   }),
 });
 
-const Register = () => {
+const steps = [
+  { id: 1, label: 'Name' },
+  { id: 2, label: 'Gender' },
+  { id: 3, label: 'Measurements' },
+  { id: 4, label: 'Summary' },
+];
+
+type RegisterFormValues = z.infer<typeof registerFormSchema>;
+
+const Register: React.FC = () => {
+  const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const isMobile = useIsMobile();
-  
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { toast } = useToast();
+
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerFormSchema),
     defaultValues: {
       name: "",
       age: "",
-      sex: undefined,
+      sex: "male",
       weight: "",
       height: "",
     },
-    mode: "onChange"
+    mode: "onChange",
   });
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setStep(1);
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, []);
+  const isFirstStep = currentStep === 0;
+  const isLastStep = currentStep === steps.length - 1;
 
-  const goToNextStep = async () => {
-    try {
-      setIsLoading(true);
-      const fields = getFieldsForStep(step);
-      const isValid = await validateStepFields(fields);
-      
-      if (isValid) {
-        if (step < TOTAL_STEPS) {
-          setStep(step + 1);
-          window.scrollTo(0, 0);
-        } else {
-          onSubmit(form.getValues());
-        }
-      }
-    } catch (error) {
-      console.error("Error in step validation:", error);
-    } finally {
-      setIsLoading(false);
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
     }
   };
 
-  const goToPreviousStep = () => {
-    if (step > 1) {
-      setStep(step - 1);
-      window.scrollTo(0, 0);
+  const handlePrevStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
     }
   };
 
-  const validateStepFields = async (fields: string[]) => {
-    try {
-      const result = await form.trigger(fields as any);
-      return result;
-    } catch (error) {
-      console.error("Field validation error:", error);
-      return false;
-    }
-  };
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const userData = {
-        ...values,
-        createdAt: new Date().toISOString()
-      };
-      
-      localStorage.setItem("userData", JSON.stringify(userData));
-      toast.success("Profile created successfully!");
-      
-      navigate("/profile-complete", { replace: true });
-    } catch (error) {
-      console.error("Error saving profile:", error);
-      toast.error("Failed to save profile. Please try again.");
-    }
-  }
-
-  const renderStepContent = () => {
-    switch (step) {
-      case 1:
-        return <NameStep form={form} />;
-      case 2:
-        return <GenderStep form={form} />;
-      case 3:
-        return <MeasurementsStep form={form} />;
-      case 4:
-        return <SummaryStep form={form} />;
-      default:
-        return null;
-    }
+  const onSubmit = (data: RegisterFormValues) => {
+    localStorage.setItem("userData", JSON.stringify(data));
+    localStorage.setItem("programStartDate", new Date().toISOString());
+    localStorage.setItem("lastSeenWeek", "1");
+    toast({
+      title: "Registration complete.",
+      description: "You will be redirected to the dashboard.",
+    });
+    setTimeout(() => {
+      navigate("/");
+    }, 1500);
   };
 
   return (
-    <div className="min-h-screen bg-rightstep-vertical-gradient py-2 md:py-4">
-      <div className="container mx-auto px-4 py-4 md:py-6 max-w-md">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-rightstep-gradient">
+      <Card className="w-full max-w-md bg-gray-800 text-white shadow-md rounded-lg overflow-hidden">
         <Form {...form}>
-          <Card className={cn(
-            "w-full shadow-lg border-0",
-            "bg-transparent shadow-none"
-          )}>
-            <CardHeader className="text-center px-4 md:px-6 py-4 md:py-6">
-              {renderStepContent()}
-            </CardHeader>
-            <CardFooter className="flex flex-col gap-3 pb-6">
-              <div className="flex w-full gap-2">
-                {step > 1 && (
-                  <Button 
-                    onClick={goToPreviousStep} 
-                    className="flex-1 bg-rightstep-green hover:bg-rightstep-green-dark rounded-full py-5 md:py-6"
-                    disabled={isLoading}
-                  >
-                    <ChevronLeft className="mr-2 h-4 w-4" /> Back
-                  </Button>
-                )}
-                <Button 
-                  onClick={goToNextStep} 
-                  className={`${step === 1 ? 'w-full' : 'flex-1'} bg-rightstep-green hover:bg-rightstep-green-dark rounded-full py-5 md:py-6`}
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Loading..." : (step === 1 ? 'Get Started' : (step < TOTAL_STEPS ? 'Next Step' : 'Complete'))}
-                  {!isLoading && step !== 1 && <ArrowRight className="ml-2 h-4 w-4" />}
-                </Button>
-              </div>
-              <p className="text-xs text-center text-white/70">
-                Your data is stored locally on your device
-              </p>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {currentStep === 0 && <NameStep form={form} />}
+            {currentStep === 1 && <GenderStep form={form} />}
+            {currentStep === 2 && <MeasurementsStep form={form} />}
+            {currentStep === 3 && <SummaryStep form={form} />}
+            <CardFooter className="flex justify-between items-center bg-gray-700 border-t border-gray-600 p-4">
+              <Button
+                variant="secondary"
+                onClick={handlePrevStep}
+                disabled={isFirstStep}
+              >
+                <ChevronLeft className="w-4 h-4 mr-2" />
+                Previous
+              </Button>
+              <Button
+                type="submit"
+                disabled={isLastStep ? !form.isValid : false}
+              >
+                {isLastStep ? "Complete" : "Next"}
+                <ChevronRight className="w-4 h-4 ml-2" />
+              </Button>
             </CardFooter>
-          </Card>
+          </form>
         </Form>
-      </div>
-      <ProgressIndicator activeStep={step - 1} totalDots={TOTAL_STEPS} />
+      </Card>
+      <ProgressIndicator activeStep={currentStep} totalDots={steps.length} />
+      <Toaster />
     </div>
   );
 };
