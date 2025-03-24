@@ -22,6 +22,13 @@ const config: CapacitorConfig = {
     }
   },
   android: {
+    buildOptions: {
+      keystorePath: undefined,
+      keystoreAlias: undefined,
+      keystorePassword: undefined,
+      keystoreAliasPassword: undefined,
+      releaseType: 'APK'
+    },
     iconBackground: '#ffffff', // Optional background color for adaptive icons
   },
   // Add this line to help with asset handling
