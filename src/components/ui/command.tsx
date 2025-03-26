@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { type DialogProps } from "@radix-ui/react-dialog"
 import { Command as CommandPrimitive } from "cmdk"
@@ -38,19 +39,50 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
-    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-    <CommandPrimitive.Input
-      ref={ref}
-      className={cn(
-        "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
-        className
+>(({ className, ...props }, ref) => {
+  const [showHelp, setShowHelp] = React.useState(false);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "?" && e.target instanceof HTMLInputElement && e.target.value === "") {
+      e.preventDefault();
+      setShowHelp(true);
+    } else if (showHelp) {
+      setShowHelp(false);
+    }
+
+    if (props.onKeyDown) {
+      props.onKeyDown(e);
+    }
+  };
+
+  return (
+    <div className="flex flex-col w-full">
+      <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
+        <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+        <CommandPrimitive.Input
+          ref={ref}
+          className={cn(
+            "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+            className
+          )}
+          onKeyDown={handleKeyDown}
+          {...props}
+        />
+      </div>
+      {showHelp && (
+        <div className="p-4 text-sm border-b bg-muted/50">
+          <h4 className="font-medium mb-2">Keyboard Shortcuts</h4>
+          <ul className="space-y-1">
+            <li><kbd className="px-1 bg-background rounded border">↑</kbd> <kbd className="px-1 bg-background rounded border">↓</kbd> Navigate items</li>
+            <li><kbd className="px-1 bg-background rounded border">Enter</kbd> Select item</li>
+            <li><kbd className="px-1 bg-background rounded border">Esc</kbd> Dismiss</li>
+            <li><kbd className="px-1 bg-background rounded border">?</kbd> Show this help</li>
+          </ul>
+        </div>
       )}
-      {...props}
-    />
-  </div>
-))
+    </div>
+  )
+})
 
 CommandInput.displayName = CommandPrimitive.Input.displayName
 
