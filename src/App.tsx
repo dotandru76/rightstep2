@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -29,11 +30,15 @@ const App = () => {
 
   useEffect(() => {
     const checkUpdates = async () => {
-      const { hasUpdate, updateInfo } = await checkForUpdates();
-      
-      if (hasUpdate && updateInfo) {
-        setUpdateInfo(updateInfo);
-        setShowUpdateDialog(true);
+      try {
+        const { hasUpdate, updateInfo } = await checkForUpdates();
+        
+        if (hasUpdate && updateInfo) {
+          setUpdateInfo(updateInfo);
+          setShowUpdateDialog(true);
+        }
+      } catch (error) {
+        console.error("Error checking for updates:", error);
       }
     };
     
