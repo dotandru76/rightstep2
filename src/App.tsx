@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -58,22 +58,20 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <ProgramProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route 
-                path="/" 
-                element={
-                  userDataExists() ? 
-                    <Index /> : 
-                    <Navigate to="/register" replace />
-                } 
-              />
-              <Route path="/register" element={<Register />} />
-              <Route path="/profile-complete" element={<ProfileComplete />} />
-              <Route path="/week/:weekNumber" element={<Navigate to="/" replace />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                userDataExists() ? 
+                  <Index /> : 
+                  <Navigate to="/register" replace />
+              } 
+            />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile-complete" element={<ProfileComplete />} />
+            <Route path="/week/:weekNumber" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
           <Toaster />
           <Sonner />
           {updateInfo && (
