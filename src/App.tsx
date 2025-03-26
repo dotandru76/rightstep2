@@ -16,6 +16,8 @@ import { ProgramProvider } from "./contexts/ProgramContext";
 const queryClient = new QueryClient();
 
 const App = () => {
+  console.log("App component rendering");
+  
   const userDataExists = () => {
     try {
       return !!localStorage.getItem("userData");
@@ -53,6 +55,8 @@ const App = () => {
     setShowUpdateDialog(false);
     window.location.reload();
   };
+
+  console.log("User data exists:", userDataExists());
 
   return (
     <QueryClientProvider client={queryClient}>
