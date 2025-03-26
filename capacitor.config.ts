@@ -22,7 +22,13 @@ const config: CapacitorConfig = {
     }
   },
   android: {
-    iconBackground: '#ffffff', // Optional background color for adaptive icons
+    buildOptions: {
+      keystorePath: null,
+      keystorePassword: null,
+      keystoreAlias: null,
+      keystoreAliasPassword: null,
+      signingType: "apksigner"
+    }
   },
   // Add this line to help with asset handling
   bundledWebRuntime: false
