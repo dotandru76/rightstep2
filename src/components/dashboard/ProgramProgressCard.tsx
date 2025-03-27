@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -12,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input.tsx";
+import { Input } from "@/components/ui/input";
 
 interface ProgramProgressCardProps {
   maxAccessibleWeek: number;
