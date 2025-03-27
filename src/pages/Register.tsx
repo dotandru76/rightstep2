@@ -108,7 +108,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-rightstep-vertical-gradient">
       <Card className="w-full max-w-md bg-transparent border-none shadow-none rounded-lg overflow-hidden">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
@@ -122,7 +122,7 @@ const Register: React.FC = () => {
                   <Button 
                     type="button"
                     onClick={handleNextStep}
-                    className="w-full bg-white hover:bg-white/90 text-green-600 font-bold py-3 rounded-full text-lg shadow-lg transform transition-transform hover:scale-105"
+                    className="w-full bg-rightstep-green-darker hover:bg-rightstep-green-dark text-white font-bold py-3 rounded-full text-lg shadow-lg transform transition-transform hover:scale-105"
                   >
                     Get Started
                   </Button>
@@ -143,7 +143,7 @@ const Register: React.FC = () => {
                   <Button
                     type={isLastStep ? "submit" : "button"}
                     onClick={isLastStep ? undefined : handleNextStep}
-                    className="bg-white hover:bg-white/90 text-green-600"
+                    className="bg-rightstep-green hover:bg-rightstep-green-light text-white"
                   >
                     {isLastStep ? "Complete" : "Next"}
                     <ChevronRight className="w-4 h-4 ml-2" />

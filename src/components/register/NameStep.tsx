@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { CardContent } from "@/components/ui/card";
 import { User } from "lucide-react";
 import RightFootIcon from "@/components/RightFootIcon";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { UseFormReturn } from "react-hook-form";
 
 interface NameStepProps {
@@ -12,22 +13,24 @@ interface NameStepProps {
 }
 
 const NameStep: React.FC<NameStepProps> = ({ form }) => {
+  const isMobile = useIsMobile();
+
   return (
     <>
-      <div className="flex flex-col items-center justify-center space-y-2">
-        {/* Logo */}
-        <div className="text-center mb-4">
-          <RightFootIcon className="text-white mx-auto" size={120} color="white" />
-          <h1 className="text-3xl font-bold text-white mt-2">RightStep</h1>
+      <div className="flex flex-col items-center justify-center -mt-10 relative">
+        {/* Logo with relative positioning */}
+        <div className="text-center relative">
+          <RightFootIcon className="text-white" size={400} color="white" />
+          
+          {/* Motivational text positioned lower */}
+          <h2 className="text-xl font-medium text-white absolute bottom-16 left-0 right-0">
+            You are taking the Right Step
+          </h2>
         </div>
-        
-        {/* Motivational text */}
-        <h2 className="text-xl font-medium text-white text-center mt-8 mb-6">
-          You are taking the Right Step
-        </h2>
       </div>
       
-      <CardContent className="pb-0">
+      {/* Further reduced top margin to move content up */}
+      <CardContent className="-mt-16 pb-0">
         <FormField
           control={form.control}
           name="name"
