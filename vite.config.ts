@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import { visualizer } from "rollup-plugin-visualizer"; // Correct plugin
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig(({ mode }) => ({
   server: {
@@ -14,8 +14,8 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     mode === "development" &&
       visualizer({
-        open: true, // Automatically open the report in the browser
-        filename: "bundle-analysis.html", // Output file for the report
+        open: true,
+        filename: "bundle-analysis.html",
         gzipSize: true,
         brotliSize: true,
       }),

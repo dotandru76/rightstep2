@@ -4,7 +4,7 @@ import { Circle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-const RadioGroup = React.forwardRef<
+const RadioGroup = React.forwardRef
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 >(({ className, ...props }, ref) => {
@@ -18,7 +18,7 @@ const RadioGroup = React.forwardRef<
 });
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 
-const RadioGroupItem = React.forwardRef<
+const RadioGroupItem = React.forwardRef
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
 >(({ className, ...props }, ref) => {
@@ -39,7 +39,7 @@ const RadioGroupItem = React.forwardRef<
 });
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
-const RadioGroupItemWithImage = React.forwardRef<
+const RadioGroupItemWithImage = React.forwardRef
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> & {
     imageSrc: string;
@@ -47,7 +47,7 @@ const RadioGroupItemWithImage = React.forwardRef<
   }
 >(({ className, imageSrc, label, ...props }, ref) => {
   return (
-    <div className="flex flex-col items-center w-full max-w-screen-2xl mx-auto px-4">
+    <div className="flex flex-col items-center justify-center">
       <RadioGroupPrimitive.Item
         ref={ref}
         className="peer sr-only"
@@ -55,16 +55,16 @@ const RadioGroupItemWithImage = React.forwardRef<
       />
       <label
         htmlFor={props.id}
-        className="flex flex-col items-center justify-center cursor-pointer text-white hover:opacity-80 transition-all peer-data-[state=checked]:scale-105 peer-data-[state=checked]:border-4 peer-data-[state=checked]:border-white rounded-lg p-2"
+        className="flex flex-col items-center justify-center cursor-pointer text-white hover:opacity-80 transition-all peer-data-[state=checked]:scale-105 peer-data-[state=checked]:border-2 peer-data-[state=checked]:border-white rounded-lg p-1"
       >
-        <div className="w-40 h-40 flex items-center justify-center">
+        <div className="w-16 h-16 flex items-center justify-center">
           <img
             src={imageSrc}
             alt={label}
-            className="max-w-full max-h-full object-contain transition-transform"
+            className="max-w-full max-h-full object-contain"
           />
         </div>
-        <span className="text-lg font-medium mt-4">{label}</span>
+        <span className="text-sm font-medium mt-1">{label}</span>
       </label>
     </div>
   );
