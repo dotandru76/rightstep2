@@ -1,8 +1,7 @@
-
-import React from 'react';
+// GenderStep.tsx - simplified version without navigation buttons
+import React from "react";
 import { FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
-import { CardContent, CardTitle, CardDescription } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItemWithImage } from "@/components/ui/radio-group";
+import { CardTitle, CardDescription } from "@/components/ui/card";
 import RightFootIcon from "@/components/RightFootIcon";
 import { UseFormReturn } from "react-hook-form";
 
@@ -12,54 +11,73 @@ interface GenderStepProps {
 
 const GenderStep: React.FC<GenderStepProps> = ({ form }) => {
   return (
-    <>
-      <div className="flex justify-center -mt-8">
-        <RightFootIcon className="h-56 w-56 text-white opacity-30" size={224} />
+    <div className="flex flex-col items-center justify-center w-full px-4 sm:px-8">
+      {/* Logo */}
+      <div className="mb-12 mt-8">
+        <RightFootIcon className="h-32 w-32 text-white" size={128} />
       </div>
-      <CardTitle className="text-xl font-bold text-center text-white -mt-16">Hi, {form.getValues().name}!</CardTitle>
-      <CardDescription className="text-center mb-4 text-white/90">
+      
+      <CardTitle className="text-xl font-bold text-white mb-2">
+        Hi, {form.getValues().name}!
+      </CardTitle>
+      <CardDescription className="text-white/90 mb-8">
         Please select your gender to personalize your plan
       </CardDescription>
-      <CardContent className="pt-0 space-y-3 z-10 relative">
+      
+      <div className="w-full max-w-2xl mx-auto">
         <FormField
           control={form.control}
           name="sex"
           render={({ field }) => (
-            <FormItem className="space-y-4">
+            <FormItem className="w-full">
               <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex space-x-4"
-                >
-                  <RadioGroupItemWithImage 
-                    id="male"
-                    value="male"
-                    imageSrc="/lovable-uploads/64afc05e-9201-4769-b2d3-d44c83480d8a.png"
-                    label="Male"
-                  />
+                <div className="grid grid-cols-3 gap-8 w-full">
+                  <button
+                    type="button"
+                    onClick={() => field.onChange('male')}
+                    className={`flex flex-col items-center p-3 rounded-lg transition-all hover:opacity-90 ${field.value === 'male' ? 'border-2 border-white scale-105' : ''}`}
+                  >
+                    <img 
+                      src="/lovable-uploads/male-image.png" 
+                      alt="Male" 
+                      className="w-24 h-24 sm:w-28 sm:h-28 object-contain" 
+                    />
+                    <span className="text-white text-lg mt-2">Male</span>
+                  </button>
                   
-                  <RadioGroupItemWithImage
-                    id="female"
-                    value="female"
-                    imageSrc="/lovable-uploads/85d23c27-0326-452e-9dae-f3a6b94f05d5.png"
-                    label="Female"
-                  />
+                  <button
+                    type="button"
+                    onClick={() => field.onChange('female')}
+                    className={`flex flex-col items-center p-3 rounded-lg transition-all hover:opacity-90 ${field.value === 'female' ? 'border-2 border-white scale-105' : ''}`}
+                  >
+                    <img 
+                      src="/lovable-uploads/female-image.png" 
+                      alt="Female" 
+                      className="w-24 h-24 sm:w-28 sm:h-28 object-contain" 
+                    />
+                    <span className="text-white text-lg mt-2">Female</span>
+                  </button>
                   
-                  <RadioGroupItemWithImage
-                    id="other"
-                    value="other"
-                    imageSrc="/lovable-uploads/6ca3238a-5a6d-46e7-85f0-9dddd40f73b3.png"
-                    label="Other"
-                  />
-                </RadioGroup>
+                  <button
+                    type="button"
+                    onClick={() => field.onChange('other')}
+                    className={`flex flex-col items-center p-3 rounded-lg transition-all hover:opacity-90 ${field.value === 'other' ? 'border-2 border-white scale-105' : ''}`}
+                  >
+                    <img 
+                      src="/lovable-uploads/other-image.png" 
+                      alt="Other" 
+                      className="w-24 h-24 sm:w-28 sm:h-28 object-contain" 
+                    />
+                    <span className="text-white text-lg mt-2">Other</span>
+                  </button>
+                </div>
               </FormControl>
-              <FormMessage className="text-center text-white" />
+              <FormMessage className="text-center text-white mt-2" />
             </FormItem>
           )}
         />
-      </CardContent>
-    </>
+      </div>
+    </div>
   );
 };
 

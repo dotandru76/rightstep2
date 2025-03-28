@@ -1,9 +1,8 @@
+import * as React from "react";
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import { Circle } from "lucide-react";
 
-import * as React from "react"
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
-import { Circle } from "lucide-react"
-
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
@@ -15,9 +14,9 @@ const RadioGroup = React.forwardRef<
       {...props}
       ref={ref}
     />
-  )
-})
-RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
+  );
+});
+RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
@@ -36,9 +35,9 @@ const RadioGroupItem = React.forwardRef<
         <Circle className="h-2.5 w-2.5 fill-current text-current" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
-  )
-})
-RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName
+  );
+});
+RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
 const RadioGroupItemWithImage = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
@@ -48,28 +47,28 @@ const RadioGroupItemWithImage = React.forwardRef<
   }
 >(({ className, imageSrc, label, ...props }, ref) => {
   return (
-    <div className="flex-1">
+    <div className="flex flex-col items-center w-full max-w-screen-2xl mx-auto px-4">
       <RadioGroupPrimitive.Item
         ref={ref}
         className="peer sr-only"
         {...props}
       />
-      <label 
-        htmlFor={props.id} 
-        className="flex flex-col items-center justify-between rounded-md border-2 border-white/30 bg-transparent hover:bg-white/10 hover:border-white peer-data-[state=checked]:border-white [&:has([data-state=checked])]:border-white cursor-pointer text-white h-auto"
+      <label
+        htmlFor={props.id}
+        className="flex flex-col items-center justify-center cursor-pointer text-white hover:opacity-80 transition-all peer-data-[state=checked]:scale-105 peer-data-[state=checked]:border-4 peer-data-[state=checked]:border-white rounded-lg p-2"
       >
-        <div className="flex justify-center items-center w-full p-1">
-          <img 
-            src={imageSrc} 
-            alt={label} 
-            className="object-contain w-full h-36" 
+        <div className="w-40 h-40 flex items-center justify-center">
+          <img
+            src={imageSrc}
+            alt={label}
+            className="max-w-full max-h-full object-contain transition-transform"
           />
         </div>
-        <span className="text-base font-medium pb-2">{label}</span>
+        <span className="text-lg font-medium mt-4">{label}</span>
       </label>
     </div>
   );
 });
 RadioGroupItemWithImage.displayName = "RadioGroupItemWithImage";
 
-export { RadioGroup, RadioGroupItem, RadioGroupItemWithImage }
+export { RadioGroup, RadioGroupItem, RadioGroupItemWithImage };
