@@ -113,3 +113,22 @@ body {
   display: flex;
   flex-direction: column;
 }
+@layer utilities {
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); } /* Start invisible and slightly down */
+    to { opacity: 1; transform: translateY(0); }   /* End fully visible and in position */
+  }
+  .animate-fade-in {
+    /* Apply the animation */
+    animation: fadeIn 0.5s ease-out forwards; /* 'forwards' keeps the end state */
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; transform: scale(1); }      /* Normal state */
+    50% { opacity: 0.8; transform: scale(1.03); } /* Slightly larger and faded */
+  }
+  .animate-pulse-slow {
+    /* Apply the animation, adjust duration/timing as needed */
+    animation: pulse-slow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}

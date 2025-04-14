@@ -1,0 +1,84 @@
+// Apply the application plugin first
+apply plugin: 'com.android.application'
+
+android {
+    namespace "com.waterbalance.journey"
+    compileSdk rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "com.waterbalance.journey"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+            // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+            // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    // Ensure compileOptions are set if you plan to use Java 8+ features or certain libraries need it
+    // compileOptions {
+    //     sourceCompatibility JavaVersion.VERSION_1_8
+    //     targetCompatibility JavaVersion.VERSION_1_8
+    // }
+    // If using Kotlin, ensure kotlinOptions are set
+    // kotlinOptions {
+    //     jvmTarget = '1.8'
+    // }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+    // Ensure google() and mavenCentral() are also available if not inherited from project level
+    // google()
+    // mavenCentral()
+}
+
+dependencies {
+    // Base dependencies (kept original, removed duplicates)
+    implementation fileTree(include: ['*.jar'], dir: 'libs') // Keep this one
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android') // Keep this one
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+    implementation 'androidx.webkit:webkit:1.4.0' // Keep this
+
+    // **** ADDED FIREBASE DEPENDENCIES ****
+    // Import the Firebase BoM (Bill of Materials) - manages versions
+    // Check the Firebase documentation for the absolute latest version
+    implementation platform('com.google.firebase:firebase-bom:33.1.1')
+
+    // Add the dependency for Firebase Cloud Storage Kotlin extensions
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+    // Add other Firebase SDKs here if/when needed
+    // implementation 'com.google.firebase:firebase-firestore-ktx'
+    // implementation 'com.google.firebase:firebase-auth-ktx'
+    // ************************************
+}
+
+// Apply Capacitor build configuration
+apply from: 'capacitor.build.gradle'
+
+// Conditionally apply the Google Services plugin if the google-services.json file exists
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}

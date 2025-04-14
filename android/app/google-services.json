@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "666949495917",
+    "project_id": "rightstep-7a5f4",
+    "storage_bucket": "rightstep-7a5f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666949495917:android:51414e3de9761f400fa364",
+        "android_client_info": {
+          "package_name": "com.waterbalance.journey"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGCoK3-Dx88CFSD9tfWii9PlVuoT0srgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,150 +1,100 @@
-import React, { useState, useEffect } from "react";
+import React from 'react';
+import { Volume2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-// Function to ensure voices are loaded
-const loadVoices = () => {
-  return new Promise<SpeechSynthesisVoice[]>((resolve) => {
-    // Check if voices are already loaded
-    let voices = window.speechSynthesis.getVoices();
-    
-    if (voices.length > 0) {
-      resolve(voices);
-      return;
-    }
-    
-    // If not loaded, wait for the voiceschanged event
-    const voicesChanged = () => {
-      voices = window.speechSynthesis.getVoices();
-      resolve(voices);
-      window.speechSynthesis.removeEventListener('voiceschanged', voicesChanged);
-    };
-    
-    window.speechSynthesis.addEventListener('voiceschanged', voicesChanged);
-  });
-};
-
-// Function to find the best female voice
-const getFemaleVoice = () => {
-  const voices = window.speechSynthesis.getVoices();
-  console.log("Available voices:", voices.map(v => v.name));
-  
-  // First try to find specific female voices we know work well
-  for (const name of ['Google UK English Female', 'Microsoft Zira', 'Samantha', 'Victoria']) {
-    const voice = voices.find(v => v.name.includes(name));
-    if (voice) {
-      console.log("Selected voice:", voice.name);
-      return voice;
-    }
-  }
-  
-  // Then try to find any voice with 'female' in the name
-  const femaleVoice = voices.find(v => 
-    v.name.toLowerCase().includes('female') || 
-    v.name.toLowerCase().includes('girl') ||
-    v.name.toLowerCase().includes('woman')
-  );
-  
-  if (femaleVoice) {
-    console.log("Selected female voice:", femaleVoice.name);
-    return femaleVoice;
-  }
-  
-  // If no female voice found, pick first English voice or any voice
-  const englishVoice = voices.find(v => v.lang.startsWith('en'));
-  
-  console.log("Selected fallback voice:", (englishVoice || voices[0])?.name);
-  return englishVoice || voices[0];
+// Helper function to detect Android WebView
+const isAndroidWebView = () => {
+  // Check if running in a mobile environment (WebView)
+  const userAgent = navigator.userAgent.toLowerCase();
+  return userAgent.indexOf('android') > -1;
 };
 
 interface VoiceButtonProps {
   text: string;
-  showTrainer?: boolean;
+  size?: 'sm' | 'md';
 }
 
-const VoiceButton: React.FC<VoiceButtonProps> = ({ text, showTrainer = false }) => {
-  const [isSpeaking, setIsSpeaking] = useState(false);
+const VoiceButton: React.FC<VoiceButtonProps> = ({ text, size = 'sm' }) => {
+  const isAndroid = isAndroidWebView();
 
-  // Prefetch voices when component mounts
-  useEffect(() => {
-    // Try to load voices right away
-    window.speechSynthesis.getVoices();
-    
-    // Clean up any active speech when component unmounts
-    return () => {
-      window.speechSynthesis.cancel();
-    };
-  }, []);
-
-  const speak = () => {
-    // Stop any ongoing speech
-    window.speechSynthesis.cancel();
-    
-    if (isSpeaking) {
-      setIsSpeaking(false);
+  const handleClick = () => {
+    if (isAndroid) {
+      console.log("Speech synthesis disabled on Android");
       return;
     }
 
-    // Create utterance with the provided text
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Get female voice
-    const femaleVoice = getFemaleVoice();
-    if (femaleVoice) {
-      utterance.voice = femaleVoice;
+    try {
+      // Check if speechSynthesis is available
+      if (!window.speechSynthesis) {
+        console.error("Speech synthesis not available");
+        return;
+      }
+      
+      // Stop any ongoing speech
+      window.speechSynthesis.cancel();
+      
+      // Create utterance with the text
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Try to find available voices safely
+      let voices = [];
+      try {
+        voices = window.speechSynthesis.getVoices() || [];
+      } catch (err) {
+        console.warn("Could not get voices:", err);
+      }
+      
+      // Only proceed with voice selection if voices are available
+      if (voices && voices.length > 0) {
+        // Try to find a good female voice
+        const femaleVoices = voices.filter(v => 
+          v.name.includes("female") || 
+          v.name.includes("Female") ||
+          v.name.includes("Samantha") ||
+          v.name.includes("Victoria")
+        );
+        
+        if (femaleVoices.length > 0) {
+          utterance.voice = femaleVoices[0];
+        }
+      }
+      
+      // Set properties for more feminine voice
+      utterance.rate = 0.85;   // Slightly slower
+      utterance.pitch = 1.4;   // Higher pitch
+      utterance.volume = 1;
+      
+      // Speak
+      window.speechSynthesis.speak(utterance);
+    } catch (err) {
+      console.error("Speech synthesis error:", err);
+      // Silently fail - don't alert as it's not critical functionality
     }
-    
-    // Set properties for better voice quality
-    utterance.rate = 0.9;    // Slightly slower
-    utterance.pitch = 1.3;   // Higher pitch for more feminine voice
-    utterance.volume = 1;
-    
-    // Handle when speech ends
-    utterance.onend = () => {
-      setIsSpeaking(false);
-    };
-    
-    // Start speaking
-    setIsSpeaking(true);
-    window.speechSynthesis.speak(utterance);
   };
 
-  if (showTrainer) {
+  // If on Android, disable the button to prevent issues
+  if (isAndroid) {
     return (
-      <div className="flex flex-col items-center">
-        <button
-          onClick={speak}
-          className={`w-24 h-24 rounded-full overflow-hidden transition-transform ${isSpeaking ? 'scale-110' : 'hover:scale-105'}`}
-          aria-label={isSpeaking ? "Stop voice" : "Listen"}
-        >
-          <img 
-            src="/public/lovable-uploads/trainer.png" 
-            alt="Trainer" 
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              // Fallback if image fails to load
-              const target = e.target as HTMLImageElement;
-              target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Ccircle cx='50' cy='35' r='25' fill='%23f9a8d4'/%3E%3Cpath d='M50 65 C30 65 15 80 15 100 L85 100 C85 80 70 65 50 65 Z' fill='%23f9a8d4'/%3E%3C/svg%3E";
-            }}
-          />
-        </button>
-        <span className="text-sm text-center mt-2 text-white font-medium">Please press on me</span>
-      </div>
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        className={`opacity-50 ${size === 'sm' ? 'h-6 w-6' : 'h-8 w-8'}`}
+        disabled={true}
+      >
+        <Volume2 className={size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'} />
+      </Button>
     );
   }
 
   return (
-    <button
-      onClick={speak}
-      className={`rounded-full p-2 flex items-center justify-center ${
-        isSpeaking ? 'bg-rightstep-green text-white' : 'bg-white text-rightstep-green hover:bg-green-50'
-      } shadow-sm`}
-      aria-label={isSpeaking ? "Stop voice" : "Listen"}
+    <Button 
+      variant="ghost" 
+      size="icon" 
+      onClick={handleClick}
+      className={size === 'sm' ? 'h-6 w-6' : 'h-8 w-8'}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-      </svg>
-    </button>
+      <Volume2 className={size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'} />
+    </Button>
   );
 };
 

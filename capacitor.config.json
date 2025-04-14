@@ -1,0 +1,12 @@
+{
+  "appId": "com.waterbalance.journey",
+  "appName": "Water Balance Journey",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 3000,
+      "launchAutoHide": true,
+      "backgroundColor": "#ffffff"
+    }
+  }
+}

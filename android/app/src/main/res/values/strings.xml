@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Water Balance Journey</string>
+    <string name="title_activity_main">Water Balance Journey</string>
+    <string name="package_name">com.waterbalance.journey</string>
+    <string name="custom_url_scheme">com.waterbalance.journey</string>
+</resources>
